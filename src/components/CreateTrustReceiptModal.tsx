@@ -451,12 +451,12 @@ export function CreateTrustReceiptModal({
               <div className="space-y-3 pt-1">
                 <div className="flex items-center justify-between">
                   <label className="block text-xs font-black uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-indigo-600" />
+                    <Calendar className="w-3.5 h-3.5 text-black" />
                     <span>3. Set Deadline (Date, Time, Day, Month &amp; Year)</span>
                   </label>
                   <span
                     className={`text-[11px] font-extrabold flex items-center gap-1 ${
-                      isPast ? 'text-rose-600' : 'text-indigo-700'
+                      isPast ? 'text-rose-600' : 'text-slate-900'
                     }`}
                   >
                     <Clock className="w-3 h-3" />
@@ -531,7 +531,7 @@ export function CreateTrustReceiptModal({
                       <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">
                         Date (Month, Day &amp; Year)
                       </span>
-                      <span className="text-[10px] font-extrabold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-md border border-indigo-200/60">
+                      <span className="text-[10px] font-extrabold text-slate-800 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200">
                         Day: {dayOfWeekName}
                       </span>
                     </div>
@@ -546,7 +546,7 @@ export function CreateTrustReceiptModal({
                             setCustomMonth(parseInt(e.target.value, 10));
                             setDeadlinePreset('custom');
                           }}
-                          className="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-extrabold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-2xs"
+                          className="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-extrabold text-slate-900 focus:outline-none focus:ring-2 focus:ring-black cursor-pointer shadow-2xs"
                         >
                           {monthNames.map((m, idx) => (
                             <option key={m} value={idx}>
@@ -565,7 +565,7 @@ export function CreateTrustReceiptModal({
                             setCustomDay(parseInt(e.target.value, 10));
                             setDeadlinePreset('custom');
                           }}
-                          className="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-extrabold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-2xs"
+                          className="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-extrabold text-slate-900 focus:outline-none focus:ring-2 focus:ring-black cursor-pointer shadow-2xs"
                         >
                           {Array.from({ length: daysInMonth }, (_, i) => i + 1).map((d) => (
                             <option key={d} value={d}>
@@ -584,7 +584,7 @@ export function CreateTrustReceiptModal({
                             setCustomYear(parseInt(e.target.value, 10));
                             setDeadlinePreset('custom');
                           }}
-                          className="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-extrabold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-2xs"
+                          className="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-extrabold text-slate-900 focus:outline-none focus:ring-2 focus:ring-black cursor-pointer shadow-2xs"
                         >
                           {[2026, 2027, 2028, 2029, 2030].map((y) => (
                             <option key={y} value={y}>
@@ -613,7 +613,7 @@ export function CreateTrustReceiptModal({
                               setCustomHour12(parseInt(e.target.value, 10));
                               setDeadlinePreset('custom');
                             }}
-                            className="w-full bg-white border border-slate-200 rounded-xl px-2 py-1.5 text-xs font-extrabold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-2xs"
+                            className="w-full bg-white border border-slate-200 rounded-xl px-2 py-1.5 text-xs font-extrabold text-slate-900 focus:outline-none focus:ring-2 focus:ring-black cursor-pointer shadow-2xs"
                           >
                             {Array.from({ length: 12 }, (_, i) => i + 1).map((h) => (
                               <option key={h} value={h}>
@@ -634,7 +634,7 @@ export function CreateTrustReceiptModal({
                               setCustomMinute(parseInt(e.target.value, 10));
                               setDeadlinePreset('custom');
                             }}
-                            className="w-full bg-white border border-slate-200 rounded-xl px-2 py-1.5 text-xs font-extrabold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-2xs"
+                            className="w-full bg-white border border-slate-200 rounded-xl px-2 py-1.5 text-xs font-extrabold text-slate-900 focus:outline-none focus:ring-2 focus:ring-black cursor-pointer shadow-2xs"
                           >
                             {[0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 59].map((m) => (
                               <option key={m} value={m}>
