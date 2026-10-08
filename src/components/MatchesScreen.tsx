@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   ArrowLeft,
+  ArrowRight,
   Clock,
   Send,
   Sparkles,
@@ -18,6 +19,9 @@ import {
   ThumbsDown,
   FileCheck,
   Plus,
+  Calendar,
+  Lock,
+  ShieldCheck,
 } from 'lucide-react';
 import {
   SharedPerson,
@@ -28,7 +32,11 @@ import {
   saveSharedTimers,
   FIVE_HOURS_MS,
 } from '../data/sharedPeople';
-import { TrustReceipt, loadTrustReceipts } from '../data/trustReceipts';
+import {
+  TrustReceipt,
+  loadTrustReceipts,
+  computeReceiptStatus,
+} from '../data/trustReceipts';
 import { TrustReceiptsView } from './TrustReceiptsView';
 import { CreateTrustReceiptModal } from './CreateTrustReceiptModal';
 
@@ -98,7 +106,7 @@ export function MatchesScreen({ onBackToFeed }: MatchesScreenProps) {
 
   // Search & Filter state for matches
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedFilter, setSelectedFilter] = useState<'all' | 'high' | 'chatting'>('all');
+  const [selectedFilter, setSelectedFilter] = useState<'all' | 'high' | 'chatting' | 'receipts'>('all');
 
   // Score feedback toast state
   const [scoreToast, setScoreToast] = useState<{
@@ -109,20 +117,58 @@ export function MatchesScreen({ onBackToFeed }: MatchesScreenProps) {
   // Sub-tab: 'matches' or 'receipts'
   const [matchScreenTab, setMatchScreenTab] = useState<'matches' | 'receipts'>('matches');
 
-  // Trust Receipt creation modal
+  // Trust Receipt state & creation modal
   const [showCreateReceiptModal, setShowCreateReceiptModal] = useState(false);
   const [createReceiptPersonId, setCreateReceiptPersonId] = useState<string | null>(null);
   const [createReceiptQuote, setCreateReceiptQuote] = useState<string>('');
+  const [receiptsList, setReceiptsList] = useState<TrustReceipt[]>(() => loadTrustReceipts());
   const [trustReceiptsCount, setTrustReceiptsCount] = useState<number>(() => loadTrustReceipts().length);
 
-  // Sync receipts count across components
+  // Quick Deal & Time Inspector Modal target
+  const [inspectingReceipt, setInspectingReceipt] = useState<TrustReceipt | null>(null);
+
+  // Sync receipts count & list across components
   useEffect(() => {
     const handleReceiptsSync = () => {
-      setTrustReceiptsCount(loadTrustReceipts().length);
+      const all = loadTrustReceipts();
+      setReceiptsList(all);
+      setTrustReceiptsCount(all.length);
     };
     window.addEventListener('fairy_receipts_sync', handleReceiptsSync);
     return () => window.removeEventListener('fairy_receipts_sync', handleReceiptsSync);
   }, []);
+
+  // Helper to find the most recent Trust Receipt for any person
+  const getRecentReceiptForPerson = (personId: string): TrustReceipt | undefined => {
+    return receiptsList.find((r) => r.promiserId === personId);
+  };
+
+  // Remaining countdown formatted for tweet/comment previews
+  const getCountdownRemaining = (deadlineAt: number): string => {
+    const diff = deadlineAt - now;
+    if (diff <= 0) return 'Expired';
+    const totalSecs = Math.floor(diff / 1000);
+    const hrs = Math.floor(totalSecs / 3600);
+    const mins = Math.floor((totalSecs % 3600) / 60);
+    const secs = totalSecs % 60;
+    if (hrs >= 24) {
+      const days = Math.floor(hrs / 24);
+      const remHrs = hrs % 24;
+      return `${days}d ${remHrs}h left`;
+    }
+    return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')} left`;
+  };
+
+  // Detailed remaining countdown for modal inspector
+  const getRemainingTimeFormattedForReceipt = (deadlineAt: number): string => {
+    const diff = deadlineAt - now;
+    if (diff <= 0) return '00:00:00 (Expired)';
+    const totalSecs = Math.floor(diff / 1000);
+    const hrs = Math.floor(totalSecs / 3600);
+    const mins = Math.floor((totalSecs % 3600) / 60);
+    const secs = totalSecs % 60;
+    return `${String(hrs).padStart(2, '0')}h ${String(mins).padStart(2, '0')}m ${String(secs).padStart(2, '0')}s`;
+  };
 
   const handleOpenCreateReceiptForPerson = (personId: string, quote?: string) => {
     setCreateReceiptPersonId(personId);
@@ -537,6 +583,57 @@ export function MatchesScreen({ onBackToFeed }: MatchesScreenProps) {
           </div>
         </header>
 
+        {/* Pinned Deal Banner in Chat: Shows How This Person Deals */}
+        {(() => {
+          const chatReceipt = getRecentReceiptForPerson(activePerson.id);
+          if (chatReceipt) {
+            return (
+              <div
+                onClick={() => setInspectingReceipt(chatReceipt)}
+                className="bg-gradient-to-r from-amber-50 to-orange-50/80 border-b border-amber-200/90 px-3.5 py-2.5 flex items-center justify-between gap-2.5 shrink-0 cursor-pointer hover:bg-amber-100/70 transition-colors shadow-2xs group"
+                title={`See how ${activePerson.name} deals on Trust Receipt #${chatReceipt.receiptNumber}`}
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-8 h-8 rounded-xl bg-black text-amber-400 flex items-center justify-center shrink-0 shadow-xs">
+                    <FileCheck className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="font-mono font-black text-xs text-slate-900">
+                        #{chatReceipt.receiptNumber}
+                      </span>
+                      <span className="text-[10px] font-black text-amber-950 bg-amber-100 px-1.5 py-0.2 rounded-md border border-amber-200">
+                        {chatReceipt.amount ? `Stake: ${chatReceipt.amount}` : 'Deal Active'}
+                      </span>
+                      <span className="text-[10px] text-slate-500 font-bold hidden sm:inline">
+                        &middot; {chatReceipt.deadlineLabel}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-700 font-medium italic truncate max-w-[200px] sm:max-w-md">
+                      "{chatReceipt.commitment}"
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setInspectingReceipt(chatReceipt);
+                    }}
+                    className="px-2.5 py-1.5 bg-black text-white hover:bg-slate-800 rounded-xl text-[11px] font-black flex items-center gap-1 shadow-2xs group-hover:scale-102 transition-transform cursor-pointer"
+                  >
+                    <span>How They Deal</span>
+                    <ArrowRight className="w-3 h-3 text-amber-400" />
+                  </button>
+                </div>
+              </div>
+            );
+          }
+          return null;
+        })()}
+
         {/* Chat message stream */}
         <div className="flex-1 min-h-0 overflow-y-auto p-4 space-y-3 overscroll-contain touch-pan-y">
           <div className="text-center my-2">
@@ -600,14 +697,25 @@ export function MatchesScreen({ onBackToFeed }: MatchesScreenProps) {
   // Computed filtered list for search & chips
   const filteredPeople = people.filter((person) => {
     const query = searchQuery.toLowerCase().trim();
+    const recentReceipt = getRecentReceiptForPerson(person.id);
+
     const matchesSearch =
       !query ||
       person.name.toLowerCase().includes(query) ||
       person.city.toLowerCase().includes(query) ||
-      'vibe coder'.includes(query);
+      'vibe coder'.includes(query) ||
+      (recentReceipt && (
+        recentReceipt.commitment.toLowerCase().includes(query) ||
+        recentReceipt.receiptNumber.toLowerCase().includes(query) ||
+        (recentReceipt.amount && recentReceipt.amount.toLowerCase().includes(query)) ||
+        recentReceipt.promiserHandle.toLowerCase().includes(query)
+      ));
 
     if (!matchesSearch) return false;
 
+    if (selectedFilter === 'receipts') {
+      return !!recentReceipt;
+    }
     if (selectedFilter === 'high') {
       return person.percent >= 80;
     }
@@ -616,6 +724,9 @@ export function MatchesScreen({ onBackToFeed }: MatchesScreenProps) {
     }
     return true;
   });
+
+  // Count of people with at least one Trust Receipt
+  const peopleWithReceiptsCount = people.filter((p) => !!getRecentReceiptForPerson(p.id)).length;
 
   // =========================================================================
   // VIEW: MATCHES LIST SCREEN ("See for your matches")
@@ -767,7 +878,7 @@ export function MatchesScreen({ onBackToFeed }: MatchesScreenProps) {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search matches by name or city (e.g. San Francisco, Berlin)..."
+            placeholder="Search by name, city, or deal terms (e.g. Alex, ₦50,000, Figma, audio)..."
             className="w-full bg-slate-100 rounded-full pl-9 pr-9 py-2 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black"
           />
           {searchQuery && (
@@ -792,6 +903,18 @@ export function MatchesScreen({ onBackToFeed }: MatchesScreenProps) {
             }`}
           >
             All ({people.length})
+          </button>
+          <button
+            onClick={() => setSelectedFilter('receipts')}
+            className={`px-2.5 py-1 rounded-full font-bold transition-all cursor-pointer shrink-0 flex items-center gap-1 ${
+              selectedFilter === 'receipts'
+                ? 'bg-amber-600 text-white shadow-2xs'
+                : 'bg-amber-50 text-amber-900 border border-amber-200/80 hover:bg-amber-100'
+            }`}
+            title="Show matches with recent Trust Receipts"
+          >
+            <FileCheck className="w-3 h-3 text-amber-500" />
+            <span>With Receipts ({peopleWithReceiptsCount})</span>
           </button>
           <button
             onClick={() => setSelectedFilter('high')}
@@ -865,91 +988,166 @@ export function MatchesScreen({ onBackToFeed }: MatchesScreenProps) {
           filteredPeople.map((person) => {
             const isChatting = hasActiveTimer(person.id);
             const isGreenPercent = person.percent >= 50;
+            const recentReceipt = getRecentReceiptForPerson(person.id);
 
             return (
               <div
                 key={person.id}
-                className="w-full bg-white rounded-2xl p-3 border border-slate-100 shadow-xs hover:border-slate-300 transition-all flex items-center justify-between gap-3"
+                className="w-full bg-white rounded-2xl p-3 sm:p-3.5 border border-slate-200/90 shadow-xs hover:border-slate-300 transition-all flex flex-col gap-2.5"
               >
-                {/* Left: Circular Avatar & Details */}
-                <div className="flex items-center gap-3 min-w-0">
-                  <div
-                    className={`w-12 h-12 rounded-full ${person.avatarBg} text-white font-bold text-sm flex items-center justify-center shrink-0 shadow-xs overflow-hidden`}
-                  >
-                    {person.avatarUrl ? (
-                      <img
-                        src={person.avatarUrl}
-                        alt={person.name}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      person.avatarInitial
-                    )}
+                {/* Top Row: Circular Avatar & Details (Left) + Match Rating & Message (Right) */}
+                <div className="flex items-center justify-between gap-2.5">
+                  {/* Left: Avatar & Info */}
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div
+                      className={`w-11 h-11 rounded-full ${person.avatarBg} text-white font-bold text-sm flex items-center justify-center shrink-0 shadow-xs overflow-hidden`}
+                    >
+                      {person.avatarUrl ? (
+                        <img
+                          src={person.avatarUrl}
+                          alt={person.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        person.avatarInitial
+                      )}
+                    </div>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <h3 className="font-extrabold text-sm text-slate-900 truncate leading-tight">
+                          {person.name}
+                        </h3>
+                        <span
+                          className={`text-[10px] font-black px-1.5 py-0.2 rounded-full ${
+                            isGreenPercent
+                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                              : 'bg-rose-50 text-rose-700 border border-rose-200'
+                          }`}
+                          title={`${person.percent}% rating`}
+                        >
+                          {person.percent}%
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-slate-500 font-medium truncate mt-0.5">
+                        Vibe coder &middot; {person.city} &middot; <span className="font-semibold text-slate-700">{person.approval}</span>
+                      </p>
+                    </div>
                   </div>
-                  <div className="min-w-0">
-                    <h3 className="font-extrabold text-sm text-slate-900 truncate leading-tight">
-                      {person.name}
-                    </h3>
-                    <p className="text-xs text-slate-600 font-semibold mt-0.5">
-                      Vibe coder
-                    </p>
-                    <p className="text-[11px] text-slate-400 font-medium truncate">
-                      {person.city}
-                    </p>
+
+                  {/* Right: Message / Chatting Button */}
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <button
+                      onClick={() => handleOpenChat(person)}
+                      className={`px-3.5 py-1.5 rounded-full text-xs font-black tracking-wide transition-all active:scale-95 cursor-pointer shadow-xs ${
+                        isChatting
+                          ? 'bg-emerald-600 hover:bg-emerald-700 text-white ring-2 ring-emerald-300 flex items-center gap-1'
+                          : 'bg-black hover:bg-slate-800 text-white'
+                      }`}
+                    >
+                      {isChatting ? (
+                        <>
+                          <Clock className="w-3 h-3 text-emerald-200 animate-spin-slow" />
+                          Chatting
+                        </>
+                      ) : (
+                        'Message'
+                      )}
+                    </button>
                   </div>
                 </div>
 
-                {/* Right: Match Percentage (NO 'Match' word!), Approval, and Button */}
-                <div className="flex items-center gap-3 shrink-0">
-                  {/* Match percentage: green, or red if under 50% - REMOVED the word 'Match' */}
-                  <div className="flex flex-col items-end">
-                    <span
-                      className={`text-xs font-black px-2 py-0.5 rounded-full ${
-                        isGreenPercent
-                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                          : 'bg-rose-50 text-rose-700 border border-rose-200'
-                      }`}
-                      title={`${person.percent}% rating`}
-                    >
-                      {person.percent}%
-                    </span>
-                    {/* Approval count (e.g. '54+') */}
-                    <span className="text-[10px] text-slate-400 font-bold mt-1">
-                      {person.approval}
-                    </span>
-                  </div>
+                {/* "How [Person] Deals" - Tweet / Comment Writing Container */}
+                {recentReceipt ? (
+                  <div
+                    onClick={() => setInspectingReceipt(recentReceipt)}
+                    className="bg-amber-50/40 hover:bg-amber-50/70 border border-amber-200/80 rounded-2xl p-3 transition-all cursor-pointer group shadow-2xs hover:shadow-xs active:scale-[0.99] space-y-2"
+                  >
+                    {/* Tweet Header Row */}
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-1.5 min-w-0">
+                        <div className="w-5 h-5 rounded-md bg-black text-amber-400 flex items-center justify-center shrink-0 shadow-2xs">
+                          <FileCheck className="w-3 h-3" />
+                        </div>
+                        <span className="font-black text-[11px] text-slate-900 truncate">
+                          How {person.name.split(' ')[0]} Deals
+                        </span>
+                        <span className="px-1.5 py-0.2 rounded-full bg-slate-200 text-slate-800 text-[9px] font-mono font-bold shrink-0">
+                          #{recentReceipt.receiptNumber}
+                        </span>
+                      </div>
 
-                  {/* Create Trust Receipt button on person card */}
+                      {/* Status Chip */}
+                      <div className="shrink-0 text-[9.5px] font-bold">
+                        {recentReceipt.outcome === 'fulfilled' ? (
+                          <span className="text-emerald-700 bg-emerald-100/90 px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
+                            <CheckCircle2 className="w-2.5 h-2.5" /> Fulfilled
+                          </span>
+                        ) : recentReceipt.acknowledgedAt ? (
+                          <span className="text-purple-700 bg-purple-100/90 px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
+                            <Lock className="w-2.5 h-2.5" /> Locked
+                          </span>
+                        ) : (
+                          <span className="text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded-full flex items-center gap-0.5 animate-pulse">
+                            <Clock className="w-2.5 h-2.5" /> Awaiting
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Quoted Commitment in Tweet Writing Style */}
+                    <div className="bg-white/90 rounded-xl p-2.5 border border-amber-200/60 shadow-2xs">
+                      <p className="text-xs text-slate-800 font-medium leading-relaxed italic">
+                        "{recentReceipt.commitment}"
+                      </p>
+                    </div>
+
+                    {/* Deal Stakes & Timeline Pill Strip */}
+                    <div className="flex flex-wrap items-center gap-1.5 text-[10px]">
+                      {recentReceipt.amount && (
+                        <span className="px-2 py-0.5 rounded-md bg-amber-100 text-amber-950 font-mono font-black border border-amber-200">
+                          Stake: {recentReceipt.amount}
+                        </span>
+                      )}
+                      <span className="px-2 py-0.5 rounded-md bg-white text-slate-700 border border-slate-200 font-sans font-bold flex items-center gap-1">
+                        <Calendar className="w-2.5 h-2.5 text-slate-400" />
+                        {recentReceipt.deadlineLabel}
+                      </span>
+                      <span className="px-2 py-0.5 rounded-md bg-black text-amber-400 font-mono font-extrabold flex items-center gap-1 ml-auto">
+                        <Clock className="w-2.5 h-2.5" />
+                        {getCountdownRemaining(recentReceipt.deadlineAt)}
+                      </span>
+                    </div>
+
+                    {/* Full-Width Mobile Action Button */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setInspectingReceipt(recentReceipt);
+                      }}
+                      className="w-full mt-1.5 py-2 px-3 bg-black hover:bg-slate-800 active:scale-[0.98] text-white rounded-xl text-xs font-black flex items-center justify-between shadow-xs transition-all cursor-pointer"
+                    >
+                      <div className="flex items-center gap-1.5 truncate">
+                        <FileCheck className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                        <span className="truncate">See How {person.name.split(' ')[0]} Deals &amp; Agreement</span>
+                      </div>
+                      <ArrowRight className="w-3.5 h-3.5 text-slate-300 shrink-0 ml-1" />
+                    </button>
+                  </div>
+                ) : (
+                  /* Option to propose a deal if no deal yet */
                   <button
+                    type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleOpenCreateReceiptForPerson(person.id);
                     }}
-                    className="p-2 rounded-full bg-slate-100 hover:bg-amber-100 hover:text-amber-900 text-slate-700 text-xs font-bold transition-all flex items-center justify-center cursor-pointer shadow-2xs hover:shadow-xs active:scale-95"
-                    title={`Create Trust Receipt with ${person.name}`}
+                    className="w-full py-2 px-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-dashed border-slate-200 text-slate-600 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                   >
-                    <FileCheck className="w-4 h-4 text-amber-600" />
+                    <Plus className="w-3.5 h-3.5 text-slate-400" />
+                    <span>Propose a Trust Receipt Deal with {person.name}</span>
                   </button>
-
-                  {/* Black pill button: 'Message' or 'Chatting' */}
-                  <button
-                    onClick={() => handleOpenChat(person)}
-                    className={`px-4 py-2 rounded-full text-xs font-bold tracking-wide transition-all active:scale-95 cursor-pointer shadow-xs ${
-                      isChatting
-                        ? 'bg-emerald-600 hover:bg-emerald-700 text-white ring-2 ring-emerald-300 flex items-center gap-1.5'
-                        : 'bg-black hover:bg-slate-800 text-white'
-                    }`}
-                  >
-                    {isChatting ? (
-                      <>
-                        <Clock className="w-3 h-3 text-emerald-200 animate-spin-slow" />
-                        Chatting
-                      </>
-                    ) : (
-                      'Message'
-                    )}
-                  </button>
-                </div>
+                )}
               </div>
             );
           })
@@ -966,13 +1164,234 @@ export function MatchesScreen({ onBackToFeed }: MatchesScreenProps) {
         initialPersonId={createReceiptPersonId}
         initialQuote={createReceiptQuote}
         onReceiptCreated={(r) => {
+          const updated = loadTrustReceipts();
+          setReceiptsList(updated);
+          setTrustReceiptsCount(updated.length);
           setScoreToast({
             type: 'good',
-            message: `Trust Receipt #${r.receiptNumber} issued to ${r.promiserName}! Awaiting acknowledgement.`,
+            message: `Trust Receipt #${r.receiptNumber} issued to ${r.promiserName}! Check out their deal on the match card.`,
           });
-          setMatchScreenTab('receipts');
+          setSearchQuery(r.promiserName);
+          setMatchScreenTab('matches');
+          setInspectingReceipt(r);
         }}
       />
+
+      {/* Deal & Time Quick Inspector Modal */}
+      {inspectingReceipt && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"
+          onClick={() => setInspectingReceipt(null)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl border border-slate-100 flex flex-col overflow-hidden max-h-[92vh] animate-in slide-in-from-bottom-4 duration-200"
+          >
+            {/* Modal Header */}
+            <div className="px-4 sm:px-5 py-3.5 border-b border-slate-100 bg-slate-50 flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-8 h-8 rounded-xl bg-black text-amber-400 flex items-center justify-center shadow-xs shrink-0">
+                  <FileCheck className="w-4 h-4" />
+                </div>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span className="font-mono font-black text-xs text-slate-900 tracking-wider">
+                      #{inspectingReceipt.receiptNumber}
+                    </span>
+                    <span className="px-1.5 py-0.2 rounded-full bg-slate-200 text-slate-700 text-[9px] font-black uppercase">
+                      TRUST RECEIPT
+                    </span>
+                  </div>
+                  <h3 className="text-xs font-black text-slate-900 truncate">
+                    How {inspectingReceipt.promiserName} Deals
+                  </h3>
+                </div>
+              </div>
+              <button
+                onClick={() => setInspectingReceipt(null)}
+                className="p-1.5 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition-colors cursor-pointer shrink-0"
+                aria-label="Close"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-4 sm:p-5 space-y-3.5 overflow-y-auto overscroll-contain">
+              {/* Promiser Profile & Reliability Card */}
+              <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200/80 flex items-center justify-between gap-2.5">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div
+                    className={`w-10 h-10 rounded-full ${inspectingReceipt.promiserAvatarBg} text-white font-bold text-sm flex items-center justify-center shadow-xs overflow-hidden shrink-0`}
+                  >
+                    {inspectingReceipt.promiserAvatarUrl ? (
+                      <img
+                        src={inspectingReceipt.promiserAvatarUrl}
+                        alt={inspectingReceipt.promiserName}
+                        className="w-full h-full object-cover rounded-full"
+                      />
+                    ) : (
+                      inspectingReceipt.promiserAvatarInitial
+                    )}
+                  </div>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-1 flex-wrap">
+                      <span className="font-extrabold text-xs text-slate-900 truncate">
+                        {inspectingReceipt.promiserName}
+                      </span>
+                      <span className="text-[9.5px] font-black px-1.5 py-0.2 rounded-full bg-emerald-100 text-emerald-800">
+                        {inspectingReceipt.promiserPercent}% Match
+                      </span>
+                    </div>
+                    <span className="text-[10px] text-slate-500 font-medium block truncate">
+                      {inspectingReceipt.promiserHandle} &middot; {inspectingReceipt.promiserCity}
+                    </span>
+                    <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-wide block">
+                      Promiser (The Deal Maker)
+                    </span>
+                  </div>
+                </div>
+
+                <div className="text-right shrink-0">
+                  <span className="text-[9px] font-extrabold uppercase tracking-wide text-slate-400 block">
+                    Recorded By
+                  </span>
+                  <span className="font-extrabold text-xs text-slate-900">
+                    {inspectingReceipt.creatorName}
+                  </span>
+                  <span className="text-[9.5px] text-slate-500 font-semibold block">You (Creator)</span>
+                </div>
+              </div>
+
+              {/* The Deal Agreement */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10.5px] font-black uppercase tracking-wider text-slate-700 flex items-center gap-1">
+                    <span>1. Agreed Commitment (The Deal)</span>
+                  </span>
+                  {inspectingReceipt.amount && (
+                    <span className="px-2 py-0.5 rounded-md bg-amber-100 text-amber-900 font-mono font-black text-xs border border-amber-200/80">
+                      Stake: {inspectingReceipt.amount}
+                    </span>
+                  )}
+                </div>
+                <div className="p-3 bg-amber-50/50 rounded-2xl border-l-4 border-amber-500 border border-slate-200/70 text-xs font-semibold text-slate-900 leading-relaxed shadow-2xs">
+                  "{inspectingReceipt.commitment}"
+                </div>
+                <p className="text-[10px] text-slate-400 font-medium px-0.5">
+                  &bull; This is the exact binding promise recorded on FAIRY.
+                </p>
+              </div>
+
+              {/* The Deal Timeline & Countdown */}
+              <div className="space-y-2 p-3 bg-slate-50 rounded-2xl border border-slate-200/80">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10.5px] font-black uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5 text-black" />
+                    <span>2. Delivery Target &amp; Live Time</span>
+                  </span>
+                  <span className="text-[9.5px] font-mono font-bold text-slate-500">
+                    Created {new Date(inspectingReceipt.createdAt).toLocaleDateString()}
+                  </span>
+                </div>
+
+                {/* Scheduled Target */}
+                <div className="p-2.5 bg-white rounded-xl border border-slate-200 flex items-center justify-between text-xs shadow-2xs">
+                  <div>
+                    <span className="text-[9px] font-bold text-slate-400 block uppercase">
+                      Target:
+                    </span>
+                    <span className="font-extrabold text-slate-900 text-[11px]">
+                      {inspectingReceipt.deadlineLabel}
+                    </span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[9px] font-bold text-slate-400 block uppercase">
+                      Exact Time:
+                    </span>
+                    <span className="font-bold text-slate-700 text-[10.5px]">
+                      {new Date(inspectingReceipt.deadlineAt).toLocaleString([], {
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Live Remaining Ticking Clock - Responsive Stack for Mobile */}
+                <div className="p-3 bg-black text-white rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 shadow-xs">
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-amber-400 animate-spin-slow shrink-0" />
+                    <div>
+                      <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400 block">
+                        Live Countdown Remaining
+                      </span>
+                      <span className="font-mono text-sm sm:text-base font-black text-amber-400 tracking-wider">
+                        {getRemainingTimeFormattedForReceipt(inspectingReceipt.deadlineAt)}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between sm:flex-col sm:items-end pt-1.5 sm:pt-0 border-t sm:border-t-0 border-slate-800">
+                    <span className="text-[9px] font-bold text-slate-400 block uppercase">
+                      Status:
+                    </span>
+                    <span className="text-xs font-black text-white">
+                      {inspectingReceipt.outcome === 'fulfilled'
+                        ? 'Fulfilled ✅'
+                        : inspectingReceipt.acknowledgedAt
+                        ? 'Locked & Active 🔒'
+                        : 'Awaiting Acknowledgement ⏳'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Deal Integrity Guarantee Box */}
+              <div className="p-2.5 bg-slate-100/80 rounded-xl border border-slate-200 text-[10.5px] text-slate-600 leading-relaxed">
+                <span className="font-black text-slate-900 block text-[10px] uppercase mb-0.5">
+                  🛡️ FAIRY Integrity Guarantee
+                </span>
+                Deals on FAIRY cannot be silently edited. On-time delivery directly raises {inspectingReceipt.promiserName}'s reputation score.
+              </div>
+            </div>
+
+            {/* Modal Actions - Grid for Mobile Touch */}
+            <div className="p-3 sm:p-4 border-t border-slate-100 bg-slate-50 grid grid-cols-2 gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => {
+                  const promiser = people.find((p) => p.id === inspectingReceipt.promiserId);
+                  setInspectingReceipt(null);
+                  if (promiser) {
+                    handleOpenChat(promiser);
+                  }
+                }}
+                className="py-2.5 px-2 rounded-xl bg-slate-200 hover:bg-slate-300 active:scale-95 text-slate-900 text-xs font-extrabold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+              >
+                <MessageSquare className="w-3.5 h-3.5 text-slate-600" />
+                <span className="truncate">Chat with {inspectingReceipt.promiserName.split(' ')[0]}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setInspectingReceipt(null);
+                  setMatchScreenTab('receipts');
+                }}
+                className="py-2.5 px-2 rounded-xl bg-black hover:bg-slate-800 active:scale-95 text-white text-xs font-black flex items-center justify-center gap-1.5 shadow-md transition-all cursor-pointer"
+              >
+                <FileCheck className="w-3.5 h-3.5 text-amber-400" />
+                <span className="truncate">View in Receipts</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Render Time's Up Dialog if triggered on list view */}
       {renderTimesUpDialog()}
