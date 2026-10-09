@@ -55,6 +55,7 @@ import { AeriStackedChairsIcon } from './components/AeriStackedChairsIcon';
 import { AeriThumbsUpIcon } from './components/AeriThumbsUpIcon';
 import { AeriMonoblocChairIcon } from './components/AeriMonoblocChairIcon';
 import { AeriArrowKeysIcon } from './components/AeriArrowKeysIcon';
+import { AeriMindProfileIcon } from './components/AeriMindProfileIcon';
 
 interface CommentItem {
   id: string;
@@ -2390,14 +2391,19 @@ export default function App() {
             setShowNormalMessagesScreen(false);
             setActiveNavIndex(0);
           }}
-          aria-label="Trending chart"
+          aria-label="Mind Profile"
+          title="Mind Profile"
           className={`p-1.5 transition-colors cursor-pointer flex flex-col items-center ${
             !showMatchesScreen && !showNormalMessagesScreen && activeNavIndex === 3
               ? 'text-black'
               : 'text-[#94A3B8] hover:text-black'
           }`}
         >
-          <TrendingUp className="w-[21px] h-[21px] stroke-[1.8]" />
+          <AeriMindProfileIcon
+            size={24}
+            className="w-[23px] h-[25px] transition-transform active:scale-95"
+            strokeWidth={!showMatchesScreen && !showNormalMessagesScreen && activeNavIndex === 3 ? 2.3 : 1.9}
+          />
         </button>
 
         <button
