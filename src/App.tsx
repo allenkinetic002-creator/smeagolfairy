@@ -1510,9 +1510,9 @@ export default function App() {
                 onClick={() => setShowNormalMessagesScreen(true)}
                 aria-label="Messages"
                 title="Messages · Direct messages with normal users"
-                className="hover:opacity-75 transition-all active:scale-90 cursor-pointer p-1 relative text-[#6B7280] hover:text-[#4B5563]"
+                className="hover:opacity-75 transition-all active:scale-90 cursor-pointer p-1 relative text-black"
               >
-                <AeriMessageBubbleIcon className="w-[24px] h-[24px]" />
+                <AeriMessageBubbleIcon className="w-[24px] h-[24px] text-black" />
                 <span className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
               </button>
             </div>
