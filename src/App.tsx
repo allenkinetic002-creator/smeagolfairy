@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   Send,
+  Home,
   TrendingUp,
   User,
   Search,
@@ -37,13 +38,13 @@ import { InfluenceRatingModal } from './components/InfluenceRatingModal';
 import { FairyPotIcon } from './components/FairyPotIcon';
 import { AeriFrogIcon } from './components/AeriFrogIcon';
 import { AeriFlameIcon } from './components/AeriFlameIcon';
-import { AeriLeafIcon } from './components/AeriLeafIcon';
 import { AeriSlimeIcon } from './components/AeriSlimeIcon';
 import { AeriCommentIcon } from './components/AeriCommentIcon';
 import { AeriPhoneIcon } from './components/AeriPhoneIcon';
-import { AeriHomeIcon } from './components/AeriHomeIcon';
+import { AeriHandPhoneIcon } from './components/AeriHandPhoneIcon';
 import { AeriToyGunIcon } from './components/AeriToyGunIcon';
-import { AeriThumbsUpIcon } from './components/AeriThumbsUpIcon';
+import { AeriClawIcon } from './components/AeriClawIcon';
+import { AeriOneEyeGhostIcon } from './components/AeriOneEyeGhostIcon';
 
 interface CommentItem {
   id: string;
@@ -1623,21 +1624,26 @@ export default function App() {
                       <AeriCommentIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
                     </button>
 
-                    {/* 3rd icon beside Phone: Custom Leaf icon inspired by leave.png */}
+                    {/* 3rd icon: Honey jar icon (Fairy Pot) */}
                     <button
+                      onClick={() => {
+                        setActiveNavIndex(2);
+                        setShowMatchesScreen(false);
+                      }}
                       className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
-                      aria-label="Leaf"
-                      title="Leaf inspired icon"
+                      aria-label="Honey Jar / Fairy Pot"
+                      title="Honey Jar"
                     >
-                      <AeriLeafIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
+                      <FairyPotIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
                     </button>
 
+                    {/* 4th icon beside 5th frog icon: Hand holding smartphone inspired by icon fairyi png.jpg */}
                     <button
                       className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
-                      title="Phone"
-                      aria-label="Phone"
+                      title="Smartphone / Social Reach"
+                      aria-label="Smartphone"
                     >
-                      <AeriPhoneIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
+                      <AeriHandPhoneIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
                     </button>
 
                     <button
@@ -2025,14 +2031,15 @@ export default function App() {
                       className={`px-2.5 py-1 rounded-full text-xs font-extrabold flex items-center gap-1.5 transition-all cursor-pointer ${
                         person.isUpvoted
                           ? 'bg-blue-600 text-white shadow-xs'
-                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                          : 'bg-slate-100 text-slate-800 hover:bg-slate-200'
                       }`}
                       title="Give thumbs up"
                     >
-                      <AeriThumbsUpIcon
-                        className={`w-3.5 h-3.5 ${
+                      <AeriClawIcon
+                        className={`w-4 h-4 ${
                           person.isUpvoted ? 'fill-white stroke-white' : 'stroke-[2]'
                         }`}
+                        filled={person.isUpvoted}
                       />
                       <span className="tabular-nums">
                         {(person.upvotes / 1000).toFixed(1)}k
@@ -2095,7 +2102,7 @@ export default function App() {
                     </h4>
                     <div className="flex items-center gap-3 mt-1 text-[10px] text-slate-500 font-medium">
                       <span className="flex items-center gap-1">
-                        <AeriThumbsUpIcon className="w-3 h-3 text-blue-600" />
+                        <AeriClawIcon className="w-3.5 h-3.5 text-blue-600 stroke-[2]" />
                         {person.topPost.likes}
                       </span>
                       <span className="flex items-center gap-1">
@@ -2189,8 +2196,8 @@ export default function App() {
                           : 'bg-slate-100 text-slate-800'
                       }`}
                     >
-                      <AeriThumbsUpIcon className="w-3.5 h-3.5" />
-                      {(previewCreator.upvotes / 1000).toFixed(1)}k Thumbs Up
+                      <AeriClawIcon className="w-4 h-4 stroke-[2]" filled={previewCreator.isUpvoted} />
+                      {(previewCreator.upvotes / 1000).toFixed(1)}k Claws
                     </button>
 
                     <button
@@ -2319,7 +2326,7 @@ export default function App() {
               : 'text-[#94A3B8] hover:text-black'
           }`}
         >
-          <AeriHomeIcon className="w-[22px] h-[22px] stroke-[1.8]" />
+          <Home className="w-[21px] h-[21px] stroke-[1.8]" />
         </button>
 
         <button
@@ -2332,13 +2339,13 @@ export default function App() {
           className={`p-1.5 transition-colors cursor-pointer relative flex flex-col items-center ${
             !showMatchesScreen && !showNormalMessagesScreen && activeNavIndex === 1
               ? 'text-blue-600'
-              : 'text-[#94A3B8] hover:text-blue-600'
+              : 'text-slate-800 hover:text-blue-600'
           }`}
           title="Top 10 People Leaderboard"
         >
-          <AeriThumbsUpIcon
-            className={`w-[22px] h-[22px] ${
-              !showMatchesScreen && !showNormalMessagesScreen && activeNavIndex === 1 ? 'stroke-[2.2] fill-blue-50' : 'stroke-[1.8]'
+          <AeriClawIcon
+            className={`w-[24px] h-[24px] ${
+              !showMatchesScreen && !showNormalMessagesScreen && activeNavIndex === 1 ? 'stroke-[2.2] fill-blue-50' : 'stroke-[2]'
             }`}
           />
           <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
@@ -2360,7 +2367,7 @@ export default function App() {
           }`}
           title="FAIRY CONTROL, DM Privacy & See for your matches"
         >
-          <FairyPotIcon
+          <AeriOneEyeGhostIcon
             className={`w-[22px] h-[22px] transition-transform active:scale-95 ${
               showMatchesScreen || (!showNormalMessagesScreen && activeNavIndex === 2)
                 ? 'stroke-[2.2] text-slate-900'

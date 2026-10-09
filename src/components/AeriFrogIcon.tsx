@@ -67,3 +67,4 @@ export function AeriFrogIcon({
 
 // Alias export for versatility
 export const AeriIcon = AeriFrogIcon;
+export { AeriHandPhoneIcon } from './AeriHandPhoneIcon';
