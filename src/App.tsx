@@ -56,6 +56,7 @@ import { AeriThumbsUpIcon } from './components/AeriThumbsUpIcon';
 import { AeriMonoblocChairIcon } from './components/AeriMonoblocChairIcon';
 import { AeriArrowKeysIcon } from './components/AeriArrowKeysIcon';
 import { AeriMindProfileIcon } from './components/AeriMindProfileIcon';
+import { AeriProfileUserIcon } from './components/AeriProfileUserIcon';
 
 interface CommentItem {
   id: string;
@@ -2419,7 +2420,11 @@ export default function App() {
               : 'text-[#94A3B8] hover:text-black'
           }`}
         >
-          <User className="w-[21px] h-[21px] stroke-[1.8]" />
+          <AeriProfileUserIcon
+            size={24}
+            className="w-[23px] h-[23px] transition-transform active:scale-95"
+            strokeWidth={!showMatchesScreen && !showNormalMessagesScreen && activeNavIndex === 4 ? 2.6 : 2.1}
+          />
         </button>
       </nav>
 
