@@ -14,7 +14,7 @@ export interface AeriRaygunIconProps extends React.SVGProps<SVGSVGElement> {
  */
 export const AeriRaygunIcon: React.FC<AeriRaygunIconProps> = ({
   size = 24,
-  strokeWidth = 1.7,
+  strokeWidth = 2.4,
   facing = 'right',
   className = '',
   ...props

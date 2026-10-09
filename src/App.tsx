@@ -1804,7 +1804,7 @@ export default function App() {
                     title="Share post / Raygun"
                     aria-label="Share post"
                   >
-                    <AeriRaygunIcon className="w-8.5 h-8.5 text-slate-800 stroke-[1.9]" />
+                    <AeriRaygunIcon className="w-8.5 h-8.5 text-slate-800 stroke-[2.5]" />
                   </button>
                 </div>
               </>
