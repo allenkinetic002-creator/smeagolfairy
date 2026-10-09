@@ -10,7 +10,7 @@ export interface AeriMaskedEyesIconProps extends React.SVGProps<SVGSVGElement> {
  * spacious eye apertures, and sideways-gazing circular pupils.
  */
 export const AeriMaskedEyesIcon: React.FC<AeriMaskedEyesIconProps> = ({
-  size = 28,
+  size = 32,
   className = '',
   ...props
 }) => {
