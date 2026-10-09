@@ -37,7 +37,7 @@ import { InfluenceRatingModal } from './components/InfluenceRatingModal';
 import { FairyPotIcon } from './components/FairyPotIcon';
 import { AeriFrogIcon } from './components/AeriFrogIcon';
 import { AeriFlameIcon } from './components/AeriFlameIcon';
-import { AeriSlimeIcon } from './components/AeriSlimeIcon';
+import { AeriHydrantIcon } from './components/AeriHydrantIcon';
 import { AeriCommentIcon } from './components/AeriCommentIcon';
 import { AeriPhoneIcon } from './components/AeriPhoneIcon';
 import { AeriHandPhoneIcon } from './components/AeriHandPhoneIcon';
@@ -1789,21 +1789,22 @@ export default function App() {
                   )}
                 </div>
 
-                {/* Secondary Row: Custom Slime icon & Share */}
-                <div className="flex items-center gap-3.5 pt-0.5 pb-0.5 shrink-0">
+                {/* Secondary Row: Fire Hydrant & Raygun */}
+                <div className="flex items-center gap-4 pt-1 pb-1 shrink-0">
                   <button
-                    className="w-5.5 h-5.5 flex items-center justify-center text-[#0284C7] transition-transform active:scale-90 hover:opacity-80 cursor-pointer"
-                    title="Cute Slime"
-                    aria-label="Slime"
+                    className="flex items-center justify-center transition-transform active:scale-90 hover:scale-105 cursor-pointer"
+                    title="Fire Hydrant"
+                    aria-label="Fire Hydrant"
                   >
-                    <AeriSlimeIcon className="w-5 h-5 text-[#0284C7]" />
+                    <AeriHydrantIcon size={26} className="w-[26px] h-[35px] drop-shadow-2xs" />
                   </button>
 
                   <button
-                    className="w-7 h-7 rounded-lg border border-slate-200 bg-slate-50/60 flex items-center justify-center hover:bg-slate-100 transition-colors active:scale-95 cursor-pointer"
+                    className="flex items-center justify-center text-slate-800 hover:text-black transition-transform active:scale-90 hover:opacity-80 hover:scale-105 cursor-pointer"
                     title="Share post / Raygun"
+                    aria-label="Share post"
                   >
-                    <AeriRaygunIcon className="w-4.5 h-4.5 text-slate-700 stroke-[1.8]" />
+                    <AeriRaygunIcon className="w-8.5 h-8.5 text-slate-800 stroke-[1.9]" />
                   </button>
                 </div>
               </>
