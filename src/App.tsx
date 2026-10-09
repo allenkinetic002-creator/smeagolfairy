@@ -1512,7 +1512,7 @@ export default function App() {
                 title="Messages · Direct messages with normal users"
                 className="hover:opacity-75 transition-all active:scale-90 cursor-pointer p-1 relative text-black"
               >
-                <AeriMessageBubbleIcon className="w-[24px] h-[24px] text-black" />
+                <AeriMessageBubbleIcon className="w-[21px] h-[21px] text-black" />
                 <span className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
               </button>
             </div>
