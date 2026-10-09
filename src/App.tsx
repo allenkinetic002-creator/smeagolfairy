@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Flame,
   MessageSquare,
-  Eye,
   Send,
   Home,
   ThumbsUp,
@@ -40,6 +39,7 @@ import { MatchesScreen } from './components/MatchesScreen';
 import { NormalMessagesScreen } from './components/NormalMessagesScreen';
 import { InfluenceRatingModal } from './components/InfluenceRatingModal';
 import { FairyPotIcon } from './components/FairyPotIcon';
+import { AeriFrogIcon } from './components/AeriFrogIcon';
 
 interface CommentItem {
   id: string;
@@ -1635,7 +1635,7 @@ export default function App() {
                       aria-label="View Fairy ratings and social reach"
                       title="Overall ratings & Social reach"
                     >
-                      <Eye className="w-5.5 h-5.5 text-black stroke-[1.8]" />
+                      <AeriFrogIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
                     </button>
                   </div>
 
@@ -2393,7 +2393,7 @@ export default function App() {
         </button>
       </nav>
 
-      {/* Fairy Influence & 5-Ratings Popout Modal (Opens from Eye icon beside Phone icon) */}
+      {/* Fairy Influence & 5-Ratings Popout Modal (Opens from Aeri frog icon beside Phone icon) */}
       <InfluenceRatingModal
         isOpen={showInfluenceRatingModal}
         onClose={() => setShowInfluenceRatingModal(false)}
