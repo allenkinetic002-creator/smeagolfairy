@@ -1501,9 +1501,9 @@ export default function App() {
               <button
                 aria-label="One-Eye Hat Guy"
                 title="One-Eye Hat Guy"
-                className="hover:opacity-75 transition-opacity cursor-pointer p-1 flex items-center justify-center"
+                className="hover:opacity-75 transition-opacity cursor-pointer p-0.5 flex items-center justify-center"
               >
-                <AeriOneEyeHatGuyIcon className="w-[27px] h-[27px] text-black" />
+                <AeriOneEyeHatGuyIcon className="w-[33px] h-[33px] text-black" />
               </button>
 
               <button

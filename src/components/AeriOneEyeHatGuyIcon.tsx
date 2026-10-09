@@ -10,7 +10,7 @@ export interface AeriOneEyeHatGuyIconProps extends React.SVGProps<SVGSVGElement>
  * and single expressive eye with white sclera, vibrant red iris, and black pupil.
  */
 export const AeriOneEyeHatGuyIcon: React.FC<AeriOneEyeHatGuyIconProps> = ({
-  size = 24,
+  size = 32,
   className = '',
   ...props
 }) => {
