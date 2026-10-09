@@ -33,15 +33,14 @@ export const AeriMessageBubbleIcon: React.FC<AeriMessageBubbleIconProps> = ({
         fillRule="evenodd"
         clipRule="evenodd"
         d="
-          M 3.6 7.2
+          M 3.6 8.5
           L 3.6 19.2
           C 3.6 20.6 4.6 21.2 5.8 20.4
           C 8.5 19.0 12.8 17.4 16.5 16.2
           C 18.8 15.5 20.4 14.0 20.4 11.8
-          L 20.4 7.2
-          C 20.4 4.8 18.6 3.4 16.2 3.4
-          L 7.8 3.4
-          C 5.4 3.4 3.6 4.8 3.6 7.2
+          L 20.4 8.5
+          C 20.4 4.5 16.8 2.2 12.0 2.2
+          C 7.2 2.2 3.6 4.5 3.6 8.5
           Z
           M 6.7 8.2
           H 9.3
