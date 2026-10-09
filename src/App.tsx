@@ -43,8 +43,10 @@ import { AeriCommentIcon } from './components/AeriCommentIcon';
 import { AeriPhoneIcon } from './components/AeriPhoneIcon';
 import { AeriHandPhoneIcon } from './components/AeriHandPhoneIcon';
 import { AeriToyGunIcon } from './components/AeriToyGunIcon';
-import { AeriClawIcon } from './components/AeriClawIcon';
-import { AeriOneEyeGhostIcon } from './components/AeriOneEyeGhostIcon';
+import { AeriDiggingDogIcon } from './components/AeriDiggingDogIcon';
+import { AeriJuiceBoxIcon } from './components/AeriJuiceBoxIcon';
+import { AeriMaskedEyesIcon } from './components/AeriMaskedEyesIcon';
+import { AeriOneEyeHatGuyIcon } from './components/AeriOneEyeHatGuyIcon';
 
 interface CommentItem {
   id: string;
@@ -1464,51 +1466,42 @@ export default function App() {
               </h1>
             </div>
 
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-3">
               <button
                 onClick={handleOpenModal}
-                className="px-2 py-0.5 rounded-full bg-red-50 hover:bg-red-100 text-red-600 font-bold text-[10px] flex items-center gap-1 transition-colors cursor-pointer mr-1"
+                className="px-2 py-0.5 rounded-full bg-red-50 hover:bg-red-100 text-red-600 font-bold text-[10px] flex items-center gap-1 transition-colors cursor-pointer mr-0.5"
                 title="Open delete confirmation dialog"
               >
                 <Trash2 className="w-2.5 h-2.5" />
                 Delete Modal
               </button>
 
-              {/* 1st header icon */}
+              {/* 1st header icon: Juice box icon inspired by Untitled-2.png */}
               <button
-                aria-label="Ghost"
-                className="hover:opacity-75 transition-opacity cursor-pointer p-0.5"
+                aria-label="Juice Box"
+                title="Juice Box"
+                className="hover:opacity-75 transition-opacity cursor-pointer p-1"
               >
-                <svg
-                  className="w-4.5 h-4.5 text-black"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M4 19V10a8 8 0 0 1 16 0v9l-2.5-2-2.5 2-3-2-3 2-2.5-2L4 19Z" />
-                  <circle cx="9" cy="10" r="1.2" fill="currentColor" />
-                  <circle cx="15" cy="10" r="1.2" fill="currentColor" />
-                </svg>
+                <AeriJuiceBoxIcon className="w-[28px] h-[28px] text-black stroke-[1.8]" />
               </button>
 
               {/* 2nd header icon */}
-              <div className="w-[17px] h-[17px] rounded-full bg-black shrink-0" />
+              <div className="w-[20px] h-[20px] rounded-full bg-black shrink-0" />
 
+              {/* 3rd header icon: One-Eye Hat Guy icon beside Search inspired by unnamed (26).jpg */}
               <button
-                aria-label="Search small"
-                className="hover:opacity-75 transition-opacity cursor-pointer p-0.5"
+                aria-label="One-Eye Hat Guy"
+                title="One-Eye Hat Guy"
+                className="hover:opacity-75 transition-opacity cursor-pointer p-1 flex items-center justify-center"
               >
-                <Search className="w-3.5 h-3.5 text-black stroke-[2.4]" />
+                <AeriOneEyeHatGuyIcon className="w-[27px] h-[27px] text-black" />
               </button>
 
               <button
-                aria-label="Search large"
-                className="hover:opacity-75 transition-opacity cursor-pointer p-0.5"
+                aria-label="Search"
+                className="hover:opacity-75 transition-opacity cursor-pointer p-1"
               >
-                <Search className="w-4.5 h-4.5 text-black stroke-[2.4]" />
+                <Search className="w-[24px] h-[24px] text-black stroke-[2.4]" />
               </button>
 
               {/* Message icon (where user messages normal users) */}
@@ -1516,10 +1509,10 @@ export default function App() {
                 onClick={() => setShowNormalMessagesScreen(true)}
                 aria-label="Messages"
                 title="Messages · Direct messages with normal users"
-                className="hover:opacity-75 transition-all active:scale-90 cursor-pointer p-0.5 relative text-black"
+                className="hover:opacity-75 transition-all active:scale-90 cursor-pointer p-1 relative text-black"
               >
-                <AeriToyGunIcon className="w-5 h-5 text-black stroke-[1.8]" />
-                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
+                <AeriToyGunIcon className="w-[26px] h-[26px] text-black stroke-[1.8]" />
+                <span className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
               </button>
             </div>
           </header>
@@ -1648,11 +1641,11 @@ export default function App() {
 
                     <button
                       onClick={() => setShowInfluenceRatingModal(true)}
-                      className="cursor-pointer transition-transform active:scale-90 hover:opacity-75"
+                      className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
                       aria-label="View Fairy ratings and social reach"
                       title="Overall ratings & Social reach"
                     >
-                      <AeriFrogIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
+                      <AeriMaskedEyesIcon className="w-6 h-6 text-black" />
                     </button>
                   </div>
 
@@ -2035,9 +2028,9 @@ export default function App() {
                       }`}
                       title="Give thumbs up"
                     >
-                      <AeriClawIcon
+                      <AeriDiggingDogIcon
                         className={`w-4 h-4 ${
-                          person.isUpvoted ? 'fill-white stroke-white' : 'stroke-[2]'
+                          person.isUpvoted ? 'fill-white stroke-white' : 'stroke-[1.8]'
                         }`}
                         filled={person.isUpvoted}
                       />
@@ -2102,7 +2095,7 @@ export default function App() {
                     </h4>
                     <div className="flex items-center gap-3 mt-1 text-[10px] text-slate-500 font-medium">
                       <span className="flex items-center gap-1">
-                        <AeriClawIcon className="w-3.5 h-3.5 text-blue-600 stroke-[2]" />
+                        <AeriDiggingDogIcon className="w-3.5 h-3.5 text-blue-600 stroke-[1.8]" />
                         {person.topPost.likes}
                       </span>
                       <span className="flex items-center gap-1">
@@ -2196,8 +2189,8 @@ export default function App() {
                           : 'bg-slate-100 text-slate-800'
                       }`}
                     >
-                      <AeriClawIcon className="w-4 h-4 stroke-[2]" filled={previewCreator.isUpvoted} />
-                      {(previewCreator.upvotes / 1000).toFixed(1)}k Claws
+                      <AeriDiggingDogIcon className="w-4 h-4 stroke-[1.8]" filled={previewCreator.isUpvoted} />
+                      {(previewCreator.upvotes / 1000).toFixed(1)}k Upvotes
                     </button>
 
                     <button
@@ -2343,9 +2336,9 @@ export default function App() {
           }`}
           title="Top 10 People Leaderboard"
         >
-          <AeriClawIcon
-            className={`w-[24px] h-[24px] ${
-              !showMatchesScreen && !showNormalMessagesScreen && activeNavIndex === 1 ? 'stroke-[2.2] fill-blue-50' : 'stroke-[2]'
+          <AeriDiggingDogIcon
+            className={`w-[23px] h-[23px] ${
+              !showMatchesScreen && !showNormalMessagesScreen && activeNavIndex === 1 ? 'stroke-[2.2] fill-blue-50' : 'stroke-[1.8]'
             }`}
           />
           <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
@@ -2367,8 +2360,8 @@ export default function App() {
           }`}
           title="FAIRY CONTROL, DM Privacy & See for your matches"
         >
-          <AeriOneEyeGhostIcon
-            className={`w-[22px] h-[22px] transition-transform active:scale-95 ${
+          <AeriJuiceBoxIcon
+            className={`w-[24px] h-[24px] transition-transform active:scale-95 ${
               showMatchesScreen || (!showNormalMessagesScreen && activeNavIndex === 2)
                 ? 'stroke-[2.2] text-slate-900'
                 : 'stroke-[1.8]'
