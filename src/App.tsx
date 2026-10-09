@@ -39,6 +39,7 @@ import { FairyControl } from './components/FairyControl';
 import { MatchesScreen } from './components/MatchesScreen';
 import { NormalMessagesScreen } from './components/NormalMessagesScreen';
 import { InfluenceRatingModal } from './components/InfluenceRatingModal';
+import { FairyPotIcon } from './components/FairyPotIcon';
 
 interface CommentItem {
   id: string;
@@ -2349,8 +2350,8 @@ export default function App() {
           }`}
           title="FAIRY CONTROL, DM Privacy & See for your matches"
         >
-          <SlidersHorizontal
-            className={`w-[21px] h-[21px] ${
+          <FairyPotIcon
+            className={`w-[22px] h-[22px] transition-transform active:scale-95 ${
               showMatchesScreen || (!showNormalMessagesScreen && activeNavIndex === 2)
                 ? 'stroke-[2.2] text-slate-900'
                 : 'stroke-[1.8]'
