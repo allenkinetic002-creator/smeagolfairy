@@ -1645,7 +1645,7 @@ export default function App() {
                       aria-label="View Fairy ratings and social reach"
                       title="Overall ratings & Social reach"
                     >
-                      <AeriMaskedEyesIcon className="w-6 h-6 text-black" />
+                      <AeriMaskedEyesIcon className="w-[28px] h-[17.5px] text-black shrink-0" />
                     </button>
                   </div>
 

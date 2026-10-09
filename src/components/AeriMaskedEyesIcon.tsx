@@ -5,49 +5,49 @@ export interface AeriMaskedEyesIconProps extends React.SVGProps<SVGSVGElement> {
 }
 
 /**
- * AeriMaskedEyesIcon - Bold black mask with two expressive white eyes looking left
- * Inspired by eyes.png: Rounded mask silhouette with twin interconnected white eye apertures
- * and deep black circular pupils peering sideways.
+ * AeriMaskedEyesIcon - Wide panoramic mask with twin expressive white eyes
+ * Inspired by eyes.png: Stretched wide horizontal mask with ample breathing room,
+ * interconnected white eye apertures, and sideways-gazing circular pupils.
  */
 export const AeriMaskedEyesIcon: React.FC<AeriMaskedEyesIconProps> = ({
-  size = 24,
+  size = 28,
   className = '',
   ...props
 }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
+      viewBox="0 0 32 20"
       width={size}
-      height={size}
+      height={typeof size === 'number' ? (size * 20) / 32 : undefined}
       className={className}
       style={{ shapeRendering: 'geometricPrecision' }}
       {...props}
     >
-      {/* Outer black mask shape */}
+      {/* Wide stretched horizontal black mask shape */}
       <path
         d="
-          M 7.5 3.5
-          H 22.5
-          V 15.5
-          C 22.5 18.5 20.5 20.5 17.5 20.5
-          H 7.5
-          C 3.5 20.5 1.5 17.0 1.5 12.0
-          C 1.5 7.0 3.5 3.5 7.5 3.5
+          M 9.5 1.5
+          H 31.0
+          V 13.5
+          C 31.0 16.8 28.5 18.5 25.0 18.5
+          H 9.5
+          C 4.2 18.5 1.0 14.8 1.0 10.0
+          C 1.0 5.2 4.2 1.5 9.5 1.5
           Z
         "
         fill="currentColor"
       />
 
-      {/* Interconnected twin white eye apertures (figure-8 / binoculars cutout) */}
-      <circle cx="8.5" cy="12.0" r="4.8" fill="#FFFFFF" />
-      <circle cx="15.0" cy="12.0" r="4.8" fill="#FFFFFF" />
+      {/* Wide twin white eye apertures (figure-8 / goggles cutout) */}
+      <circle cx="11.2" cy="10.0" r="5.6" fill="#FFFFFF" />
+      <circle cx="20.5" cy="10.0" r="5.6" fill="#FFFFFF" />
 
       {/* Left black pupil looking sideways */}
-      <circle cx="6.8" cy="12.0" r="2.3" fill="currentColor" />
+      <circle cx="9.0" cy="10.0" r="2.8" fill="currentColor" />
 
       {/* Right black pupil looking sideways */}
-      <circle cx="13.3" cy="12.0" r="2.3" fill="currentColor" />
+      <circle cx="18.2" cy="10.0" r="2.8" fill="currentColor" />
     </svg>
   );
 };
