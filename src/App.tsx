@@ -52,6 +52,7 @@ import { AeriSearchIcon } from './components/AeriSearchIcon';
 import { AeriConcentricCircleIcon } from './components/AeriConcentricCircleIcon';
 import { AeriHappyFlameIcon } from './components/AeriHappyFlameIcon';
 import { AeriStackedChairsIcon } from './components/AeriStackedChairsIcon';
+import { AeriThumbsUpIcon } from './components/AeriThumbsUpIcon';
 
 interface CommentItem {
   id: string;
@@ -2343,13 +2344,14 @@ export default function App() {
           aria-label="Top 10 Creators"
           className={`p-1.5 transition-colors cursor-pointer relative flex flex-col items-center ${
             !showMatchesScreen && !showNormalMessagesScreen && activeNavIndex === 1
-              ? 'text-slate-900'
-              : 'text-slate-700 hover:text-slate-900'
+              ? 'text-black'
+              : 'text-[#94A3B8] hover:text-black'
           }`}
           title="Top 10 People Leaderboard"
         >
-          <AeriStackedChairsIcon
-            className={`w-[22px] h-[28px] transition-transform active:scale-95 ${
+          <AeriThumbsUpIcon
+            size={24}
+            className={`w-[24px] h-[24px] transition-transform active:scale-95 ${
               !showMatchesScreen && !showNormalMessagesScreen && activeNavIndex === 1 ? 'stroke-[2.2]' : 'stroke-[1.8]'
             }`}
           />

@@ -7,12 +7,15 @@ export interface AeriThumbsUpIconProps extends React.SVGProps<SVGSVGElement> {
 }
 
 /**
- * AeriThumbsUpIcon - Expressive thumbs up hand gesture icon
- * Inspired by 8f1f0335-03f8-43e9-b822-14427423bae6.png
+ * AeriThumbsUpIcon - Bold cartoon thumbs-up hand icon
+ * Inspired by image.png:
+ * Prominent upright thumb with backward curve, horizontal wrist,
+ * rounded 4-finger curled fist on the right with distinct knuckle dividers,
+ * and bold graphic comic linework.
  */
 export const AeriThumbsUpIcon: React.FC<AeriThumbsUpIconProps> = ({
   size = 24,
-  strokeWidth = 1.8,
+  strokeWidth = 2.2,
   filled = false,
   className = '',
   ...props
@@ -20,25 +23,56 @@ export const AeriThumbsUpIcon: React.FC<AeriThumbsUpIconProps> = ({
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
+      viewBox="0 0 32 32"
       width={size}
       height={size}
-      fill={filled ? 'currentColor' : 'none'}
+      fill="none"
       stroke="currentColor"
       strokeWidth={strokeWidth}
       strokeLinecap="round"
       strokeLinejoin="round"
       className={className}
+      style={{ shapeRendering: 'geometricPrecision' }}
       {...props}
     >
-      {/* Wrist / palm base cuff */}
-      <path d="M7 10v10" />
-      <path d="M3 11.5a1 1 0 0 1 1-1h3v9H4a1 1 0 0 1-1-1v-7z" />
-      
-      {/* Thumb raised and fingers curled into fist */}
-      <path d="M7 10.5l3.8-6.3a1.9 1.9 0 0 1 3.2 1.6L12.6 9.5H19a2.5 2.5 0 0 1 2.5 2.5c0 0.4-0.1 0.8-0.3 1.2 0.5 0.5 0.8 1.1 0.8 1.9 0 0.5-0.1 1-0.4 1.4 0.4 0.5 0.6 1.1 0.6 1.7 0 1.5-1.2 2.7-2.7 2.7l-7.5-0.4H7v-9.1z" />
-      <path d="M14 12.8h4.5" />
-      <path d="M14 15.6h4" />
+      {/* Hand Outer Silhouette */}
+      <path
+        d="
+          M 4.5 14.5
+          C 4.5 13.5 5.5 13.0 6.5 13.0
+          L 8.5 13.0
+          C 9.8 12.0 11.2 9.2 12.8 5.6
+          C 13.8 3.2 15.5 2.2 17.5 2.5
+          C 19.5 2.8 20.5 4.5 19.8 7.5
+          C 19.2 10.0 18.2 12.2 18.2 13.2
+          L 23.5 13.2
+          C 25.8 13.2 27.2 14.5 27.0 16.5
+          C 26.8 17.5 26.2 18.0 25.5 18.2
+          C 27.2 18.6 28.0 20.0 27.5 21.6
+          C 27.0 22.8 26.0 23.2 25.0 23.4
+          C 26.5 24.0 27.0 25.4 26.2 26.8
+          C 25.2 28.4 23.5 28.6 21.0 28.5
+          C 17.5 28.4 12.8 25.8 9.5 20.5
+          L 6.5 20.5
+          C 5.5 20.5 4.5 20.0 4.5 19.0
+          Z
+        "
+        fill={filled ? 'currentColor' : '#FFFFFF'}
+      />
+
+      {/* Thumb-to-palm separator arc */}
+      <path d="M 18.2 13.2 C 16.8 15.5 16.2 18.0 17.8 20.5" />
+
+      {/* Curled Knuckle Divider 1 (between Index and Middle finger) */}
+      <path d="M 18.0 18.2 L 25.5 18.2" />
+
+      {/* Curled Knuckle Divider 2 (between Middle and Ring finger) */}
+      <path d="M 18.2 23.4 L 25.0 23.4" />
+
+      {/* Curled Knuckle Divider 3 (between Ring and Pinky finger) */}
+      <path d="M 18.6 27.0 L 23.5 27.0" />
     </svg>
   );
 };
+
+export default AeriThumbsUpIcon;
