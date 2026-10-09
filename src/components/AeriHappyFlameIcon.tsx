@@ -28,30 +28,26 @@ export const AeriHappyFlameIcon: React.FC<AeriHappyFlameIconProps> = ({
       style={{ shapeRendering: 'geometricPrecision' }}
       {...props}
     >
-      {/* 1. Top Floating Ember */}
+      {/* 1. Top Floating Ember (Black) */}
       <circle
         cx="17.0"
         cy="4.0"
-        r="1.7"
-        fill="#FF6D00"
-        stroke="#1A2038"
-        strokeWidth="1.1"
+        r="1.8"
+        fill="currentColor"
       />
 
-      {/* 2. Upper-Left Tilted Ember */}
+      {/* 2. Upper-Left Tilted Ember (Black) */}
       <g transform="translate(6.6, 9.2) rotate(-22)">
         <ellipse
           cx="0"
           cy="0"
-          rx="1.4"
-          ry="2.1"
-          fill="#FF6D00"
-          stroke="#1A2038"
-          strokeWidth="1.1"
+          rx="1.5"
+          ry="2.3"
+          fill="currentColor"
         />
       </g>
 
-      {/* 3. Main Outer Orange Flame Body */}
+      {/* 3. Main Outer Flame Body (Solid Black) */}
       <path
         d="
           M 6.8 29.5
@@ -66,13 +62,10 @@ export const AeriHappyFlameIcon: React.FC<AeriHappyFlameIconProps> = ({
           C 3.5 27.5 4.8 29.2 6.8 29.5
           Z
         "
-        fill="#FF6D00"
-        stroke="#1A2038"
-        strokeWidth="1.2"
-        strokeLinejoin="round"
+        fill="currentColor"
       />
 
-      {/* 4. Warm Golden-Amber Inner Glow */}
+      {/* 4. Crisp White Inner Flame Heart */}
       <path
         d="
           M 7.2 28.6
@@ -82,16 +75,16 @@ export const AeriHappyFlameIcon: React.FC<AeriHappyFlameIconProps> = ({
           C 11.2 19.0 8.0 22.0 7.2 28.6
           Z
         "
-        fill="#FFA000"
+        fill="#FFFFFF"
       />
 
-      {/* 5. Closed Squinting (> <) Anime Eyes */}
+      {/* 5. Closed Squinting (> <) Black Eyes inside White Heart */}
       {/* Left Eye (>) */}
       <path
         d="M 10.6 19.2 L 14.4 21.8 L 9.6 21.8"
         fill="none"
-        stroke="#1A2038"
-        strokeWidth="1.6"
+        stroke="currentColor"
+        strokeWidth="1.8"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -100,8 +93,8 @@ export const AeriHappyFlameIcon: React.FC<AeriHappyFlameIconProps> = ({
       <path
         d="M 20.4 19.2 L 16.6 21.8 L 21.4 21.8"
         fill="none"
-        stroke="#1A2038"
-        strokeWidth="1.6"
+        stroke="currentColor"
+        strokeWidth="1.8"
         strokeLinecap="round"
         strokeLinejoin="round"
       />

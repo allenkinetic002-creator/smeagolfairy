@@ -2391,11 +2391,11 @@ export default function App() {
           title="Trending"
           className={`p-1.5 transition-colors cursor-pointer flex flex-col items-center ${
             !showMatchesScreen && !showNormalMessagesScreen && activeNavIndex === 3
-              ? 'opacity-100 scale-105'
-              : 'opacity-75 hover:opacity-100'
+              ? 'text-black opacity-100 scale-105'
+              : 'text-[#94A3B8] opacity-75 hover:opacity-100 hover:text-black'
           }`}
         >
-          <AeriHappyFlameIcon size={24} className="w-[24px] h-[25px] transition-transform active:scale-95 drop-shadow-2xs" />
+          <AeriHappyFlameIcon size={24} className="w-[24px] h-[25px] transition-transform active:scale-95" />
         </button>
 
         <button
