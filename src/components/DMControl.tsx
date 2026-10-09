@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   Shield,
-  MessageSquare,
   Lock,
   Users,
   Clock,
@@ -26,6 +25,7 @@ import {
   Eye,
   SlidersHorizontal,
 } from 'lucide-react';
+import { AeriCommentIcon } from './AeriCommentIcon';
 
 export type DMMode =
   | 'open'
@@ -521,7 +521,7 @@ export const DMControl: React.FC<DMControlProps> = ({ onBackToFeed, onSwitchToFa
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <MessageSquare className="w-3 h-3 text-purple-600" />
+            <AeriCommentIcon className="w-3.5 h-3.5 text-purple-600" />
             Conversations ({conversations.length})
           </button>
         </div>

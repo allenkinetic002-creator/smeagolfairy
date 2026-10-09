@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import {
-  MessageSquare,
   Send,
-  Home,
-  ThumbsUp,
   TrendingUp,
   User,
   Search,
@@ -42,6 +39,11 @@ import { AeriFrogIcon } from './components/AeriFrogIcon';
 import { AeriFlameIcon } from './components/AeriFlameIcon';
 import { AeriLeafIcon } from './components/AeriLeafIcon';
 import { AeriSlimeIcon } from './components/AeriSlimeIcon';
+import { AeriCommentIcon } from './components/AeriCommentIcon';
+import { AeriPhoneIcon } from './components/AeriPhoneIcon';
+import { AeriHomeIcon } from './components/AeriHomeIcon';
+import { AeriToyGunIcon } from './components/AeriToyGunIcon';
+import { AeriThumbsUpIcon } from './components/AeriThumbsUpIcon';
 
 interface CommentItem {
   id: string;
@@ -1515,7 +1517,7 @@ export default function App() {
                 title="Messages · Direct messages with normal users"
                 className="hover:opacity-75 transition-all active:scale-90 cursor-pointer p-0.5 relative text-black"
               >
-                <MessageSquare className="w-4.5 h-4.5 text-black stroke-[2.2]" />
+                <AeriToyGunIcon className="w-5 h-5 text-black stroke-[1.8]" />
                 <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
               </button>
             </div>
@@ -1618,7 +1620,7 @@ export default function App() {
                       className="cursor-pointer transition-transform active:scale-90 hover:opacity-75"
                       aria-label="Comments"
                     >
-                      <MessageSquare className="w-5.5 h-5.5 text-black stroke-[1.8]" />
+                      <AeriCommentIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
                     </button>
 
                     {/* 3rd icon beside Phone: Custom Leaf icon inspired by leave.png */}
@@ -1630,12 +1632,13 @@ export default function App() {
                       <AeriLeafIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
                     </button>
 
-                    <div
-                      className="w-[14px] h-[21px] rounded-[3.5px] border-[1.8px] border-black flex flex-col justify-end items-center pb-[2px] cursor-pointer hover:opacity-75 transition-opacity"
+                    <button
+                      className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
                       title="Phone"
+                      aria-label="Phone"
                     >
-                      <div className="w-1 h-1 rounded-full bg-black" />
-                    </div>
+                      <AeriPhoneIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
+                    </button>
 
                     <button
                       onClick={() => setShowInfluenceRatingModal(true)}
@@ -1658,7 +1661,7 @@ export default function App() {
                     <div className="flex-1 min-h-0 bg-slate-50/70 rounded-xl p-2.5 border border-slate-100 flex flex-col justify-between overflow-hidden">
                       <div className="flex items-center justify-between pb-1 mb-1 border-b border-slate-200/60 shrink-0">
                         <span className="text-[11px] font-extrabold text-slate-800 flex items-center gap-1.5">
-                          <MessageSquare className="w-3 h-3 text-purple-600" />
+                          <AeriCommentIcon className="w-3.5 h-3.5 text-purple-600" />
                           Comments ({totalComments})
                         </span>
                         <button
@@ -1779,7 +1782,7 @@ export default function App() {
                         onClick={() => setIsDrawerOpen(true)}
                         className="px-4 py-2 bg-[#9810FA] hover:bg-[#8B0EE5] active:scale-98 transition-all rounded-full text-white text-xs font-black tracking-tight shadow-xs cursor-pointer flex items-center gap-2"
                       >
-                        <MessageSquare className="w-3.5 h-3.5 fill-white/20" />
+                        <AeriCommentIcon className="w-3.5 h-3.5 fill-white/20" />
                         <span>{totalComments} comments &middot; View Thread</span>
                       </button>
                     </div>
@@ -2026,7 +2029,7 @@ export default function App() {
                       }`}
                       title="Give thumbs up"
                     >
-                      <ThumbsUp
+                      <AeriThumbsUpIcon
                         className={`w-3.5 h-3.5 ${
                           person.isUpvoted ? 'fill-white stroke-white' : 'stroke-[2]'
                         }`}
@@ -2092,11 +2095,11 @@ export default function App() {
                     </h4>
                     <div className="flex items-center gap-3 mt-1 text-[10px] text-slate-500 font-medium">
                       <span className="flex items-center gap-1">
-                        <ThumbsUp className="w-3 h-3 text-blue-600" />
+                        <AeriThumbsUpIcon className="w-3 h-3 text-blue-600" />
                         {person.topPost.likes}
                       </span>
                       <span className="flex items-center gap-1">
-                        <MessageSquare className="w-3 h-3 text-slate-400" />
+                        <AeriCommentIcon className="w-3 h-3 text-slate-400" />
                         {person.topPost.comments}
                       </span>
                       {person.topPost.hasAudio && (
@@ -2186,7 +2189,7 @@ export default function App() {
                           : 'bg-slate-100 text-slate-800'
                       }`}
                     >
-                      <ThumbsUp className="w-3.5 h-3.5" />
+                      <AeriThumbsUpIcon className="w-3.5 h-3.5" />
                       {(previewCreator.upvotes / 1000).toFixed(1)}k Thumbs Up
                     </button>
 
@@ -2316,7 +2319,7 @@ export default function App() {
               : 'text-[#94A3B8] hover:text-black'
           }`}
         >
-          <Home className="w-[21px] h-[21px] stroke-[1.8]" />
+          <AeriHomeIcon className="w-[22px] h-[22px] stroke-[1.8]" />
         </button>
 
         <button
@@ -2333,8 +2336,8 @@ export default function App() {
           }`}
           title="Top 10 People Leaderboard"
         >
-          <ThumbsUp
-            className={`w-[21px] h-[21px] ${
+          <AeriThumbsUpIcon
+            className={`w-[22px] h-[22px] ${
               !showMatchesScreen && !showNormalMessagesScreen && activeNavIndex === 1 ? 'stroke-[2.2] fill-blue-50' : 'stroke-[1.8]'
             }`}
           />

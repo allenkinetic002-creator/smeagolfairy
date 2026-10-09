@@ -11,11 +11,9 @@ import {
   RotateCcw,
   Zap,
   Flame,
-  MessageSquare,
   Search,
   X,
   Filter,
-  ThumbsUp,
   ThumbsDown,
   FileCheck,
   Plus,
@@ -23,6 +21,7 @@ import {
   Lock,
   ShieldCheck,
 } from 'lucide-react';
+import { AeriCommentIcon } from './AeriCommentIcon';
 import {
   SharedPerson,
   INITIAL_SHARED_PEOPLE,
@@ -1373,7 +1372,7 @@ export function MatchesScreen({ onBackToFeed }: MatchesScreenProps) {
                 }}
                 className="py-2.5 px-2 rounded-xl bg-slate-200 hover:bg-slate-300 active:scale-95 text-slate-900 text-xs font-extrabold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
               >
-                <MessageSquare className="w-3.5 h-3.5 text-slate-600" />
+                <AeriCommentIcon className="w-3.5 h-3.5 text-slate-600" />
                 <span className="truncate">Chat with {inspectingReceipt.promiserName.split(' ')[0]}</span>
               </button>
 
