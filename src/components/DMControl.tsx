@@ -9,7 +9,6 @@ import {
   CheckCircle2,
   XCircle,
   AlertCircle,
-  Send,
   Sparkles,
   ChevronRight,
   Info,
@@ -26,6 +25,7 @@ import {
   SlidersHorizontal,
 } from 'lucide-react';
 import { AeriCommentIcon } from './AeriCommentIcon';
+import { AeriRaygunIcon } from './AeriRaygunIcon';
 
 export type DMMode =
   | 'open'
@@ -1792,7 +1792,7 @@ export const DMControl: React.FC<DMControlProps> = ({ onBackToFeed, onSwitchToFa
               disabled={!chatInputText.trim()}
               className="w-8 h-8 rounded-full bg-purple-600 hover:bg-purple-700 disabled:opacity-40 text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
             >
-              <Send className="w-3.5 h-3.5" />
+              <AeriRaygunIcon className="w-4 h-4" />
             </button>
           </form>
         </div>
@@ -2025,7 +2025,7 @@ export const DMControl: React.FC<DMControlProps> = ({ onBackToFeed, onSwitchToFa
                         disabled={requestIntroRequired && !simVisitorIntro.trim()}
                         className="w-full py-2.5 bg-yellow-500 hover:bg-yellow-600 disabled:opacity-40 text-white font-extrabold text-xs rounded-xl transition-all shadow-xs cursor-pointer flex items-center justify-center gap-1"
                       >
-                        <Send className="w-3.5 h-3.5" />
+                        <AeriRaygunIcon className="w-4 h-4" />
                         Send DM Request to @fairy
                       </button>
                     </>

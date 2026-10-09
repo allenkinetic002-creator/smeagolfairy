@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Send,
   Home,
   TrendingUp,
   User,
@@ -48,6 +47,7 @@ import { AeriGuacamoleBowlIcon } from './components/AeriGuacamoleBowlIcon';
 import { AeriMaskedEyesIcon } from './components/AeriMaskedEyesIcon';
 import { AeriOneEyeHatGuyIcon } from './components/AeriOneEyeHatGuyIcon';
 import { AeriOneEyeGhostIcon } from './components/AeriOneEyeGhostIcon';
+import { AeriRaygunIcon } from './components/AeriRaygunIcon';
 
 interface CommentItem {
   id: string;
@@ -1801,9 +1801,9 @@ export default function App() {
 
                   <button
                     className="w-7 h-7 rounded-lg border border-slate-200 bg-slate-50/60 flex items-center justify-center hover:bg-slate-100 transition-colors active:scale-95 cursor-pointer"
-                    title="Share post"
+                    title="Share post / Raygun"
                   >
-                    <Send className="w-3.5 h-3.5 text-slate-700 stroke-[1.8] -rotate-12 translate-x-[-1px] translate-y-[1px]" />
+                    <AeriRaygunIcon className="w-4.5 h-4.5 text-slate-700 stroke-[1.8]" />
                   </button>
                 </div>
               </>

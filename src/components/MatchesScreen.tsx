@@ -3,7 +3,6 @@ import {
   ArrowLeft,
   ArrowRight,
   Clock,
-  Send,
   Sparkles,
   CheckCircle2,
   XCircle,
@@ -22,6 +21,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { AeriCommentIcon } from './AeriCommentIcon';
+import { AeriRaygunIcon } from './AeriRaygunIcon';
 import {
   SharedPerson,
   INITIAL_SHARED_PEOPLE,
@@ -682,7 +682,7 @@ export function MatchesScreen({ onBackToFeed }: MatchesScreenProps) {
               disabled={!inputMessage.trim()}
               className="w-9 h-9 rounded-full bg-black hover:bg-slate-800 text-white flex items-center justify-center disabled:opacity-40 active:scale-95 transition-all cursor-pointer shadow-xs"
             >
-              <Send className="w-4 h-4" />
+              <AeriRaygunIcon className="w-4.5 h-4.5" />
             </button>
           </form>
         </div>

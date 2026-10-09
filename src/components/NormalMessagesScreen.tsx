@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import {
   ArrowLeft,
   Search,
-  Send,
   Image,
   Smile,
   MoreVertical,
@@ -25,6 +24,7 @@ import {
   ThumbsUp,
   ThumbsDown,
 } from 'lucide-react';
+import { AeriRaygunIcon } from './AeriRaygunIcon';
 import elenaAvatar from '../assets/images/creator_portrait_elena_1791014499312.jpg';
 
 import {
@@ -668,7 +668,7 @@ export function NormalMessagesScreen({
               disabled={!inputText.trim()}
               className="w-9 h-9 rounded-full bg-black text-white flex items-center justify-center disabled:opacity-30 hover:bg-slate-800 active:scale-95 transition-all cursor-pointer shadow-xs"
             >
-              <Send className="w-4 h-4" />
+              <AeriRaygunIcon className="w-4.5 h-4.5" />
             </button>
           </form>
         </div>
