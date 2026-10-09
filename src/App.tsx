@@ -54,6 +54,7 @@ import { AeriHappyFlameIcon } from './components/AeriHappyFlameIcon';
 import { AeriStackedChairsIcon } from './components/AeriStackedChairsIcon';
 import { AeriThumbsUpIcon } from './components/AeriThumbsUpIcon';
 import { AeriMonoblocChairIcon } from './components/AeriMonoblocChairIcon';
+import { AeriArrowKeysIcon } from './components/AeriArrowKeysIcon';
 
 interface CommentItem {
   id: string;
@@ -2350,9 +2351,9 @@ export default function App() {
           }`}
           title="Top 10 People Leaderboard"
         >
-          <AeriMonoblocChairIcon
-            size={24}
-            className="w-[24px] h-[24px] transition-transform active:scale-95"
+          <AeriArrowKeysIcon
+            size={26}
+            className="w-[28px] h-[22px] transition-transform active:scale-95"
           />
           <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
         </button>
