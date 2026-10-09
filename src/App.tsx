@@ -51,6 +51,7 @@ import { AeriRaygunIcon } from './components/AeriRaygunIcon';
 import { AeriSearchIcon } from './components/AeriSearchIcon';
 import { AeriConcentricCircleIcon } from './components/AeriConcentricCircleIcon';
 import { AeriHappyFlameIcon } from './components/AeriHappyFlameIcon';
+import { AeriStackedChairsIcon } from './components/AeriStackedChairsIcon';
 
 interface CommentItem {
   id: string;
@@ -2342,14 +2343,14 @@ export default function App() {
           aria-label="Top 10 Creators"
           className={`p-1.5 transition-colors cursor-pointer relative flex flex-col items-center ${
             !showMatchesScreen && !showNormalMessagesScreen && activeNavIndex === 1
-              ? 'text-blue-600'
-              : 'text-slate-800 hover:text-blue-600'
+              ? 'text-slate-900'
+              : 'text-slate-700 hover:text-slate-900'
           }`}
           title="Top 10 People Leaderboard"
         >
-          <AeriDiggingDogIcon
-            className={`w-[23px] h-[23px] ${
-              !showMatchesScreen && !showNormalMessagesScreen && activeNavIndex === 1 ? 'stroke-[2.2] fill-blue-50' : 'stroke-[1.8]'
+          <AeriStackedChairsIcon
+            className={`w-[22px] h-[28px] transition-transform active:scale-95 ${
+              !showMatchesScreen && !showNormalMessagesScreen && activeNavIndex === 1 ? 'stroke-[2.2]' : 'stroke-[1.8]'
             }`}
           />
           <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
@@ -2387,15 +2388,14 @@ export default function App() {
             setShowNormalMessagesScreen(false);
             setActiveNavIndex(0);
           }}
-          aria-label="Trending flame"
-          title="Trending"
+          aria-label="Trending chart"
           className={`p-1.5 transition-colors cursor-pointer flex flex-col items-center ${
             !showMatchesScreen && !showNormalMessagesScreen && activeNavIndex === 3
-              ? 'text-black opacity-100 scale-105'
-              : 'text-[#94A3B8] opacity-75 hover:opacity-100 hover:text-black'
+              ? 'text-black'
+              : 'text-[#94A3B8] hover:text-black'
           }`}
         >
-          <AeriHappyFlameIcon size={24} className="w-[24px] h-[25px] transition-transform active:scale-95" />
+          <TrendingUp className="w-[21px] h-[21px] stroke-[1.8]" />
         </button>
 
         <button
