@@ -48,6 +48,7 @@ import { AeriMaskedEyesIcon } from './components/AeriMaskedEyesIcon';
 import { AeriOneEyeHatGuyIcon } from './components/AeriOneEyeHatGuyIcon';
 import { AeriOneEyeGhostIcon } from './components/AeriOneEyeGhostIcon';
 import { AeriRaygunIcon } from './components/AeriRaygunIcon';
+import { AeriSearchIcon } from './components/AeriSearchIcon';
 
 interface CommentItem {
   id: string;
@@ -1502,7 +1503,7 @@ export default function App() {
                 aria-label="Search"
                 className="hover:opacity-75 transition-opacity cursor-pointer p-1"
               >
-                <Search className="w-[24px] h-[24px] text-black stroke-[2.4]" />
+                <AeriSearchIcon className="w-[23px] h-[23px] text-black" />
               </button>
 
               {/* Message icon (where user messages normal users) */}
