@@ -49,6 +49,7 @@ import { AeriOneEyeHatGuyIcon } from './components/AeriOneEyeHatGuyIcon';
 import { AeriOneEyeGhostIcon } from './components/AeriOneEyeGhostIcon';
 import { AeriRaygunIcon } from './components/AeriRaygunIcon';
 import { AeriSearchIcon } from './components/AeriSearchIcon';
+import { AeriConcentricCircleIcon } from './components/AeriConcentricCircleIcon';
 
 interface CommentItem {
   id: string;
@@ -1487,8 +1488,14 @@ export default function App() {
                 <AeriGuacamoleBowlIcon size={30} className="w-[30px] h-[30px]" />
               </button>
 
-              {/* 2nd header icon */}
-              <div className="w-[20px] h-[20px] rounded-full bg-black shrink-0" />
+              {/* 2nd header icon: Concentric Circle icon inspired by Screenshot 2026-03-14 114918.png */}
+              <button
+                aria-label="Concentric Circle"
+                title="Concentric Circle"
+                className="hover:opacity-75 transition-opacity cursor-pointer p-0.5 flex items-center justify-center shrink-0"
+              >
+                <AeriConcentricCircleIcon className="w-[22px] h-[22px] text-black" />
+              </button>
 
               {/* 3rd header icon: One-Eye Hat Guy icon beside Search inspired by unnamed (26).jpg */}
               <button
