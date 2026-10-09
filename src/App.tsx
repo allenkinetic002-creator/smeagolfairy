@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Flame,
   MessageSquare,
   Send,
   Home,
@@ -40,6 +39,9 @@ import { NormalMessagesScreen } from './components/NormalMessagesScreen';
 import { InfluenceRatingModal } from './components/InfluenceRatingModal';
 import { FairyPotIcon } from './components/FairyPotIcon';
 import { AeriFrogIcon } from './components/AeriFrogIcon';
+import { AeriFlameIcon } from './components/AeriFlameIcon';
+import { AeriLeafIcon } from './components/AeriLeafIcon';
+import { AeriSlimeIcon } from './components/AeriSlimeIcon';
 
 interface CommentItem {
   id: string;
@@ -1522,7 +1524,7 @@ export default function App() {
           {/* Trending Tag & Comment Switcher */}
           <div className="w-full px-4 py-1 flex items-center justify-between shrink-0 bg-white z-10 border-b border-slate-50">
             <div className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-[#FFF0F5] rounded-full">
-              <Flame className="w-3.5 h-3.5 text-[#FF5722] fill-[#FF5722]" />
+              <AeriFlameIcon filled className="w-3.5 h-3.5 text-[#FF5722]" />
               <span className="text-[11.5px] font-bold text-[#8B2FC9] tracking-tight">
                 Trending
               </span>
@@ -1601,10 +1603,11 @@ export default function App() {
                       className="cursor-pointer transition-transform active:scale-90"
                       aria-label="Like post"
                     >
-                      <Flame
+                      <AeriFlameIcon
+                        filled={isLiked}
                         className={`w-5.5 h-5.5 transition-colors ${
                           isLiked
-                            ? 'text-[#FF6D00] fill-[#FF6D00]'
+                            ? 'text-[#FF6D00]'
                             : 'text-[#FF6D00] stroke-[1.8]'
                         }`}
                       />
@@ -1618,9 +1621,14 @@ export default function App() {
                       <MessageSquare className="w-5.5 h-5.5 text-black stroke-[1.8]" />
                     </button>
 
-                    <div className="w-[20px] h-[20px] rounded-[5px] border-[1.8px] border-black flex items-center justify-center cursor-pointer hover:opacity-75 transition-opacity">
-                      <div className="w-1.5 h-2.5 bg-black rounded-[1.5px]" />
-                    </div>
+                    {/* 3rd icon beside Phone: Custom Leaf icon inspired by leave.png */}
+                    <button
+                      className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
+                      aria-label="Leaf"
+                      title="Leaf inspired icon"
+                    >
+                      <AeriLeafIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
+                    </button>
 
                     <div
                       className="w-[14px] h-[21px] rounded-[3.5px] border-[1.8px] border-black flex flex-col justify-end items-center pb-[2px] cursor-pointer hover:opacity-75 transition-opacity"
@@ -1778,16 +1786,15 @@ export default function App() {
                   )}
                 </div>
 
-                {/* Secondary Row */}
+                {/* Secondary Row: Custom Slime icon & Share */}
                 <div className="flex items-center gap-3.5 pt-0.5 pb-0.5 shrink-0">
-                  <div className="w-5 h-5 flex items-center justify-center text-[#0284C7]">
-                    <svg
-                      className="w-4.5 h-4.5 text-[#0284C7] fill-current"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.8-.7z" />
-                    </svg>
-                  </div>
+                  <button
+                    className="w-5.5 h-5.5 flex items-center justify-center text-[#0284C7] transition-transform active:scale-90 hover:opacity-80 cursor-pointer"
+                    title="Cute Slime"
+                    aria-label="Slime"
+                  >
+                    <AeriSlimeIcon className="w-5 h-5 text-[#0284C7]" />
+                  </button>
 
                   <button
                     className="w-7 h-7 rounded-lg border border-slate-200 bg-slate-50/60 flex items-center justify-center hover:bg-slate-100 transition-colors active:scale-95 cursor-pointer"
