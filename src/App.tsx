@@ -44,7 +44,7 @@ import { AeriPhoneIcon } from './components/AeriPhoneIcon';
 import { AeriHandPhoneIcon } from './components/AeriHandPhoneIcon';
 import { AeriToyGunIcon } from './components/AeriToyGunIcon';
 import { AeriDiggingDogIcon } from './components/AeriDiggingDogIcon';
-import { AeriJuiceBoxIcon } from './components/AeriJuiceBoxIcon';
+import { AeriGuacamoleBowlIcon } from './components/AeriGuacamoleBowlIcon';
 import { AeriMaskedEyesIcon } from './components/AeriMaskedEyesIcon';
 import { AeriOneEyeHatGuyIcon } from './components/AeriOneEyeHatGuyIcon';
 import { AeriOneEyeGhostIcon } from './components/AeriOneEyeGhostIcon';
@@ -1477,13 +1477,13 @@ export default function App() {
                 Delete Modal
               </button>
 
-              {/* 1st header icon: Juice box icon inspired by Untitled-2.png */}
+              {/* 1st header icon: Guacamole Bowl icon inspired by 61f6185e-7107-40ff-8eb6-0569d6090611.jpg.png */}
               <button
-                aria-label="Juice Box"
-                title="Juice Box"
-                className="hover:opacity-75 transition-opacity cursor-pointer p-1"
+                aria-label="Guacamole & Nachos"
+                title="Guacamole & Chips"
+                className="hover:opacity-75 transition-opacity cursor-pointer p-0.5 flex items-center justify-center"
               >
-                <AeriJuiceBoxIcon className="w-[28px] h-[28px] text-black stroke-[1.8]" />
+                <AeriGuacamoleBowlIcon size={30} className="w-[30px] h-[30px]" />
               </button>
 
               {/* 2nd header icon */}
