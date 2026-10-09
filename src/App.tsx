@@ -41,7 +41,7 @@ import { AeriHydrantIcon } from './components/AeriHydrantIcon';
 import { AeriCommentIcon } from './components/AeriCommentIcon';
 import { AeriPhoneIcon } from './components/AeriPhoneIcon';
 import { AeriHandPhoneIcon } from './components/AeriHandPhoneIcon';
-import { AeriDoubleTriangleIcon } from './components/AeriDoubleTriangleIcon';
+import { AeriMessageBubbleIcon } from './components/AeriMessageBubbleIcon';
 import { AeriDiggingDogIcon } from './components/AeriDiggingDogIcon';
 import { AeriGuacamoleBowlIcon } from './components/AeriGuacamoleBowlIcon';
 import { AeriMaskedEyesIcon } from './components/AeriMaskedEyesIcon';
@@ -1510,9 +1510,9 @@ export default function App() {
                 onClick={() => setShowNormalMessagesScreen(true)}
                 aria-label="Messages"
                 title="Messages · Direct messages with normal users"
-                className="hover:opacity-75 transition-all active:scale-90 cursor-pointer p-1 relative text-black"
+                className="hover:opacity-75 transition-all active:scale-90 cursor-pointer p-1 relative text-[#6B7280] hover:text-[#4B5563]"
               >
-                <AeriDoubleTriangleIcon className="w-[26px] h-[26px]" />
+                <AeriMessageBubbleIcon className="w-[24px] h-[24px]" />
                 <span className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
               </button>
             </div>

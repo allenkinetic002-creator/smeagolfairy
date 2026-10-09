@@ -3,6 +3,7 @@ import React from 'react';
 export interface AeriMessageBubbleIconProps extends React.SVGProps<SVGSVGElement> {
   size?: number | string;
   className?: string;
+  color?: string;
 }
 
 /**
@@ -14,6 +15,7 @@ export interface AeriMessageBubbleIconProps extends React.SVGProps<SVGSVGElement
 export const AeriMessageBubbleIcon: React.FC<AeriMessageBubbleIconProps> = ({
   size = 24,
   className = '',
+  color,
   ...props
 }) => {
   return (
@@ -22,7 +24,7 @@ export const AeriMessageBubbleIcon: React.FC<AeriMessageBubbleIconProps> = ({
       viewBox="0 0 24 24"
       width={size}
       height={size}
-      fill="currentColor"
+      fill={color || 'currentColor'}
       className={className}
       style={{ shapeRendering: 'geometricPrecision' }}
       {...props}
