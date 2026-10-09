@@ -47,6 +47,7 @@ import { AeriDiggingDogIcon } from './components/AeriDiggingDogIcon';
 import { AeriJuiceBoxIcon } from './components/AeriJuiceBoxIcon';
 import { AeriMaskedEyesIcon } from './components/AeriMaskedEyesIcon';
 import { AeriOneEyeHatGuyIcon } from './components/AeriOneEyeHatGuyIcon';
+import { AeriOneEyeGhostIcon } from './components/AeriOneEyeGhostIcon';
 
 interface CommentItem {
   id: string;
@@ -2360,8 +2361,8 @@ export default function App() {
           }`}
           title="FAIRY CONTROL, DM Privacy & See for your matches"
         >
-          <AeriJuiceBoxIcon
-            className={`w-[24px] h-[24px] transition-transform active:scale-95 ${
+          <AeriOneEyeGhostIcon
+            className={`w-[22px] h-[22px] transition-transform active:scale-95 ${
               showMatchesScreen || (!showNormalMessagesScreen && activeNavIndex === 2)
                 ? 'stroke-[2.2] text-slate-900'
                 : 'stroke-[1.8]'
