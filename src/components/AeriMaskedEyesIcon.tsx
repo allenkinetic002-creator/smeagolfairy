@@ -29,8 +29,8 @@ export const AeriMaskedEyesIcon: React.FC<AeriMaskedEyesIconProps> = ({
         d="
           M 10.0 1.0
           H 31.0
-          V 15.0
-          C 31.0 19.0 28.5 21.0 25.0 21.0
+          V 11.0
+          C 31.0 17.0 27.8 21.0 22.0 21.0
           H 10.0
           C 4.2 21.0 1.0 17.0 1.0 11.0
           C 1.0 5.0 4.2 1.0 10.0 1.0
