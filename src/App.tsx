@@ -50,6 +50,7 @@ import { AeriOneEyeGhostIcon } from './components/AeriOneEyeGhostIcon';
 import { AeriRaygunIcon } from './components/AeriRaygunIcon';
 import { AeriSearchIcon } from './components/AeriSearchIcon';
 import { AeriConcentricCircleIcon } from './components/AeriConcentricCircleIcon';
+import { AeriHappyFlameIcon } from './components/AeriHappyFlameIcon';
 
 interface CommentItem {
   id: string;
@@ -2386,14 +2387,15 @@ export default function App() {
             setShowNormalMessagesScreen(false);
             setActiveNavIndex(0);
           }}
-          aria-label="Trending chart"
+          aria-label="Trending flame"
+          title="Trending"
           className={`p-1.5 transition-colors cursor-pointer flex flex-col items-center ${
             !showMatchesScreen && !showNormalMessagesScreen && activeNavIndex === 3
-              ? 'text-black'
-              : 'text-[#94A3B8] hover:text-black'
+              ? 'opacity-100 scale-105'
+              : 'opacity-75 hover:opacity-100'
           }`}
         >
-          <TrendingUp className="w-[21px] h-[21px] stroke-[1.8]" />
+          <AeriHappyFlameIcon size={24} className="w-[24px] h-[25px] transition-transform active:scale-95 drop-shadow-2xs" />
         </button>
 
         <button
