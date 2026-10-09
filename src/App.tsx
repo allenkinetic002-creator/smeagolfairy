@@ -38,6 +38,7 @@ import { DMControl } from './components/DMControl';
 import { FairyControl } from './components/FairyControl';
 import { MatchesScreen } from './components/MatchesScreen';
 import { NormalMessagesScreen } from './components/NormalMessagesScreen';
+import { InfluenceRatingModal } from './components/InfluenceRatingModal';
 
 interface CommentItem {
   id: string;
@@ -1325,6 +1326,7 @@ export default function App() {
   const [controlSubTab, setControlSubTab] = useState<'fairy-control' | 'dm-control' | 'matches'>('fairy-control');
   const [showMatchesScreen, setShowMatchesScreen] = useState(false);
   const [showNormalMessagesScreen, setShowNormalMessagesScreen] = useState(false);
+  const [showInfluenceRatingModal, setShowInfluenceRatingModal] = useState(false);
 
   const currentCreators = creatorsData[selectedCategory] || creatorsData.new_artists;
 
@@ -1619,14 +1621,18 @@ export default function App() {
                       <div className="w-1.5 h-2.5 bg-black rounded-[1.5px]" />
                     </div>
 
-                    <div className="w-[14px] h-[21px] rounded-[3.5px] border-[1.8px] border-black flex flex-col justify-end items-center pb-[2px] cursor-pointer hover:opacity-75 transition-opacity">
+                    <div
+                      className="w-[14px] h-[21px] rounded-[3.5px] border-[1.8px] border-black flex flex-col justify-end items-center pb-[2px] cursor-pointer hover:opacity-75 transition-opacity"
+                      title="Phone"
+                    >
                       <div className="w-1 h-1 rounded-full bg-black" />
                     </div>
 
                     <button
-                      onClick={handleOpenModal}
+                      onClick={() => setShowInfluenceRatingModal(true)}
                       className="cursor-pointer transition-transform active:scale-90 hover:opacity-75"
-                      aria-label="View count or options"
+                      aria-label="View Fairy ratings and social reach"
+                      title="Overall ratings & Social reach"
                     >
                       <Eye className="w-5.5 h-5.5 text-black stroke-[1.8]" />
                     </button>
@@ -2385,6 +2391,12 @@ export default function App() {
           <User className="w-[21px] h-[21px] stroke-[1.8]" />
         </button>
       </nav>
+
+      {/* Fairy Influence & 5-Ratings Popout Modal (Opens from Eye icon beside Phone icon) */}
+      <InfluenceRatingModal
+        isOpen={showInfluenceRatingModal}
+        onClose={() => setShowInfluenceRatingModal(false)}
+      />
     </div>
   );
 }
