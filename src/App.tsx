@@ -1494,7 +1494,7 @@ export default function App() {
                 title="Concentric Circle"
                 className="hover:opacity-75 transition-opacity cursor-pointer p-0.5 flex items-center justify-center shrink-0"
               >
-                <AeriConcentricCircleIcon className="w-[22px] h-[22px] text-black" />
+                <AeriConcentricCircleIcon className="w-[27px] h-[27px] text-black" />
               </button>
 
               {/* 3rd header icon: One-Eye Hat Guy icon beside Search inspired by unnamed (26).jpg */}

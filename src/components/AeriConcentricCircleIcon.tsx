@@ -10,7 +10,7 @@ export interface AeriConcentricCircleIconProps extends React.SVGProps<SVGSVGElem
  * Bold outer black circular ring, white concentric gap, and solid black center disc.
  */
 export const AeriConcentricCircleIcon: React.FC<AeriConcentricCircleIconProps> = ({
-  size = 24,
+  size = 28,
   className = '',
   ...props
 }) => {
