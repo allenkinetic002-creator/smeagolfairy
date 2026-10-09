@@ -57,6 +57,8 @@ import { AeriMonoblocChairIcon } from './components/AeriMonoblocChairIcon';
 import { AeriArrowKeysIcon } from './components/AeriArrowKeysIcon';
 import { AeriMindProfileIcon } from './components/AeriMindProfileIcon';
 import { AeriProfileUserIcon } from './components/AeriProfileUserIcon';
+import { AeriBellIcon } from './components/AeriBellIcon';
+import { AeriHorseIcon } from './components/AeriHorseIcon';
 
 interface CommentItem {
   id: string;
@@ -2353,9 +2355,10 @@ export default function App() {
           }`}
           title="Top 10 People Leaderboard"
         >
-          <AeriArrowKeysIcon
+          <AeriHorseIcon
             size={26}
-            className="w-[28px] h-[22px] transition-transform active:scale-95"
+            className="w-[26px] h-[26px] transition-transform active:scale-95"
+            strokeWidth={!showMatchesScreen && !showNormalMessagesScreen && activeNavIndex === 1 ? 2.6 : 2.1}
           />
           <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
         </button>
@@ -2392,18 +2395,18 @@ export default function App() {
             setShowNormalMessagesScreen(false);
             setActiveNavIndex(0);
           }}
-          aria-label="Mind Profile"
-          title="Mind Profile"
+          aria-label="Notifications"
+          title="Notifications"
           className={`p-1.5 transition-colors cursor-pointer flex flex-col items-center ${
             !showMatchesScreen && !showNormalMessagesScreen && activeNavIndex === 3
               ? 'text-black'
               : 'text-[#94A3B8] hover:text-black'
           }`}
         >
-          <AeriMindProfileIcon
+          <AeriBellIcon
             size={24}
             className="w-[23px] h-[25px] transition-transform active:scale-95"
-            strokeWidth={!showMatchesScreen && !showNormalMessagesScreen && activeNavIndex === 3 ? 2.3 : 1.9}
+            strokeWidth={!showMatchesScreen && !showNormalMessagesScreen && activeNavIndex === 3 ? 2.8 : 2.3}
           />
         </button>
 
