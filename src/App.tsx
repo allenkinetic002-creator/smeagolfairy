@@ -1557,7 +1557,7 @@ export default function App() {
   const [showNormalMessagesScreen, setShowNormalMessagesScreen] = useState(false);
   const [targetMessagePerson, setTargetMessagePerson] = useState<TargetMessagePerson | null>(null);
   const [showInfluenceRatingModal, setShowInfluenceRatingModal] = useState(false);
-  const [activePhoneReactionId, setActivePhoneReactionId] = useState<string | null>(null);
+  const [activePhoneReactionId, setActivePhoneReactionId] = useState<string | null>('post-default-elena');
 
   const handleTogglePhoneReaction = (id: string) => {
     setActivePhoneReactionId((prev) => (prev === id ? null : id));
@@ -1810,16 +1810,17 @@ export default function App() {
                   </div>
                 )}
 
+                {/* Placed directly on top of the person profile pic */}
+                {activePhoneReactionId === post.id && (
+                  <div className="w-full flex justify-center py-1 bg-white rounded-xl">
+                    <PhoneReactionPopup />
+                  </div>
+                )}
+
                 {/* 2. Post Author Header with Profile Picture */}
                 <div className="flex items-center justify-between py-1 px-0.5 shrink-0 bg-white">
                   <div className="flex items-center gap-2.5">
                     <div className="relative">
-                      {/* Reaction Widget placed directly on top of the profile pic */}
-                      <PhoneReactionPopup
-                        isOpen={activePhoneReactionId === post.id}
-                        onClose={() => setActivePhoneReactionId(null)}
-                        postAuthor={post.authorName}
-                      />
                       <img
                         src={post.authorAvatar}
                         alt={post.authorName}
@@ -2367,16 +2368,17 @@ export default function App() {
                         : 'border-slate-200/90'
                     }`}
                   >
+                    {/* Reaction Widget placed directly on top of the profile pic */}
+                    {activePhoneReactionId === `person-${person.name}` && (
+                      <div className="w-full flex justify-center py-2 bg-white border-b border-slate-100">
+                        <PhoneReactionPopup />
+                      </div>
+                    )}
+
                     {/* Post Author Header with Profile Picture */}
                     <div className="flex items-center justify-between p-3.5 pb-2.5 bg-white">
                     <div className="flex items-center gap-2.5 min-w-0">
                       <div className="relative shrink-0">
-                        {/* Reaction Widget placed directly on top of the profile pic */}
-                        <PhoneReactionPopup
-                          isOpen={activePhoneReactionId === `person-${person.name}`}
-                          onClose={() => setActivePhoneReactionId(null)}
-                          postAuthor={person.name}
-                        />
                         {person.avatarUrl ? (
                           <img
                             src={person.avatarUrl}
@@ -2889,16 +2891,17 @@ export default function App() {
           {/* Profile Post Displayed in Full */}
           <div className="p-3.5 space-y-3">
             <div className="bg-white rounded-3xl border border-slate-200/90 shadow-xs overflow-hidden">
+              {/* Reaction Widget placed directly on top of the profile pic */}
+              {activePhoneReactionId === 'creator-preview' && (
+                <div className="w-full flex justify-center py-2 bg-white border-b border-slate-100">
+                  <PhoneReactionPopup />
+                </div>
+              )}
+
               {/* Post Author Bar with Flame Badge */}
               <div className="flex items-center justify-between p-3 pb-2 bg-white">
                 <div className="flex items-center gap-2.5">
                   <div className="relative">
-                    {/* Reaction Widget placed directly on top of the profile pic */}
-                    <PhoneReactionPopup
-                      isOpen={activePhoneReactionId === 'creator-preview'}
-                      onClose={() => setActivePhoneReactionId(null)}
-                      postAuthor="Aeri Fairy"
-                    />
                     <img
                       src={feedPosts[0].authorAvatar}
                       alt="Aeri Fairy"
