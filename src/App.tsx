@@ -1403,7 +1403,7 @@ export default function App() {
   };
 
   // Comments state
-  const [commentType, setCommentType] = useState<'inline-feed' | 'discussion-card' | 'floating-drawer'>('inline-feed');
+  const [commentType, setCommentType] = useState<'off' | 'inline-feed' | 'discussion-card' | 'floating-drawer'>('inline-feed');
   const [comments, setComments] = useState<CommentItem[]>(DEFAULT_COMMENTS);
   const [inputComment, setInputComment] = useState('');
   const [totalComments, setTotalComments] = useState(812);
@@ -1518,14 +1518,6 @@ export default function App() {
           {/* Header */}
           <header className="w-full px-4 pt-2.5 pb-1 flex items-center justify-between shrink-0 bg-white z-10 border-b border-slate-50">
             <div className="flex items-center gap-2">
-              <button
-                onClick={() => setShowCreatePostModal(true)}
-                aria-label="Camera · Create Post"
-                title="Camera · Post video, photo & writing"
-                className="hover:opacity-75 transition-all active:scale-90 cursor-pointer p-1 text-black flex items-center justify-center -ml-1"
-              >
-                <Camera className="w-5.5 h-5.5 text-black stroke-[1.9]" />
-              </button>
               <div className="w-[24px] h-[24px] rounded-[6px] bg-black flex items-center justify-center shadow-xs">
                 <svg
                   className="w-3.5 h-3.5 text-white fill-current"
@@ -1549,11 +1541,12 @@ export default function App() {
                 <AeriGuacamoleBowlIcon size={30} className="w-[30px] h-[30px]" />
               </button>
 
-              {/* 2nd header icon: Concentric Circle icon inspired by Screenshot 2026-03-14 114918.png */}
+              {/* 2nd header icon: Concentric Circle icon linked to Create Post Modal (Photo, Video & Writing) */}
               <button
-                aria-label="Concentric Circle"
-                title="Concentric Circle"
-                className="hover:opacity-75 transition-opacity cursor-pointer p-0.5 flex items-center justify-center shrink-0"
+                onClick={() => setShowCreatePostModal(true)}
+                aria-label="Create Post · Concentric Circle"
+                title="Create Post · Upload video, photo & writing"
+                className="hover:opacity-75 transition-transform active:scale-90 cursor-pointer p-0.5 flex items-center justify-center shrink-0"
               >
                 <AeriConcentricCircleIcon className="w-[27px] h-[27px] text-black" />
               </button>
@@ -1587,36 +1580,54 @@ export default function App() {
             </div>
           </header>
 
-          {/* Quick Bar: Create Post Action & Comment Switcher */}
+          {/* Comment Mode Switcher */}
           <div className="w-full px-4 py-1.5 flex items-center justify-between shrink-0 bg-white z-10 border-b border-slate-100">
-            <button
-              onClick={() => setShowCreatePostModal(true)}
-              aria-label="Camera · Create Post"
-              title="Camera · Post video, photo & writing"
-              className="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-50 hover:bg-purple-100 text-purple-800 rounded-full text-xs font-black transition-transform active:scale-95 cursor-pointer border border-purple-200/60 shadow-2xs"
-            >
-              <Camera className="w-3.5 h-3.5 text-purple-700" />
-              <span>Camera</span>
-            </button>
+            <div className="flex items-center gap-1.5">
+              <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
+                Comments:
+              </span>
+              <span className={`text-[10.5px] font-extrabold ${commentType === 'off' ? 'text-slate-400' : 'text-purple-700'}`}>
+                {commentType === 'off'
+                  ? 'Off (Hidden)'
+                  : commentType === 'inline-feed'
+                  ? 'Inline Feed'
+                  : commentType === 'discussion-card'
+                  ? 'Discussion Card'
+                  : 'Sliding Sheet'}
+              </span>
+            </div>
 
             <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
               <button
-                onClick={() => setCommentType('inline-feed')}
-                className={`px-2 py-0.5 text-[10px] font-bold rounded-md transition-all cursor-pointer ${
-                  commentType === 'inline-feed'
-                    ? 'bg-purple-600 text-white shadow-2xs'
+                onClick={() => setCommentType('off')}
+                className={`px-2.5 py-0.5 text-[10px] font-bold rounded-md transition-all cursor-pointer ${
+                  commentType === 'off'
+                    ? 'bg-rose-500 text-white shadow-2xs font-black'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
+                title="Turn comments off so they disappear"
+              >
+                Off
+              </button>
+              <button
+                onClick={() => setCommentType((prev) => (prev === 'inline-feed' ? 'off' : 'inline-feed'))}
+                className={`px-2 py-0.5 text-[10px] font-bold rounded-md transition-all cursor-pointer ${
+                  commentType === 'inline-feed'
+                    ? 'bg-purple-600 text-white shadow-2xs font-black'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+                title="Display inline feed comments"
               >
                 Feed
               </button>
               <button
-                onClick={() => setCommentType('discussion-card')}
+                onClick={() => setCommentType((prev) => (prev === 'discussion-card' ? 'off' : 'discussion-card'))}
                 className={`px-2 py-0.5 text-[10px] font-bold rounded-md transition-all cursor-pointer ${
                   commentType === 'discussion-card'
-                    ? 'bg-purple-600 text-white shadow-2xs'
+                    ? 'bg-purple-600 text-white shadow-2xs font-black'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
+                title="Display discussion thread card"
               >
                 Discussion
               </button>
@@ -1627,9 +1638,10 @@ export default function App() {
                 }}
                 className={`px-2 py-0.5 text-[10px] font-bold rounded-md transition-all cursor-pointer ${
                   commentType === 'floating-drawer'
-                    ? 'bg-purple-600 text-white shadow-2xs'
+                    ? 'bg-purple-600 text-white shadow-2xs font-black'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
+                title="Display sliding sheet drawer"
               >
                 Sheet
               </button>
@@ -1821,9 +1833,10 @@ export default function App() {
               </div>
             ))}
 
-                {/* Comments Section */}
-                <div className="flex-1 min-h-0 w-full my-1 flex flex-col justify-between overflow-hidden">
-                  {commentType === 'inline-feed' ? (
+                {/* Comments Section (Displays when Feed, Discussion, or Sheet is active; disappears when Off) */}
+                {commentType !== 'off' && (
+                  <div className="flex-1 min-h-0 w-full my-1 flex flex-col justify-between overflow-hidden animate-fadeIn">
+                    {commentType === 'inline-feed' ? (
                     <div className="flex-1 min-h-0 bg-slate-50/70 rounded-xl p-2.5 border border-slate-100 flex flex-col justify-between overflow-hidden">
                       <div className="flex items-center justify-between pb-1 mb-1 border-b border-slate-200/60 shrink-0">
                         <span className="text-[11px] font-extrabold text-slate-800 flex items-center gap-1.5">
@@ -1954,6 +1967,7 @@ export default function App() {
                     </div>
                   )}
                 </div>
+              )}
 
                 {/* Secondary Row: Fire Hydrant & Raygun */}
                 <div className="flex items-center gap-4 pt-1 pb-1 shrink-0">
