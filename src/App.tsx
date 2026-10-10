@@ -1581,26 +1581,11 @@ export default function App() {
           </header>
 
           {/* Comment Mode Switcher */}
-          <div className="w-full px-4 py-1.5 flex items-center justify-between shrink-0 bg-white z-10 border-b border-slate-100">
-            <div className="flex items-center gap-1.5">
-              <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
-                Comments:
-              </span>
-              <span className={`text-[10.5px] font-extrabold ${commentType === 'off' ? 'text-slate-400' : 'text-purple-700'}`}>
-                {commentType === 'off'
-                  ? 'Off (Hidden)'
-                  : commentType === 'inline-feed'
-                  ? 'Inline Feed'
-                  : commentType === 'discussion-card'
-                  ? 'Discussion Card'
-                  : 'Sliding Sheet'}
-              </span>
-            </div>
-
-            <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
+          <div className="w-full px-4 py-1.5 flex items-center justify-center shrink-0 bg-white z-10 border-b border-slate-100">
+            <div className="inline-flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
               <button
                 onClick={() => setCommentType('off')}
-                className={`px-2.5 py-0.5 text-[10px] font-bold rounded-md transition-all cursor-pointer ${
+                className={`px-3 py-0.5 text-[10px] font-bold rounded-md transition-all cursor-pointer ${
                   commentType === 'off'
                     ? 'bg-rose-500 text-white shadow-2xs font-black'
                     : 'text-slate-600 hover:text-slate-900'
@@ -1611,7 +1596,7 @@ export default function App() {
               </button>
               <button
                 onClick={() => setCommentType((prev) => (prev === 'inline-feed' ? 'off' : 'inline-feed'))}
-                className={`px-2 py-0.5 text-[10px] font-bold rounded-md transition-all cursor-pointer ${
+                className={`px-3 py-0.5 text-[10px] font-bold rounded-md transition-all cursor-pointer ${
                   commentType === 'inline-feed'
                     ? 'bg-purple-600 text-white shadow-2xs font-black'
                     : 'text-slate-600 hover:text-slate-900'
@@ -1622,7 +1607,7 @@ export default function App() {
               </button>
               <button
                 onClick={() => setCommentType((prev) => (prev === 'discussion-card' ? 'off' : 'discussion-card'))}
-                className={`px-2 py-0.5 text-[10px] font-bold rounded-md transition-all cursor-pointer ${
+                className={`px-3 py-0.5 text-[10px] font-bold rounded-md transition-all cursor-pointer ${
                   commentType === 'discussion-card'
                     ? 'bg-purple-600 text-white shadow-2xs font-black'
                     : 'text-slate-600 hover:text-slate-900'
@@ -1636,7 +1621,7 @@ export default function App() {
                   setCommentType('floating-drawer');
                   setIsDrawerOpen(true);
                 }}
-                className={`px-2 py-0.5 text-[10px] font-bold rounded-md transition-all cursor-pointer ${
+                className={`px-3 py-0.5 text-[10px] font-bold rounded-md transition-all cursor-pointer ${
                   commentType === 'floating-drawer'
                     ? 'bg-purple-600 text-white shadow-2xs font-black'
                     : 'text-slate-600 hover:text-slate-900'
