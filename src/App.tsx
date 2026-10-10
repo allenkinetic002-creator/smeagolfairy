@@ -1550,7 +1550,46 @@ export default function App() {
           </div>
 
           {/* Main Content Area */}
-          <div className="flex-1 min-h-0 w-full px-4 py-1 flex flex-col justify-between overflow-hidden relative">
+          <div className="flex-1 min-h-0 w-full px-4 py-1 flex flex-col overflow-y-auto scrollbar-thin space-y-2 relative">
+            {/* Post Author Header with Profile Picture */}
+            <div className="flex items-center justify-between py-1 px-0.5 shrink-0 bg-white">
+              <div className="flex items-center gap-2.5">
+                <div className="relative">
+                  <img
+                    src={elenaAvatar}
+                    alt="Elena Vance"
+                    className="w-9 h-9 rounded-full object-cover ring-2 ring-purple-600/30 p-0.5 shadow-xs"
+                  />
+                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-1.5 ring-white" />
+                </div>
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-1.5 leading-none">
+                    <span className="text-[13px] font-black text-slate-900 tracking-tight">
+                      Elena Vance
+                    </span>
+                    <CheckCircle2 className="w-3.5 h-3.5 text-purple-600 fill-purple-100" />
+                  </div>
+                  <span className="text-[10.5px] font-medium text-slate-500 mt-0.5">
+                    @elena_aeri &middot; 2h ago &middot; Kyoto, Japan
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                <button
+                  className="px-3 py-1 rounded-full bg-purple-50 hover:bg-purple-100 text-purple-700 font-extrabold text-[11px] transition-colors cursor-pointer"
+                >
+                  Follow
+                </button>
+                <button
+                  aria-label="Post options"
+                  className="p-1 text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
+                >
+                  <span className="text-base font-bold leading-none">&middot;&middot;&middot;</span>
+                </button>
+              </div>
+            </div>
+
             {/* Post Card */}
             <div
               className="relative w-full h-[36vh] min-h-[190px] max-h-[290px] rounded-[18px] overflow-hidden bg-gradient-to-b from-[#557F8B] via-[#D19B36] to-[#7E6650] shadow-xs shrink-0"
@@ -1634,6 +1673,39 @@ export default function App() {
                   <span className="text-[11px] font-bold text-slate-500 tabular-nums">
                     {likeCount.toLocaleString()} likes
                   </span>
+                </div>
+
+                {/* Post Writing & Caption */}
+                <div className="pt-0.5 pb-1 px-0.5 shrink-0">
+                  <div className="flex items-start gap-2">
+                    <img
+                      src={elenaAvatar}
+                      alt="Elena Vance"
+                      className="w-5 h-5 rounded-full object-cover shrink-0 mt-0.5 ring-1 ring-purple-500/20"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[12px] leading-snug text-slate-800">
+                        <span className="font-extrabold text-slate-900 mr-1.5">
+                          @elena_aeri
+                        </span>
+                        Golden hour in the enchanted woods 🧚✨ Caught between autumn mist and warm amber light. Where should we wander next?
+                      </p>
+                      <div className="flex flex-wrap gap-1.5 mt-1">
+                        <span className="text-[10.5px] font-bold text-purple-600 hover:underline cursor-pointer">
+                          #fairy
+                        </span>
+                        <span className="text-[10.5px] font-bold text-purple-600 hover:underline cursor-pointer">
+                          #autumnlight
+                        </span>
+                        <span className="text-[10.5px] font-bold text-purple-600 hover:underline cursor-pointer">
+                          #aeri
+                        </span>
+                        <span className="text-[10.5px] font-bold text-purple-600 hover:underline cursor-pointer">
+                          #dreamscape
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Comments Section */}
