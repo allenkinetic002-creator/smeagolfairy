@@ -5,6 +5,17 @@ export interface FaceoffBattleModalProps {
   isOpen?: boolean;
   onClose?: () => void;
   className?: string;
+  battleQuestion?: string;
+  redParticipant?: {
+    name: string;
+    avatar: string;
+    title?: string;
+  };
+  blueParticipant?: {
+    name: string;
+    avatar: string;
+    title?: string;
+  };
 }
 
 /**
@@ -22,6 +33,15 @@ export function FaceoffBattleModal({
   isOpen = true,
   onClose,
   className = '',
+  battleQuestion = 'Who looks Hotter between me Freda pepper or this loser Slimy sticky',
+  redParticipant = {
+    name: 'Freda Da. pepper',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+  },
+  blueParticipant = {
+    name: 'Heather Slime',
+    avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
+  },
 }: FaceoffBattleModalProps) {
   const [userVote, setUserVote] = useState<'red' | 'blue' | null>(null);
   const [likes, setLikes] = useState<number>(234095);
@@ -79,7 +99,7 @@ export function FaceoffBattleModal({
 
       {/* 1. Header Question */}
       <h2 className="text-[14px] sm:text-[15px] font-black text-slate-900 leading-snug tracking-tight pr-6">
-        Who looks Hotter between me Freda pepper or this loser Slimy sticky
+        {battleQuestion}
       </h2>
 
       {/* 2. WINNER vs LOSER Header */}
@@ -99,11 +119,11 @@ export function FaceoffBattleModal({
 
       {/* 4. Faces & Percentages Row */}
       <div className="flex items-center justify-between px-0.5">
-        {/* Freda Left */}
+        {/* Freda Left / Red */}
         <div className="flex items-center gap-1.5 sm:gap-2">
           <img
-            src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
-            alt="Freda Da. pepper"
+            src={redParticipant.avatar}
+            alt={redParticipant.name}
             className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover shadow-2xs ring-1 ring-slate-200"
           />
           <span className="text-[13.5px] sm:text-[14.5px] font-black text-slate-900 tabular-nums">
@@ -116,14 +136,14 @@ export function FaceoffBattleModal({
           0:00:00
         </div>
 
-        {/* Heather Right */}
+        {/* Heather Right / Blue */}
         <div className="flex items-center gap-1.5 sm:gap-2">
           <span className="text-[13.5px] sm:text-[14.5px] font-black text-slate-900 tabular-nums">
             {bluePct.toFixed(1)}%
           </span>
           <img
-            src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80"
-            alt="Heather Slime"
+            src={blueParticipant.avatar}
+            alt={blueParticipant.name}
             className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover shadow-2xs ring-1 ring-slate-200"
           />
         </div>
@@ -131,8 +151,8 @@ export function FaceoffBattleModal({
 
       {/* 5. Names Row */}
       <div className="flex items-center justify-between mt-1 px-0.5 text-[11px] font-bold text-slate-900">
-        <span>Freda Da. pepper</span>
-        <span>Heather Slime</span>
+        <span>{redParticipant.name}</span>
+        <span>{blueParticipant.name}</span>
       </div>
 
       {/* 6. Interaction Row (Red button + Likes | Dislikes + Blue button) */}

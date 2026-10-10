@@ -63,6 +63,9 @@ import { AeriProfileUserIcon } from './components/AeriProfileUserIcon';
 import { AeriBellIcon } from './components/AeriBellIcon';
 import { AeriHorseIcon } from './components/AeriHorseIcon';
 import { CreatePostModal, NewPostPayload } from './components/CreatePostModal';
+import { RaygunActionModal } from './components/RaygunActionModal';
+import { PastChallengesModal } from './components/PastChallengesModal';
+import { ChallengePostModal, ChallengePostPayload } from './components/ChallengePostModal';
 
 export interface FeedPost {
   id: string;
@@ -80,6 +83,19 @@ export interface FeedPost {
   likeCount: number;
   isLiked: boolean;
   isTrending?: boolean;
+  faceoffConfig?: {
+    battleQuestion?: string;
+    redParticipant?: {
+      name: string;
+      avatar: string;
+      title?: string;
+    };
+    blueParticipant?: {
+      name: string;
+      avatar: string;
+      title?: string;
+    };
+  };
 }
 
 interface CommentItem {
@@ -1563,6 +1579,60 @@ export default function App() {
   const [isPencilMorphed, setIsPencilMorphed] = useState(false);
   const [activeFaceoffPostId, setActiveFaceoffPostId] = useState<string | null>(null);
 
+  // Raygun Modal states (Verb: Past Challenges / Adverb: Challenge Person)
+  const [raygunTarget, setRaygunTarget] = useState<{
+    name: string;
+    avatar: string;
+    handle: string;
+  } | null>(null);
+  const [showRaygunModal, setShowRaygunModal] = useState(false);
+  const [showPastChallengesModal, setShowPastChallengesModal] = useState(false);
+  const [showChallengeModal, setShowChallengeModal] = useState(false);
+
+  const handleOpenRaygun = (name: string, avatar?: string, handle?: string) => {
+    setRaygunTarget({
+      name,
+      avatar: avatar || elenaAvatar,
+      handle: handle || '@creator',
+    });
+    setShowRaygunModal(true);
+  };
+
+  const handlePublishChallenge = (payload: ChallengePostPayload) => {
+    const newPostId = 'post-challenge-' + Date.now();
+    const newPost: FeedPost = {
+      id: newPostId,
+      authorName: payload.challengerName,
+      authorHandle: '@elena_aeri',
+      authorAvatar: payload.challengerAvatar,
+      isVerified: true,
+      timeAgo: 'Just now',
+      location: 'Battle Arena',
+      mediaType: 'image',
+      mediaUrl: payload.mediaUrl,
+      caption: payload.caption,
+      tags: payload.tags,
+      audioTitle: '⚔️ Arena Battle Beat',
+      likeCount: 1,
+      isLiked: true,
+      isTrending: true,
+      faceoffConfig: {
+        battleQuestion: payload.battleQuestion,
+        redParticipant: {
+          name: payload.challengerName,
+          avatar: payload.challengerAvatar,
+        },
+        blueParticipant: {
+          name: payload.opponentName,
+          avatar: payload.opponentAvatar,
+        },
+      },
+    };
+    setFeedPosts((prev) => [newPost, ...prev]);
+    // Automatically pop out the broken pencil faceoff battle card attached directly on top of this newly created challenge post!
+    setActiveFaceoffPostId(newPostId);
+  };
+
   const handleToggleFaceoff = (id: string) => {
     setActiveFaceoffPostId((prev) => (prev === id ? null : id));
   };
@@ -1814,7 +1884,12 @@ export default function App() {
                 {/* Broken Pencil Faceoff Battle Card attached to post on top of profile pic */}
                 {activeFaceoffPostId === post.id && (
                   <div className="w-full flex justify-center pt-0 pb-1.5 -mt-0.5">
-                    <FaceoffBattleModal onClose={() => setActiveFaceoffPostId(null)} />
+                    <FaceoffBattleModal
+                      onClose={() => setActiveFaceoffPostId(null)}
+                      battleQuestion={post.faceoffConfig?.battleQuestion}
+                      redParticipant={post.faceoffConfig?.redParticipant}
+                      blueParticipant={post.faceoffConfig?.blueParticipant}
+                    />
                   </div>
                 )}
                 {/* 1. Trending Tag with Flame placed directly on top of the person profile pic */}
@@ -2195,9 +2270,10 @@ export default function App() {
                   </button>
 
                   <button
+                    onClick={() => handleOpenRaygun(feedPosts[0]?.authorName || 'Elena Vance', feedPosts[0]?.authorAvatar, feedPosts[0]?.authorHandle)}
                     className="flex items-center justify-center text-slate-800 hover:text-black transition-transform active:scale-90 hover:opacity-80 hover:scale-105 cursor-pointer"
-                    title="Share post / Raygun"
-                    aria-label="Share post"
+                    title="Raygun Arena (Verb / Adverb)"
+                    aria-label="Raygun Arena Actions"
                   >
                     <AeriRaygunIcon className="w-8.5 h-8.5 text-slate-800 stroke-[1.3]" />
                   </button>
@@ -2674,9 +2750,10 @@ export default function App() {
                     </button>
 
                     <button
+                      onClick={() => handleOpenRaygun(person.name, person.avatarUrl, person.handle)}
                       className="flex items-center justify-center text-slate-800 hover:text-black transition-transform active:scale-90 hover:opacity-80 hover:scale-105 cursor-pointer"
-                      title="Share post / Raygun"
-                      aria-label="Share post"
+                      title="Raygun Arena (Verb / Adverb)"
+                      aria-label="Raygun Arena Actions"
                     >
                       <AeriRaygunIcon className="w-8.5 h-8.5 text-slate-800 stroke-[1.3]" />
                     </button>
@@ -3107,8 +3184,9 @@ export default function App() {
 
                   {/* 7. Raygun Icon */}
                   <button
+                    onClick={() => previewCreator && handleOpenRaygun(previewCreator.name, previewCreator.avatarUrl, previewCreator.handle)}
                     className="flex items-center justify-center text-slate-800 hover:text-black transition-transform active:scale-90 hover:scale-105 cursor-pointer"
-                    title="Raygun"
+                    title="Raygun Arena (Verb / Adverb)"
                   >
                     <AeriRaygunIcon className="w-7.5 h-7.5 text-slate-800 stroke-[1.3]" />
                   </button>
@@ -3262,6 +3340,47 @@ export default function App() {
         onPublish={handlePublishPost}
         authorAvatar={elenaAvatar}
       />
+
+      {/* Raygun Action Modals (Verb: Past Challenges / Adverb: Challenge Person to Online Fight) */}
+      {raygunTarget && (
+        <>
+          <RaygunActionModal
+            isOpen={showRaygunModal}
+            onClose={() => setShowRaygunModal(false)}
+            targetPersonName={raygunTarget.name}
+            targetPersonAvatar={raygunTarget.avatar}
+            onSelectVerb={() => {
+              setShowRaygunModal(false);
+              setShowPastChallengesModal(true);
+            }}
+            onSelectAdverb={() => {
+              setShowRaygunModal(false);
+              setShowChallengeModal(true);
+            }}
+          />
+
+          <PastChallengesModal
+            isOpen={showPastChallengesModal}
+            onClose={() => setShowPastChallengesModal(false)}
+            personName={raygunTarget.name}
+            personAvatar={raygunTarget.avatar}
+          />
+
+          <ChallengePostModal
+            isOpen={showChallengeModal}
+            onClose={() => setShowChallengeModal(false)}
+            opponentName={raygunTarget.name}
+            opponentHandle={raygunTarget.handle}
+            opponentAvatar={raygunTarget.avatar}
+            currentUser={{
+              name: 'Elena Vance',
+              handle: '@elena_aeri',
+              avatar: elenaAvatar,
+            }}
+            onPublishChallenge={handlePublishChallenge}
+          />
+        </>
+      )}
     </div>
   );
 }
