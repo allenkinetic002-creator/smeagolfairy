@@ -2234,31 +2234,35 @@ export default function App() {
                 <div
                   key={person.rank}
                   id={`creator-rank-card-${person.rank}`}
-                  className={`bg-white rounded-3xl border transition-all shadow-xs scroll-mt-2 overflow-hidden ${
-                    isSelected
-                      ? 'border-purple-400 ring-2 ring-purple-400/50 shadow-md'
-                      : person.rank === 1
-                      ? 'border-amber-300 ring-1 ring-amber-300/40 bg-gradient-to-b from-amber-50/15 via-white to-white'
-                      : person.rank === 2
-                      ? 'border-slate-300 ring-1 ring-slate-200'
-                      : person.rank === 3
-                      ? 'border-amber-700/30 ring-1 ring-amber-700/20'
-                      : 'border-slate-200/90'
-                  }`}
+                  className="scroll-mt-3"
                 >
-                  {/* 1. Rank Header Divider (Inspired by reference image: red horizontal line with centered solid red circle & bold white rank number) */}
-                  <div className="w-full px-4 pt-3.5 pb-1 flex items-center justify-center relative bg-white">
+                  {/* Rank Header Divider (In between posts: red horizontal line with centered solid red circle & bold white rank number) */}
+                  <div className="relative w-full flex items-center justify-center my-3.5 px-1">
                     {/* Horizontal Red Line */}
-                    <div className="w-full h-[2.5px] bg-[#FF0000] absolute left-0 right-0 top-1/2 -translate-y-1/2" />
+                    <div className="absolute inset-x-0 h-[2.5px] bg-[#FF0000] top-1/2 -translate-y-1/2 pointer-events-none" />
 
-                    {/* Centered Red Circle with Bold White Rank Number */}
-                    <div className="relative z-10 w-7.5 h-7.5 rounded-full bg-[#FF0000] text-white font-black flex items-center justify-center text-[15px] shadow-xs border-2 border-white select-none">
-                      {person.rank}
+                    {/* Centered Red Circle with Bold White Rank Number - accurate middle of the lines */}
+                    <div className="relative z-10 w-8 h-8 rounded-full bg-[#FF0000] text-white font-black flex items-center justify-center text-[15px] shadow-xs border-2 border-white select-none shrink-0 -translate-y-[0.5px]">
+                      <span className="leading-none select-none">{person.rank}</span>
                     </div>
                   </div>
 
-                  {/* 2. Post Author Header with Profile Picture */}
-                  <div className="flex items-center justify-between px-3.5 pt-1.5 pb-2.5 bg-white">
+                  {/* Post Card */}
+                  <div
+                    className={`bg-white rounded-3xl border transition-all shadow-xs overflow-hidden ${
+                      isSelected
+                        ? 'border-purple-400 ring-2 ring-purple-400/50 shadow-md'
+                        : person.rank === 1
+                        ? 'border-amber-300 ring-1 ring-amber-300/40 bg-gradient-to-b from-amber-50/15 via-white to-white'
+                        : person.rank === 2
+                        ? 'border-slate-300 ring-1 ring-slate-200'
+                        : person.rank === 3
+                        ? 'border-amber-700/30 ring-1 ring-amber-700/20'
+                        : 'border-slate-200/90'
+                    }`}
+                  >
+                    {/* Post Author Header with Profile Picture */}
+                    <div className="flex items-center justify-between p-3.5 pb-2.5 bg-white">
                     <div className="flex items-center gap-2.5 min-w-0">
                       <div className="relative shrink-0">
                         {person.avatarUrl ? (
@@ -2477,8 +2481,9 @@ export default function App() {
                     </button>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            );
+          })}
           </div>
 
           {/* Modal to Preview Creator's Post when tapped */}
