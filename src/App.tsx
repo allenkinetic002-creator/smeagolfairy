@@ -1425,37 +1425,37 @@ function getCreatorPostImage(creator: Creator): string {
 
 function getRankBadgeStyle(rank: number) {
   if (rank === 1) {
-    // Gold: Rich metallic gold gradient
+    // Gold: Rich metallic gold fused with the gold line (no white borders or rings)
     return {
-      line: 'bg-[#E6A100]',
-      circle: 'bg-gradient-to-tr from-[#E6A100] via-[#FAD02C] to-[#FFE600] text-slate-950 ring-1 ring-amber-400/60 shadow-xs',
-      badge: 'bg-gradient-to-tr from-[#E6A100] via-[#FAD02C] to-[#FFE600] text-slate-950 ring-1.5 ring-white shadow-2xs',
+      line: 'bg-[#D97706]',
+      circle: 'bg-gradient-to-r from-[#D97706] via-[#F59E0B] to-[#D97706] text-slate-950 shadow-xs',
+      badge: 'bg-gradient-to-r from-[#D97706] via-[#F59E0B] to-[#D97706] text-slate-950 shadow-2xs',
       label: 'Gold #1 Ranked Post',
     };
   }
   if (rank === 2) {
-    // Silver: Polished silver gradient
+    // Silver: Solid polished silver fused with silver line (no white parts or rings)
     return {
-      line: 'bg-[#94A3B8]',
-      circle: 'bg-gradient-to-tr from-[#94A3B8] via-[#F1F5F9] to-[#CBD5E1] text-slate-900 ring-1 ring-slate-300/60 shadow-xs',
-      badge: 'bg-gradient-to-tr from-[#94A3B8] via-[#F1F5F9] to-[#CBD5E1] text-slate-900 ring-1.5 ring-white shadow-2xs',
+      line: 'bg-[#64748B]',
+      circle: 'bg-gradient-to-r from-[#64748B] via-[#94A3B8] to-[#64748B] text-slate-950 shadow-xs',
+      badge: 'bg-gradient-to-r from-[#64748B] via-[#94A3B8] to-[#64748B] text-slate-950 shadow-2xs',
       label: 'Silver #2 Ranked Post',
     };
   }
   if (rank === 3) {
-    // Bronze: Warm metallic bronze gradient
+    // Bronze: Warm metallic bronze fused with bronze line (no white parts or rings)
     return {
-      line: 'bg-[#B85D19]',
-      circle: 'bg-gradient-to-tr from-[#8C4A1E] via-[#D97736] to-[#A0522D] text-white ring-1 ring-amber-800/60 shadow-xs',
-      badge: 'bg-gradient-to-tr from-[#8C4A1E] via-[#D97736] to-[#A0522D] text-white ring-1.5 ring-white shadow-2xs',
+      line: 'bg-[#92400E]',
+      circle: 'bg-gradient-to-r from-[#92400E] via-[#B45309] to-[#92400E] text-white shadow-xs',
+      badge: 'bg-gradient-to-r from-[#92400E] via-[#B45309] to-[#92400E] text-white shadow-2xs',
       label: 'Bronze #3 Ranked Post',
     };
   }
-  // 4 through 10: Signature Red
+  // 4 through 10: Signature Red fused seamlessly into line (no white borders or rings)
   return {
     line: 'bg-[#FF0000]',
     circle: 'bg-[#FF0000] text-white shadow-xs',
-    badge: 'bg-[#FF0000] text-white ring-1.5 ring-white shadow-2xs',
+    badge: 'bg-[#FF0000] text-white shadow-2xs',
     label: `Rank #${rank}`,
   };
 }
@@ -2285,8 +2285,8 @@ export default function App() {
                     {/* Horizontal Line */}
                     <div className={`absolute inset-x-0 h-[2.5px] top-1/2 -translate-y-1/2 pointer-events-none ${rankStyle.line}`} />
 
-                    {/* Centered Circle with Bold Rank Number - accurate middle of the lines */}
-                    <div className={`relative z-10 w-8 h-8 rounded-full font-black flex items-center justify-center text-[15px] border-2 border-white select-none shrink-0 -translate-y-[0.5px] ${rankStyle.circle}`}>
+                    {/* Centered Circle with Bold Rank Number - fused directly into the horizontal lines with no white border */}
+                    <div className={`relative z-10 w-8 h-8 rounded-full font-black flex items-center justify-center text-[15px] select-none shrink-0 ${rankStyle.circle}`}>
                       <span className="leading-none select-none">{person.rank}</span>
                     </div>
                   </div>
