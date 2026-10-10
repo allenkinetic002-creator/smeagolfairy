@@ -1820,13 +1820,13 @@ export default function App() {
             </div>
 
             <div className="flex items-center gap-3">
-              {/* 1st header icon: Guacamole Bowl / Nacho Cheese icon (toggles bottom-left floating honeyjar icon) */}
+              {/* 1st header icon: Guacamole Bowl / Nacho Cheese icon (toggles far-right floating honeyjar icon) */}
               <button
                 onClick={() => setShowFloatingHoneyJar((prev) => !prev)}
                 aria-label="Guacamole & Nachos"
-                title={showFloatingHoneyJar ? "Hide Honey Jar Icon" : "Show Honey Jar Icon (Bottom Left)"}
+                title={showFloatingHoneyJar ? "Hide Honey Jar Icon" : "Show Honey Jar Icon (Far Right)"}
                 className={`hover:opacity-75 transition-all active:scale-90 cursor-pointer p-0.5 flex items-center justify-center rounded-lg ${
-                  showFloatingHoneyJar ? 'bg-amber-100 ring-2 ring-amber-400 scale-105' : ''
+                  showFloatingHoneyJar ? 'bg-purple-100 ring-2 ring-purple-400 scale-105' : ''
                 }`}
               >
                 <AeriGuacamoleBowlIcon size={30} className="w-[30px] h-[30px]" />
@@ -3490,14 +3490,20 @@ export default function App() {
         </button>
       </nav>
 
-      {/* Floating Honey Jar Icon (Pops up at bottom left like Twitter's feather/tweet icon when Nacho Cheese icon is clicked) */}
+      {/* Floating Honey Jar Icon (Pops up at far right like Twitter's feather/tweet icon when Nacho Cheese icon is clicked) */}
       {showFloatingHoneyJar && (
         <aside
           aria-label="Floating Honey Jar Action"
-          className="fixed bottom-20 left-4 z-40 animate-fabPop select-none"
+          className="fixed bottom-20 right-4 sm:right-6 z-40 animate-fabPop select-none"
         >
           <div className="relative group flex items-center">
-            {/* Main Floating Action Button (FAB) */}
+            {/* Quick label tooltip on hover (to the left) */}
+            <div className="absolute right-16 bg-slate-900/95 text-white text-[11px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-md flex items-center gap-1.5 border border-purple-500/30">
+              <span>🍯 Honey Jar</span>
+              <span className="text-purple-300 text-[10px] font-normal">Fairy Pot</span>
+            </div>
+
+            {/* Main Floating Action Button (FAB) - Purple circle with white Honey Jar */}
             <button
               onClick={() => {
                 setActiveNavIndex(2);
@@ -3507,16 +3513,10 @@ export default function App() {
               }}
               aria-label="Honey Jar / Fairy Pot"
               title="Honey Jar · Open Fairy Pot & Matches"
-              className="w-14 h-14 rounded-full bg-gradient-to-tr from-amber-500 via-amber-400 to-yellow-300 text-slate-950 flex items-center justify-center shadow-[0_8px_25px_rgba(245,158,11,0.45)] hover:shadow-[0_10px_28px_rgba(245,158,11,0.6)] hover:scale-105 active:scale-95 transition-all duration-200 border-2 border-white/90 cursor-pointer"
+              className="w-14 h-14 rounded-full bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white flex items-center justify-center shadow-[0_8px_25px_rgba(147,51,234,0.5)] hover:shadow-[0_10px_28px_rgba(147,51,234,0.65)] hover:scale-105 active:scale-95 transition-all duration-200 border-2 border-purple-300/80 cursor-pointer"
             >
-              <FairyPotIcon className="w-7 h-7 text-black stroke-[2] drop-shadow-xs" />
+              <FairyPotIcon className="w-7 h-7 text-white stroke-white stroke-[2.2] drop-shadow-xs" />
             </button>
-
-            {/* Quick label tooltip on hover */}
-            <div className="absolute left-16 bg-slate-900/90 text-white text-[11px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-md flex items-center gap-1.5">
-              <span>🍯 Honey Jar</span>
-              <span className="text-amber-400 text-[10px] font-normal">Fairy Pot</span>
-            </div>
 
             {/* Close button to dismiss */}
             <button
@@ -3526,7 +3526,7 @@ export default function App() {
               }}
               aria-label="Close Honey Jar"
               title="Close"
-              className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white text-[10px] font-bold flex items-center justify-center shadow cursor-pointer transition-transform hover:scale-110 active:scale-90"
+              className="absolute -top-1 -left-1 w-5 h-5 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white text-[10px] font-bold flex items-center justify-center shadow cursor-pointer transition-transform hover:scale-110 active:scale-90"
             >
               ✕
             </button>
