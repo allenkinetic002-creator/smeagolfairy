@@ -29,9 +29,8 @@ interface ChallengePostModalProps {
 
 /**
  * Adverb Mode - Challenge the person.
- * Styled to look exactly like the broken pencil / verb faceoff feature card,
- * with the question, WINNER vs LOSER, preference estimate, avatars, voting bars,
- * double yellow lines, post media & writing section, and Submit button (no plane icon).
+ * What you type in the challenge box live-updates and changes
+ * "Who looks Hotter between me [Name] or this loser [Opponent]".
  */
 export const ChallengePostModal: React.FC<ChallengePostModalProps> = ({
   isOpen,
@@ -46,12 +45,11 @@ export const ChallengePostModal: React.FC<ChallengePostModalProps> = ({
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
   },
 }) => {
-  const [battleQuestion, setBattleQuestion] = useState(
+  // Single synchronized challenge state so what the user types changes "Who looks Hotter between..." in real-time
+  const [challengeText, setChallengeText] = useState(
     `Who looks Hotter between me ${currentUser.name} or this loser ${opponentName}`
   );
-  const [captionText, setCaptionText] = useState(
-    `I am officially challenging ${opponentName} to an online fight! Cast your votes on who wins this battle! 🔥⚔️`
-  );
+
   const [mediaUrl, setMediaUrl] = useState(
     'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=900&auto=format&fit=crop&q=80'
   );
@@ -107,11 +105,12 @@ export const ChallengePostModal: React.FC<ChallengePostModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!captionText.trim()) return;
+    const finalChallenge = challengeText.trim();
+    if (!finalChallenge) return;
 
     onPublishChallenge({
-      caption: captionText.trim(),
-      battleQuestion: battleQuestion.trim(),
+      caption: finalChallenge,
+      battleQuestion: finalChallenge,
       mediaUrl,
       tags: ['#brokenpencil', '#faceoff', '#onlinefight'],
       opponentName,
@@ -147,15 +146,11 @@ export const ChallengePostModal: React.FC<ChallengePostModalProps> = ({
           Adverb &bull; Challenge Person Online
         </div>
 
-        {/* 1. Header Question (Editable so you can write the challenge headline) */}
+        {/* 1. Header Question: changes in real-time as you type your challenge below */}
         <div className="pr-6">
-          <input
-            type="text"
-            value={battleQuestion}
-            onChange={(e) => setBattleQuestion(e.target.value)}
-            className="w-full text-[14px] sm:text-[15px] font-black text-slate-900 leading-snug tracking-tight bg-slate-50/80 hover:bg-slate-100/80 focus:bg-white rounded-lg px-2 py-1 border border-slate-200 focus:border-purple-500 outline-none transition-colors"
-            placeholder="Write challenge question..."
-          />
+          <h2 className="text-[14px] sm:text-[15px] font-black text-slate-900 leading-snug tracking-tight transition-all">
+            {challengeText || `Who looks Hotter between me ${currentUser.name} or this loser ${opponentName}`}
+          </h2>
         </div>
 
         {/* 2. WINNER vs LOSER Header */}
@@ -339,17 +334,22 @@ export const ChallengePostModal: React.FC<ChallengePostModalProps> = ({
             />
           </div>
 
-          {/* Post Caption / Writing Area */}
+          {/* Post Challenge Writing: Directly updates the header above */}
           <div>
-            <label className="block text-[11px] font-black text-slate-800 mb-1">
-              Write your challenge post:
-            </label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="text-[11px] font-black text-slate-800">
+                Write your challenge:
+              </label>
+              <span className="text-[9.5px] font-semibold text-purple-600">
+                Live-updates card title above
+              </span>
+            </div>
             <textarea
               rows={2}
-              value={captionText}
-              onChange={(e) => setCaptionText(e.target.value)}
-              placeholder="Write to challenge the person to a fight online..."
-              className="w-full p-2.5 rounded-xl border border-slate-300 focus:border-purple-600 focus:ring-1 focus:ring-purple-200 text-xs text-slate-900 outline-none resize-none leading-snug"
+              value={challengeText}
+              onChange={(e) => setChallengeText(e.target.value)}
+              placeholder={`Write what appears on the faceoff card (e.g. Who looks Hotter between me ${currentUser.name} or this loser ${opponentName})`}
+              className="w-full p-2.5 rounded-xl border border-slate-300 focus:border-purple-600 focus:ring-1 focus:ring-purple-200 text-xs font-bold text-slate-900 outline-none resize-none leading-snug"
               required
             />
           </div>
