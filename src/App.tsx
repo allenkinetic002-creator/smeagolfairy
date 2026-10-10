@@ -63,6 +63,8 @@ import { AeriProfileUserIcon } from './components/AeriProfileUserIcon';
 import { AeriBellIcon } from './components/AeriBellIcon';
 import { AeriHorseIcon } from './components/AeriHorseIcon';
 import { CreatePostModal, NewPostPayload } from './components/CreatePostModal';
+import { CreateTweetModal, NewTweetPayload } from './components/CreateTweetModal';
+import { TweetPostCard } from './components/TweetPostCard';
 import { RaygunActionModal } from './components/RaygunActionModal';
 import { PastChallengesModal } from './components/PastChallengesModal';
 import { ChallengePostModal, ChallengePostPayload } from './components/ChallengePostModal';
@@ -75,14 +77,21 @@ export interface FeedPost {
   isVerified: boolean;
   timeAgo: string;
   location?: string;
-  mediaType: 'image' | 'video';
-  mediaUrl: string;
+  mediaType: 'image' | 'video' | 'tweet';
+  isTweet?: boolean;
+  tweetContent?: string;
+  mediaUrl?: string;
   caption: string;
   tags: string[];
-  audioTitle: string;
+  audioTitle?: string;
   likeCount: number;
   isLiked: boolean;
   isTrending?: boolean;
+  retweetCount?: number;
+  isRetweeted?: boolean;
+  replyCount?: number;
+  viewCount?: string;
+  isBookmarked?: boolean;
   faceoffConfig?: {
     battleQuestion?: string;
     redParticipant?: {
@@ -1483,7 +1492,29 @@ export default function App() {
   // Nav index: 0 = Home (Post Screen), 1 = Thumbs Up (Top 10 People Leaderboard), 2 = Comments, 3 = Trending, 4 = Profile
   const [activeNavIndex, setActiveNavIndex] = useState(0);
   const [showCreatePostModal, setShowCreatePostModal] = useState(false);
+  const [showCreateTweetModal, setShowCreateTweetModal] = useState(false);
+  const [tweetSuccessToast, setTweetSuccessToast] = useState<string | null>(null);
   const [feedPosts, setFeedPosts] = useState<FeedPost[]>([
+    {
+      id: 'tweet-initial-elena',
+      authorName: 'Elena Vance',
+      authorHandle: '@elena_aeri',
+      authorAvatar: elenaAvatar,
+      isVerified: true,
+      timeAgo: '15m ago',
+      isTweet: true,
+      tweetContent: 'Just tuned into the fairy frequency 🍯✨ New creative drop coming soon. Buzz your thoughts below and make sure to grab the honey jar before sunset! 🧚💜 #fairy #honeyjar #creativevibes',
+      mediaType: 'tweet',
+      caption: 'Just tuned into the fairy frequency 🍯✨ New creative drop coming soon.',
+      tags: ['#fairy', '#honeyjar', '#creativevibes'],
+      audioTitle: 'Fairy Chimes',
+      likeCount: 342,
+      isLiked: false,
+      isTrending: true,
+      retweetCount: 48,
+      replyCount: 23,
+      viewCount: '4.2K',
+    },
     {
       id: 'post-default-elena',
       authorName: 'Elena Vance',
@@ -1502,6 +1533,41 @@ export default function App() {
       isTrending: true,
     },
   ]);
+
+  const handlePublishTweet = (payload: NewTweetPayload) => {
+    const newTweet: FeedPost = {
+      id: 'tweet-' + Date.now(),
+      authorName: 'Elena Vance',
+      authorHandle: '@elena_aeri',
+      authorAvatar: elenaAvatar,
+      isVerified: true,
+      timeAgo: 'Just now',
+      isTweet: true,
+      tweetContent: payload.text,
+      mediaType: payload.mediaUrl ? 'image' : 'tweet',
+      mediaUrl: payload.mediaUrl,
+      caption: payload.text,
+      tags: payload.tags && payload.tags.length > 0 ? payload.tags : ['#fairy', '#honeyjar'],
+      audioTitle: 'Fairy Chimes',
+      likeCount: 1,
+      isLiked: true,
+      isTrending: true,
+      retweetCount: 0,
+      isRetweeted: false,
+      replyCount: 0,
+      viewCount: '1',
+    };
+    setFeedPosts((prev) => [newTweet, ...prev]);
+    setActiveNavIndex(0);
+    setShowMatchesScreen(false);
+    setShowNormalMessagesScreen(false);
+    setTargetMessagePerson(null);
+
+    setTweetSuccessToast('Your Tweet was posted to Fairy! 🍯');
+    setTimeout(() => {
+      setTweetSuccessToast(null);
+    }, 3500);
+  };
 
   const handlePublishPost = (payload: NewPostPayload) => {
     const newPost: FeedPost = {
@@ -1937,7 +2003,34 @@ export default function App() {
 
           {/* Main Content Area */}
           <div className="flex-1 min-h-0 w-full px-4 py-1 flex flex-col overflow-y-auto scrollbar-thin space-y-3 relative">
-            {feedPosts.map((post) => (
+            {/* Success toast if tweet published */}
+            {tweetSuccessToast && (
+              <div className="sticky top-1 z-30 w-full flex justify-center animate-fadeIn pointer-events-none">
+                <div className="bg-purple-900/95 text-white text-xs font-bold px-4 py-2 rounded-full shadow-lg backdrop-blur-xs flex items-center gap-2 border border-purple-400/40">
+                  <FairyPotIcon size={14} className="text-amber-300 stroke-amber-300 stroke-[2.2]" />
+                  <span>{tweetSuccessToast}</span>
+                </div>
+              </div>
+            )}
+
+            {feedPosts.map((post) =>
+              post.isTweet ? (
+                <TweetPostCard
+                  key={post.id}
+                  post={post}
+                  onToggleLike={handleTogglePostLike}
+                  onOpenComments={() => setIsDrawerOpen(true)}
+                  onOpenSendMessage={handleOpenSendPersonMessage}
+                  onTogglePhoneReaction={handleTogglePhoneReaction}
+                  onToggleInfluenceRating={handleToggleInfluenceRating}
+                  isPhoneReactionActive={activePhoneReactionId === post.id}
+                  isFaceoffOpen={Boolean(openFaceoffPosts[post.id])}
+                  isMorphed={Boolean(morphedPosts[post.id])}
+                  onToggleFaceoff={handleToggleFaceoff}
+                  onCloseFaceoff={handleCloseFaceoff}
+                  onMorphPencil={handleMorphPencil}
+                />
+              ) : (
               <div key={post.id} className="space-y-1.5 shrink-0">
                 {/* Reaction Widget moved upper to the very top of post */}
                 {activePhoneReactionId === post.id && (
@@ -2197,7 +2290,8 @@ export default function App() {
                   </div>
                 )}
               </div>
-            ))}
+              )
+            )}
 
                 {/* Comments Section (Displays when Feed, Discussion, or Sheet is active; disappears when Off) */}
                 {commentType !== 'off' && (
@@ -3497,19 +3591,26 @@ export default function App() {
           {/* Main Floating Action Button (FAB) - Purple circle with white Honey Jar */}
           <button
             onClick={() => {
-              setActiveNavIndex(2);
-              setShowMatchesScreen(false);
-              setShowNormalMessagesScreen(false);
-              setTargetMessagePerson(null);
+              setShowCreateTweetModal(true);
             }}
-            aria-label="Honey Jar / Fairy Pot"
-            title="Honey Jar · Open Fairy Pot & Matches"
+            aria-label="Honey Jar · Write and post a Tweet"
+            title="Honey Jar · Write and post a Tweet"
             className="w-10 h-10 rounded-full bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white flex items-center justify-center shadow-md hover:scale-105 active:scale-95 transition-transform duration-150 cursor-pointer"
           >
             <FairyPotIcon size={20} className="w-5 h-5 text-white stroke-white stroke-[2.1]" />
           </button>
         </aside>
       )}
+
+      {/* Create Tweet Modal (Allows writing and posting a Tweet that looks like Twitter) */}
+      <CreateTweetModal
+        isOpen={showCreateTweetModal}
+        onClose={() => setShowCreateTweetModal(false)}
+        onPublishTweet={handlePublishTweet}
+        authorAvatar={elenaAvatar}
+        authorName="Elena Vance"
+        authorHandle="@elena_aeri"
+      />
 
       {/* Create Post Modal (Allows posting video, pic, and writing) */}
       <CreatePostModal
