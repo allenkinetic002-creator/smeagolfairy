@@ -1518,6 +1518,14 @@ export default function App() {
           {/* Header */}
           <header className="w-full px-4 pt-2.5 pb-1 flex items-center justify-between shrink-0 bg-white z-10 border-b border-slate-50">
             <div className="flex items-center gap-2">
+              <button
+                onClick={() => setShowCreatePostModal(true)}
+                aria-label="Camera · Create Post"
+                title="Camera · Post video, photo & writing"
+                className="hover:opacity-75 transition-all active:scale-90 cursor-pointer p-1 text-black flex items-center justify-center -ml-1"
+              >
+                <Camera className="w-5.5 h-5.5 text-black stroke-[1.9]" />
+              </button>
               <div className="w-[24px] h-[24px] rounded-[6px] bg-black flex items-center justify-center shadow-xs">
                 <svg
                   className="w-3.5 h-3.5 text-white fill-current"
@@ -1583,10 +1591,12 @@ export default function App() {
           <div className="w-full px-4 py-1.5 flex items-center justify-between shrink-0 bg-white z-10 border-b border-slate-100">
             <button
               onClick={() => setShowCreatePostModal(true)}
-              className="inline-flex items-center gap-1.5 px-3 py-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white rounded-full text-xs font-black shadow-xs transition-transform active:scale-95 cursor-pointer"
+              aria-label="Camera · Create Post"
+              title="Camera · Post video, photo & writing"
+              className="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-50 hover:bg-purple-100 text-purple-800 rounded-full text-xs font-black transition-transform active:scale-95 cursor-pointer border border-purple-200/60 shadow-2xs"
             >
-              <Plus className="w-3.5 h-3.5" />
-              <span>New Post</span>
+              <Camera className="w-3.5 h-3.5 text-purple-700" />
+              <span>Camera</span>
             </button>
 
             <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
@@ -1628,29 +1638,6 @@ export default function App() {
 
           {/* Main Content Area */}
           <div className="flex-1 min-h-0 w-full px-4 py-1 flex flex-col overflow-y-auto scrollbar-thin space-y-3 relative">
-            {/* Quick Compose Input Box */}
-            <div
-              onClick={() => setShowCreatePostModal(true)}
-              className="flex items-center gap-2.5 p-2.5 bg-slate-50 hover:bg-slate-100/90 rounded-2xl border border-slate-200/60 cursor-pointer transition-all shadow-2xs group shrink-0"
-            >
-              <img
-                src={elenaAvatar}
-                alt="Elena Vance"
-                className="w-8 h-8 rounded-full object-cover ring-1 ring-purple-500/20"
-              />
-              <span className="text-xs text-slate-400 font-medium flex-1">
-                Share a video, photo or write a post...
-              </span>
-              <div className="flex items-center gap-2 pr-1">
-                <span className="p-1 rounded-lg bg-amber-50 text-amber-600 group-hover:scale-105 transition-transform" title="Add Photo">
-                  <Camera className="w-3.5 h-3.5" />
-                </span>
-                <span className="p-1 rounded-lg bg-indigo-50 text-indigo-600 group-hover:scale-105 transition-transform" title="Add Video">
-                  <Video className="w-3.5 h-3.5" />
-                </span>
-              </div>
-            </div>
-
             {feedPosts.map((post) => (
               <div key={post.id} className="space-y-2 shrink-0">
                 {/* 1. Trending Tag with Flame placed directly on top of the person profile pic */}
