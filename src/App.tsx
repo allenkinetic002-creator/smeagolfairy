@@ -1559,7 +1559,7 @@ export default function App() {
   const [showNormalMessagesScreen, setShowNormalMessagesScreen] = useState(false);
   const [targetMessagePerson, setTargetMessagePerson] = useState<TargetMessagePerson | null>(null);
   const [showInfluenceRatingModal, setShowInfluenceRatingModal] = useState(false);
-  const [activePhoneReactionId, setActivePhoneReactionId] = useState<string | null>('post-default-elena');
+  const [activePhoneReactionId, setActivePhoneReactionId] = useState<string | null>(null);
   const [isPencilMorphed, setIsPencilMorphed] = useState(false);
   const [showFaceoffModal, setShowFaceoffModal] = useState(false);
 
