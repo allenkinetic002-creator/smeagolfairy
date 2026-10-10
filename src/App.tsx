@@ -1423,6 +1423,43 @@ function getCreatorPostImage(creator: Creator): string {
   return topPostPhoto;
 }
 
+function getRankBadgeStyle(rank: number) {
+  if (rank === 1) {
+    // Gold: Rich metallic gold gradient
+    return {
+      line: 'bg-[#E6A100]',
+      circle: 'bg-gradient-to-tr from-[#E6A100] via-[#FAD02C] to-[#FFE600] text-slate-950 ring-1 ring-amber-400/60 shadow-xs',
+      badge: 'bg-gradient-to-tr from-[#E6A100] via-[#FAD02C] to-[#FFE600] text-slate-950 ring-1.5 ring-white shadow-2xs',
+      label: 'Gold #1 Ranked Post',
+    };
+  }
+  if (rank === 2) {
+    // Silver: Polished silver gradient
+    return {
+      line: 'bg-[#94A3B8]',
+      circle: 'bg-gradient-to-tr from-[#94A3B8] via-[#F1F5F9] to-[#CBD5E1] text-slate-900 ring-1 ring-slate-300/60 shadow-xs',
+      badge: 'bg-gradient-to-tr from-[#94A3B8] via-[#F1F5F9] to-[#CBD5E1] text-slate-900 ring-1.5 ring-white shadow-2xs',
+      label: 'Silver #2 Ranked Post',
+    };
+  }
+  if (rank === 3) {
+    // Bronze: Warm metallic bronze gradient
+    return {
+      line: 'bg-[#B85D19]',
+      circle: 'bg-gradient-to-tr from-[#8C4A1E] via-[#D97736] to-[#A0522D] text-white ring-1 ring-amber-800/60 shadow-xs',
+      badge: 'bg-gradient-to-tr from-[#8C4A1E] via-[#D97736] to-[#A0522D] text-white ring-1.5 ring-white shadow-2xs',
+      label: 'Bronze #3 Ranked Post',
+    };
+  }
+  // 4 through 10: Signature Red
+  return {
+    line: 'bg-[#FF0000]',
+    circle: 'bg-[#FF0000] text-white shadow-xs',
+    badge: 'bg-[#FF0000] text-white ring-1.5 ring-white shadow-2xs',
+    label: `Rank #${rank}`,
+  };
+}
+
 export default function App() {
   // Nav index: 0 = Home (Post Screen), 1 = Thumbs Up (Top 10 People Leaderboard), 2 = Comments, 3 = Trending, 4 = Profile
   const [activeNavIndex, setActiveNavIndex] = useState(0);
@@ -2188,7 +2225,7 @@ export default function App() {
                 >
                   {/* Rank Number Badge */}
                   <span
-                    className="w-5.5 h-5.5 rounded-full bg-[#FF0000] text-white flex items-center justify-center text-[11px] font-black shrink-0 shadow-2xs"
+                    className={`w-5.5 h-5.5 rounded-full flex items-center justify-center text-[11px] font-black shrink-0 ${getRankBadgeStyle(creator.rank).badge}`}
                   >
                     {creator.rank}
                   </span>
@@ -2211,6 +2248,12 @@ export default function App() {
                     {creator.rank === 1 && (
                       <span className="absolute -top-1.5 -right-1.5 text-[9px] leading-none">👑</span>
                     )}
+                    {creator.rank === 2 && (
+                      <span className="absolute -top-1.5 -right-1.5 text-[9px] leading-none">🥈</span>
+                    )}
+                    {creator.rank === 3 && (
+                      <span className="absolute -top-1.5 -right-1.5 text-[9px] leading-none">🥉</span>
+                    )}
                   </div>
 
                   {/* Creator Name */}
@@ -2229,6 +2272,7 @@ export default function App() {
               const postImg = getCreatorPostImage(person);
               const isLiked = !!likedCreatorPosts[person.rank];
               const honeyCount = honeyJarCounts[person.rank] || 0;
+              const rankStyle = getRankBadgeStyle(person.rank);
 
               return (
                 <div
@@ -2236,13 +2280,13 @@ export default function App() {
                   id={`creator-rank-card-${person.rank}`}
                   className="scroll-mt-3"
                 >
-                  {/* Rank Header Divider (In between posts: red horizontal line with centered solid red circle & bold white rank number) */}
+                  {/* Rank Header Divider (In between posts: line with centered circle badge - Gold #1, Silver #2, Bronze #3, Red #4-10) */}
                   <div className="relative w-full flex items-center justify-center my-3.5 px-1">
-                    {/* Horizontal Red Line */}
-                    <div className="absolute inset-x-0 h-[2.5px] bg-[#FF0000] top-1/2 -translate-y-1/2 pointer-events-none" />
+                    {/* Horizontal Line */}
+                    <div className={`absolute inset-x-0 h-[2.5px] top-1/2 -translate-y-1/2 pointer-events-none ${rankStyle.line}`} />
 
-                    {/* Centered Red Circle with Bold White Rank Number - accurate middle of the lines */}
-                    <div className="relative z-10 w-8 h-8 rounded-full bg-[#FF0000] text-white font-black flex items-center justify-center text-[15px] shadow-xs border-2 border-white select-none shrink-0 -translate-y-[0.5px]">
+                    {/* Centered Circle with Bold Rank Number - accurate middle of the lines */}
+                    <div className={`relative z-10 w-8 h-8 rounded-full font-black flex items-center justify-center text-[15px] border-2 border-white select-none shrink-0 -translate-y-[0.5px] ${rankStyle.circle}`}>
                       <span className="leading-none select-none">{person.rank}</span>
                     </div>
                   </div>
@@ -2278,10 +2322,10 @@ export default function App() {
                             {person.avatarInitial}
                           </div>
                         )}
-                        {/* Red circle rank badge directly on top of profile pic */}
+                        {/* Rank badge directly on top of profile pic: Gold for 1, Silver for 2, Bronze for 3, Red for 4-10 */}
                         <div
-                          className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#FF0000] text-white font-black flex items-center justify-center text-[10px] ring-1.5 ring-white shadow-2xs"
-                          title={`Rank #${person.rank}`}
+                          className={`absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full font-black flex items-center justify-center text-[10px] ${rankStyle.badge}`}
+                          title={rankStyle.label}
                         >
                           {person.rank}
                         </div>
