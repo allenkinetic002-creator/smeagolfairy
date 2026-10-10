@@ -1561,7 +1561,11 @@ export default function App() {
   const [showInfluenceRatingModal, setShowInfluenceRatingModal] = useState(false);
   const [activePhoneReactionId, setActivePhoneReactionId] = useState<string | null>(null);
   const [isPencilMorphed, setIsPencilMorphed] = useState(false);
-  const [showFaceoffModal, setShowFaceoffModal] = useState(false);
+  const [activeFaceoffPostId, setActiveFaceoffPostId] = useState<string | null>(null);
+
+  const handleToggleFaceoff = (id: string) => {
+    setActiveFaceoffPostId((prev) => (prev === id ? null : id));
+  };
 
   const handleTogglePhoneReaction = (id: string) => {
     setActivePhoneReactionId((prev) => (prev === id ? null : id));
@@ -1806,6 +1810,13 @@ export default function App() {
                     <PhoneReactionPopup />
                   </div>
                 )}
+
+                {/* Broken Pencil Faceoff Battle Card attached to post on top of profile pic */}
+                {activeFaceoffPostId === post.id && (
+                  <div className="w-full flex justify-center pt-0 pb-1.5 -mt-0.5">
+                    <FaceoffBattleModal onClose={() => setActiveFaceoffPostId(null)} />
+                  </div>
+                )}
                 {/* 1. Trending Tag with Flame placed directly on top of the person profile pic */}
                 {post.isTrending && (
                   <div className="flex items-center justify-between pt-1 pb-0.5 px-0.5 shrink-0">
@@ -1856,8 +1867,8 @@ export default function App() {
                     {/* Follow button morphs into pure broken pencil icon (moved slightly upper, no button wrapper or background) */}
                     {isPencilMorphed ? (
                       <div
-                        onClick={() => setShowFaceoffModal(true)}
-                        title="Click to view faceoff battle"
+                        onClick={() => handleToggleFaceoff(post.id)}
+                        title="Click to toggle faceoff battle"
                         role="button"
                         tabIndex={0}
                         aria-label="Broken pencil faceoff battle"
@@ -2395,6 +2406,13 @@ export default function App() {
                       </div>
                     )}
 
+                    {/* Broken Pencil Faceoff Battle Card attached on top of profile pic */}
+                    {activeFaceoffPostId === `person-${person.name}` && (
+                      <div className="w-full flex justify-center py-2 px-3 bg-white border-b border-slate-100">
+                        <FaceoffBattleModal onClose={() => setActiveFaceoffPostId(null)} />
+                      </div>
+                    )}
+
                     {/* Post Author Header with Profile Picture */}
                     <div className="flex items-center justify-between p-3.5 pb-2.5 bg-white">
                     <div className="flex items-center gap-2.5 min-w-0">
@@ -2442,8 +2460,8 @@ export default function App() {
                       </span>
                       {isPencilMorphed ? (
                         <div
-                          onClick={() => setShowFaceoffModal(true)}
-                          title="Click to view faceoff battle"
+                          onClick={() => handleToggleFaceoff(`person-${person.name}`)}
+                          title="Click to toggle faceoff battle"
                           role="button"
                           tabIndex={0}
                           aria-label="Broken pencil faceoff battle"
@@ -2729,8 +2747,8 @@ export default function App() {
                   <div className="flex items-center justify-between pt-3 mt-3 border-t border-slate-100">
                     {isPencilMorphed ? (
                       <div
-                        onClick={() => setShowFaceoffModal(true)}
-                        title="Click to view faceoff battle"
+                        onClick={() => handleToggleFaceoff('creator-preview')}
+                        title="Click to toggle faceoff battle"
                         role="button"
                         tabIndex={0}
                         aria-label="Broken pencil faceoff battle"
@@ -2941,6 +2959,13 @@ export default function App() {
               {activePhoneReactionId === 'creator-preview' && (
                 <div className="w-full flex justify-center py-2 bg-white border-b border-slate-100">
                   <PhoneReactionPopup />
+                </div>
+              )}
+
+              {/* Broken Pencil Faceoff Battle Card attached on top of profile pic */}
+              {activeFaceoffPostId === 'creator-preview' && (
+                <div className="w-full flex justify-center py-2 px-3 bg-white border-b border-slate-100">
+                  <FaceoffBattleModal onClose={() => setActiveFaceoffPostId(null)} />
                 </div>
               )}
 
@@ -3226,11 +3251,7 @@ export default function App() {
         onClose={() => setShowInfluenceRatingModal(false)}
       />
 
-      {/* Faceoff Battle Modal (Pops out when clicking broken pencil icon) */}
-      <FaceoffBattleModal
-        isOpen={showFaceoffModal}
-        onClose={() => setShowFaceoffModal(false)}
-      />
+
 
 
 
