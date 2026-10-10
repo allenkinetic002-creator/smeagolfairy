@@ -1581,7 +1581,7 @@ export default function App() {
           </header>
 
           {/* Comment Mode Switcher */}
-          <div className="w-full px-4 py-1.5 flex items-center justify-center shrink-0 bg-white z-10 border-b border-slate-100">
+          <div className="w-full px-4 py-1.5 flex items-center justify-end shrink-0 bg-white z-10 border-b border-slate-100">
             <div className="inline-flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
               <button
                 onClick={() => setCommentType('off')}
