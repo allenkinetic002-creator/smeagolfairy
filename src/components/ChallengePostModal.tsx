@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { X, ThumbsUp, Send } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { X, ThumbsUp, Image as ImageIcon, Upload, Video } from 'lucide-react';
 
 export interface ChallengePostPayload {
   caption: string;
@@ -31,7 +31,7 @@ interface ChallengePostModalProps {
  * Adverb Mode - Challenge the person.
  * Styled to look exactly like the broken pencil / verb faceoff feature card,
  * with the question, WINNER vs LOSER, preference estimate, avatars, voting bars,
- * double yellow lines, plus writing area to challenge the person online and submit!
+ * double yellow lines, post media & writing section, and Submit button (no plane icon).
  */
 export const ChallengePostModal: React.FC<ChallengePostModalProps> = ({
   isOpen,
@@ -52,12 +52,18 @@ export const ChallengePostModal: React.FC<ChallengePostModalProps> = ({
   const [captionText, setCaptionText] = useState(
     `I am officially challenging ${opponentName} to an online fight! Cast your votes on who wins this battle! 🔥⚔️`
   );
+  const [mediaUrl, setMediaUrl] = useState(
+    'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=900&auto=format&fit=crop&q=80'
+  );
+  const [mediaType, setMediaType] = useState<'image' | 'video'>('image');
 
   const [userVote, setUserVote] = useState<'red' | 'blue' | null>(null);
   const [likes, setLikes] = useState<number>(234095);
   const [dislikes, setDislikes] = useState<number>(90000);
   const [redPct, setRedPct] = useState<number>(52.0);
   const [bluePct, setBluePct] = useState<number>(48.0);
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   if (!isOpen) return null;
 
@@ -91,6 +97,14 @@ export const ChallengePostModal: React.FC<ChallengePostModalProps> = ({
     }
   };
 
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const isVid = file.type.startsWith('video/');
+    setMediaType(isVid ? 'video' : 'image');
+    setMediaUrl(URL.createObjectURL(file));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!captionText.trim()) return;
@@ -98,7 +112,7 @@ export const ChallengePostModal: React.FC<ChallengePostModalProps> = ({
     onPublishChallenge({
       caption: captionText.trim(),
       battleQuestion: battleQuestion.trim(),
-      mediaUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=900&auto=format&fit=crop&q=80',
+      mediaUrl,
       tags: ['#brokenpencil', '#faceoff', '#onlinefight'],
       opponentName,
       opponentHandle,
@@ -285,26 +299,67 @@ export const ChallengePostModal: React.FC<ChallengePostModalProps> = ({
           </div>
         </div>
 
-        {/* 9. Writing & Post Creation for the Challenge */}
-        <form onSubmit={handleSubmit} className="mt-4 pt-3 border-t border-slate-200/80">
-          <label className="block text-[11px] font-black text-slate-800 mb-1">
-            Write your challenge post:
-          </label>
-          <textarea
-            rows={2}
-            value={captionText}
-            onChange={(e) => setCaptionText(e.target.value)}
-            placeholder="Write to challenge the person to a fight online..."
-            className="w-full p-2.5 rounded-xl border border-slate-300 focus:border-purple-600 focus:ring-1 focus:ring-purple-200 text-xs text-slate-900 outline-none resize-none leading-snug"
-            required
-          />
+        {/* 9. Create Post Section: Media & Writing */}
+        <form onSubmit={handleSubmit} className="mt-4 pt-3 border-t border-slate-200/80 space-y-3">
+          {/* Post Media (Photo / Video for the challenge post) */}
+          <div>
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-[11px] font-black text-slate-800 flex items-center gap-1">
+                <ImageIcon className="w-3.5 h-3.5 text-purple-600" />
+                <span>Post Media (Photo / Video):</span>
+              </span>
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="text-[10px] font-bold text-purple-600 hover:text-purple-800 bg-purple-50 px-2 py-0.5 rounded-md cursor-pointer flex items-center gap-1"
+              >
+                <Upload className="w-3 h-3" />
+                <span>Change Media</span>
+              </button>
+            </div>
 
+            <div className="relative w-full h-28 bg-slate-900 rounded-xl overflow-hidden border border-slate-200">
+              {mediaType === 'video' ? (
+                <video src={mediaUrl} className="w-full h-full object-cover" autoPlay loop muted playsInline />
+              ) : (
+                <img src={mediaUrl} alt="Post preview" className="w-full h-full object-cover" />
+              )}
+              <div className="absolute bottom-1.5 left-2 px-2 py-0.5 bg-black/60 backdrop-blur-xs rounded-md text-white text-[9.5px] font-bold flex items-center gap-1">
+                {mediaType === 'video' ? <Video className="w-3 h-3 text-indigo-400" /> : <ImageIcon className="w-3 h-3 text-amber-400" />}
+                <span>Challenge Post Media</span>
+              </div>
+            </div>
+
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*,video/*"
+              onChange={handleFileUpload}
+              className="hidden"
+            />
+          </div>
+
+          {/* Post Caption / Writing Area */}
+          <div>
+            <label className="block text-[11px] font-black text-slate-800 mb-1">
+              Write your challenge post:
+            </label>
+            <textarea
+              rows={2}
+              value={captionText}
+              onChange={(e) => setCaptionText(e.target.value)}
+              placeholder="Write to challenge the person to a fight online..."
+              className="w-full p-2.5 rounded-xl border border-slate-300 focus:border-purple-600 focus:ring-1 focus:ring-purple-200 text-xs text-slate-900 outline-none resize-none leading-snug"
+              required
+            />
+          </div>
+
+          {/* Submit Button WITHOUT paper plane icon */}
           <button
             type="submit"
-            className="w-full mt-2.5 py-2.5 px-4 bg-[#E51E2B] hover:bg-[#D41825] active:scale-98 text-white font-black text-xs rounded-xl shadow-xs hover:shadow-sm transition-all cursor-pointer flex items-center justify-center gap-1.5"
+            className="w-full py-2.5 px-4 bg-[#E51E2B] hover:bg-[#D41825] active:scale-98 text-white font-black text-xs rounded-xl shadow-xs hover:shadow-sm transition-all cursor-pointer flex items-center justify-center text-center"
           >
-            <Send className="w-3.5 h-3.5" />
-            <span>Submit Challenge Post</span>
+            Submit Challenge Post
           </button>
         </form>
       </div>

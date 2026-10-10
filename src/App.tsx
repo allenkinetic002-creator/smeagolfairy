@@ -1520,8 +1520,12 @@ export default function App() {
       likeCount: 1,
       isLiked: true,
       isTrending: true,
+      faceoffConfig: payload.faceoffConfig,
     };
     setFeedPosts((prev) => [newPost, ...prev]);
+    if (payload.faceoffConfig) {
+      setActiveFaceoffPostId(newPost.id);
+    }
   };
 
   const handleTogglePostLike = (postId: string) => {

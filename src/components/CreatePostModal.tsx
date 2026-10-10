@@ -14,6 +14,7 @@ import {
   Smile,
   Hash,
 } from 'lucide-react';
+import { BrokenPencilIcon } from './BrokenPencilIcon';
 
 export interface NewPostPayload {
   mediaType: 'image' | 'video';
@@ -22,6 +23,19 @@ export interface NewPostPayload {
   tags: string[];
   audioTitle: string;
   location: string;
+  faceoffConfig?: {
+    battleQuestion?: string;
+    redParticipant?: {
+      name: string;
+      avatar: string;
+      title?: string;
+    };
+    blueParticipant?: {
+      name: string;
+      avatar: string;
+      title?: string;
+    };
+  };
 }
 
 interface CreatePostModalProps {
@@ -80,6 +94,11 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
   const [location, setLocation] = useState<string>('Kyoto, Japan');
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [attachFaceoff, setAttachFaceoff] = useState<boolean>(false);
+  const [faceoffQuestion, setFaceoffQuestion] = useState<string>(
+    `Who looks Hotter between me ${authorName} or this loser Slimy sticky`
+  );
+  const [opponentName, setOpponentName] = useState<string>('Slimy sticky');
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -132,6 +151,19 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
         tags: selectedTags,
         audioTitle: audioTitle.trim() || 'Original Audio',
         location: location.trim() || 'Kyoto, Japan',
+        faceoffConfig: attachFaceoff
+          ? {
+              battleQuestion: faceoffQuestion.trim(),
+              redParticipant: {
+                name: authorName,
+                avatar: authorAvatar,
+              },
+              blueParticipant: {
+                name: opponentName.trim(),
+                avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
+              },
+            }
+          : undefined,
       });
       setIsSubmitting(false);
       onClose();
@@ -376,6 +408,60 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
                 className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2 py-1 text-[11px] focus:outline-none focus:border-purple-500"
               />
             </div>
+          </div>
+
+          {/* Attach Broken Pencil Faceoff Battle Toggle */}
+          <div className="pt-2 border-t border-slate-100">
+            <div
+              onClick={() => setAttachFaceoff((prev) => !prev)}
+              className="flex items-center justify-between p-2.5 rounded-xl bg-purple-50/70 hover:bg-purple-50 border border-purple-200/90 cursor-pointer transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                <BrokenPencilIcon className="w-5 h-auto text-purple-700" />
+                <div>
+                  <div className="text-[11px] font-black text-purple-950">
+                    Attach Broken Pencil Challenge
+                  </div>
+                  <div className="text-[9.5px] text-slate-500">
+                    Pop out faceoff battle card directly on this post
+                  </div>
+                </div>
+              </div>
+              <input
+                type="checkbox"
+                checked={attachFaceoff}
+                onChange={(e) => setAttachFaceoff(e.target.checked)}
+                className="w-4 h-4 accent-purple-600 rounded cursor-pointer"
+                onClick={(e) => e.stopPropagation()}
+              />
+            </div>
+
+            {attachFaceoff && (
+              <div className="mt-2 p-2.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2 animate-fadeIn">
+                <div>
+                  <label className="text-[10px] font-bold text-slate-600 block mb-0.5">
+                    Battle Question / Stakes:
+                  </label>
+                  <input
+                    type="text"
+                    value={faceoffQuestion}
+                    onChange={(e) => setFaceoffQuestion(e.target.value)}
+                    className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-[11px] font-bold text-slate-800 focus:outline-none focus:border-purple-500"
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-slate-600 block mb-0.5">
+                    Opponent to Challenge:
+                  </label>
+                  <input
+                    type="text"
+                    value={opponentName}
+                    onChange={(e) => setOpponentName(e.target.value)}
+                    className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-[11px] text-slate-800 focus:outline-none focus:border-purple-500"
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Submit Button */}
