@@ -1565,6 +1565,8 @@ export default function App() {
   const [previewCreator, setPreviewCreator] = useState<Creator | null>(null);
   const [likedCreatorPosts, setLikedCreatorPosts] = useState<Record<number, boolean>>({});
   const [honeyJarCounts, setHoneyJarCounts] = useState<Record<number, number>>({});
+  // Floating Honey Jar FAB state (triggered by clicking Nacho Cheese icon, pops up at bottom left like Twitter's feather icon)
+  const [showFloatingHoneyJar, setShowFloatingHoneyJar] = useState(false);
 
   const toggleLikedCreatorPost = (rank: number) => {
     setLikedCreatorPosts((prev) => ({
@@ -1818,11 +1820,14 @@ export default function App() {
             </div>
 
             <div className="flex items-center gap-3">
-              {/* 1st header icon: Guacamole Bowl icon inspired by 61f6185e-7107-40ff-8eb6-0569d6090611.jpg.png */}
+              {/* 1st header icon: Guacamole Bowl / Nacho Cheese icon (toggles bottom-left floating honeyjar icon) */}
               <button
+                onClick={() => setShowFloatingHoneyJar((prev) => !prev)}
                 aria-label="Guacamole & Nachos"
-                title="Guacamole & Chips"
-                className="hover:opacity-75 transition-opacity cursor-pointer p-0.5 flex items-center justify-center"
+                title={showFloatingHoneyJar ? "Hide Honey Jar Icon" : "Show Honey Jar Icon (Bottom Left)"}
+                className={`hover:opacity-75 transition-all active:scale-90 cursor-pointer p-0.5 flex items-center justify-center rounded-lg ${
+                  showFloatingHoneyJar ? 'bg-amber-100 ring-2 ring-amber-400 scale-105' : ''
+                }`}
               >
                 <AeriGuacamoleBowlIcon size={30} className="w-[30px] h-[30px]" />
               </button>
@@ -3484,6 +3489,50 @@ export default function App() {
           />
         </button>
       </nav>
+
+      {/* Floating Honey Jar Icon (Pops up at bottom left like Twitter's feather/tweet icon when Nacho Cheese icon is clicked) */}
+      {showFloatingHoneyJar && (
+        <aside
+          aria-label="Floating Honey Jar Action"
+          className="fixed bottom-20 left-4 z-40 animate-fabPop select-none"
+        >
+          <div className="relative group flex items-center">
+            {/* Main Floating Action Button (FAB) */}
+            <button
+              onClick={() => {
+                setActiveNavIndex(2);
+                setShowMatchesScreen(false);
+                setShowNormalMessagesScreen(false);
+                setTargetMessagePerson(null);
+              }}
+              aria-label="Honey Jar / Fairy Pot"
+              title="Honey Jar · Open Fairy Pot & Matches"
+              className="w-14 h-14 rounded-full bg-gradient-to-tr from-amber-500 via-amber-400 to-yellow-300 text-slate-950 flex items-center justify-center shadow-[0_8px_25px_rgba(245,158,11,0.45)] hover:shadow-[0_10px_28px_rgba(245,158,11,0.6)] hover:scale-105 active:scale-95 transition-all duration-200 border-2 border-white/90 cursor-pointer"
+            >
+              <FairyPotIcon className="w-7 h-7 text-black stroke-[2] drop-shadow-xs" />
+            </button>
+
+            {/* Quick label tooltip on hover */}
+            <div className="absolute left-16 bg-slate-900/90 text-white text-[11px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-md flex items-center gap-1.5">
+              <span>🍯 Honey Jar</span>
+              <span className="text-amber-400 text-[10px] font-normal">Fairy Pot</span>
+            </div>
+
+            {/* Close button to dismiss */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowFloatingHoneyJar(false);
+              }}
+              aria-label="Close Honey Jar"
+              title="Close"
+              className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white text-[10px] font-bold flex items-center justify-center shadow cursor-pointer transition-transform hover:scale-110 active:scale-90"
+            >
+              ✕
+            </button>
+          </div>
+        </aside>
+      )}
 
       {/* Create Post Modal (Allows posting video, pic, and writing) */}
       <CreatePostModal

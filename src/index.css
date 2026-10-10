@@ -26,3 +26,25 @@
 .animate-slideUp {
   animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+@keyframes fabPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.35) translateY(28px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.12) translateY(-4px);
+  }
+  80% {
+    transform: scale(0.96) translateY(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-fabPop {
+  animation: fabPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
