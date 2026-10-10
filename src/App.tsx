@@ -1824,10 +1824,8 @@ export default function App() {
               <button
                 onClick={() => setShowFloatingHoneyJar((prev) => !prev)}
                 aria-label="Guacamole & Nachos"
-                title={showFloatingHoneyJar ? "Hide Honey Jar Icon" : "Show Honey Jar Icon (Far Right)"}
-                className={`hover:opacity-75 transition-all active:scale-90 cursor-pointer p-0.5 flex items-center justify-center rounded-lg ${
-                  showFloatingHoneyJar ? 'bg-purple-100 ring-2 ring-purple-400 scale-105' : ''
-                }`}
+                title="Guacamole & Nachos"
+                className="hover:opacity-75 transition-opacity active:scale-90 cursor-pointer p-0.5 flex items-center justify-center shrink-0"
               >
                 <AeriGuacamoleBowlIcon size={30} className="w-[30px] h-[30px]" />
               </button>
@@ -3496,41 +3494,20 @@ export default function App() {
           aria-label="Floating Honey Jar Action"
           className="fixed bottom-20 right-4 sm:right-6 z-40 animate-fabPop select-none"
         >
-          <div className="relative group flex items-center">
-            {/* Quick label tooltip on hover (to the left) */}
-            <div className="absolute right-16 bg-slate-900/95 text-white text-[11px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-md flex items-center gap-1.5 border border-purple-500/30">
-              <span>🍯 Honey Jar</span>
-              <span className="text-purple-300 text-[10px] font-normal">Fairy Pot</span>
-            </div>
-
-            {/* Main Floating Action Button (FAB) - Purple circle with white Honey Jar */}
-            <button
-              onClick={() => {
-                setActiveNavIndex(2);
-                setShowMatchesScreen(false);
-                setShowNormalMessagesScreen(false);
-                setTargetMessagePerson(null);
-              }}
-              aria-label="Honey Jar / Fairy Pot"
-              title="Honey Jar · Open Fairy Pot & Matches"
-              className="w-14 h-14 rounded-full bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white flex items-center justify-center shadow-[0_8px_25px_rgba(147,51,234,0.5)] hover:shadow-[0_10px_28px_rgba(147,51,234,0.65)] hover:scale-105 active:scale-95 transition-all duration-200 border-2 border-purple-300/80 cursor-pointer"
-            >
-              <FairyPotIcon className="w-7 h-7 text-white stroke-white stroke-[2.2] drop-shadow-xs" />
-            </button>
-
-            {/* Close button to dismiss */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowFloatingHoneyJar(false);
-              }}
-              aria-label="Close Honey Jar"
-              title="Close"
-              className="absolute -top-1 -left-1 w-5 h-5 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white text-[10px] font-bold flex items-center justify-center shadow cursor-pointer transition-transform hover:scale-110 active:scale-90"
-            >
-              ✕
-            </button>
-          </div>
+          {/* Main Floating Action Button (FAB) - Purple circle with white Honey Jar */}
+          <button
+            onClick={() => {
+              setActiveNavIndex(2);
+              setShowMatchesScreen(false);
+              setShowNormalMessagesScreen(false);
+              setTargetMessagePerson(null);
+            }}
+            aria-label="Honey Jar / Fairy Pot"
+            title="Honey Jar · Open Fairy Pot & Matches"
+            className="w-14 h-14 rounded-full bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform duration-150 cursor-pointer"
+          >
+            <FairyPotIcon className="w-7 h-7 text-white stroke-white stroke-[2.2]" />
+          </button>
         </aside>
       )}
 
