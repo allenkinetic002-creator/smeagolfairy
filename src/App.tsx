@@ -2397,16 +2397,15 @@ export default function App() {
           }}
           aria-label="Notifications"
           title="Notifications"
-          className={`p-1.5 transition-colors cursor-pointer flex flex-col items-center ${
+          className={`p-1.5 transition-all cursor-pointer flex flex-col items-center ${
             !showMatchesScreen && !showNormalMessagesScreen && activeNavIndex === 3
-              ? 'text-black'
-              : 'text-[#94A3B8] hover:text-black'
+              ? 'scale-105 opacity-100'
+              : 'opacity-75 hover:opacity-100'
           }`}
         >
           <AeriBellIcon
-            size={24}
-            className="w-[24px] h-[24px] transition-transform active:scale-95"
-            strokeWidth={!showMatchesScreen && !showNormalMessagesScreen && activeNavIndex === 3 ? 2.8 : 2.3}
+            size={25}
+            className="w-[25px] h-[26px] transition-transform active:scale-95"
           />
         </button>
 

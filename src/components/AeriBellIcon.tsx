@@ -3,58 +3,106 @@ import React from 'react';
 export interface AeriBellIconProps extends React.SVGProps<SVGSVGElement> {
   size?: number | string;
   strokeWidth?: number | string;
+  active?: boolean;
 }
 
 /**
  * AeriBellIcon (Notification Icon)
- * Faithfully matches the uploaded flame illustration (hon.png):
- * - Stylized multi-tongued fire flame silhouette
- * - Tall central flame tongue cresting smoothly at the top
- * - Sharp dynamic left and right flame spurs
- * - Bulbous base with open lower-center flame core cutout
- * - Inner flame silhouette with secondary left spur and central inner tongue
- * - Solid fill in currentColor (black when active, slate when inactive)
+ * The vibrant orange flame character with warm golden-amber inner heart,
+ * two floating spark embers, crisp dark outline, and cute squinting (> <) expression.
  */
 export const AeriBellIcon: React.FC<AeriBellIconProps> = ({
   size = 24,
   className = '',
-  fill = 'currentColor',
   ...props
 }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 100 100"
+      viewBox="0 0 32 34"
       width={size}
-      height={size}
-      fill={fill}
+      height={typeof size === 'number' ? (size * 34) / 32 : undefined}
+      fill="none"
       className={className}
       style={{ shapeRendering: 'geometricPrecision' }}
       {...props}
     >
+      {/* 1. Top Floating Ember */}
+      <circle
+        cx="17.0"
+        cy="4.0"
+        r="1.7"
+        fill="#FF6D00"
+        stroke="#1A2038"
+        strokeWidth="1.1"
+      />
+
+      {/* 2. Upper-Left Tilted Ember */}
+      <g transform="translate(6.6, 9.2) rotate(-22)">
+        <ellipse
+          cx="0"
+          cy="0"
+          rx="1.4"
+          ry="2.1"
+          fill="#FF6D00"
+          stroke="#1A2038"
+          strokeWidth="1.1"
+        />
+      </g>
+
+      {/* 3. Main Outer Orange Flame Body */}
       <path
         d="
-          M 57.0 92.0
-          C 70.0 92.0 85.0 85.0 91.5 73.0
-          C 96.0 64.0 94.0 52.0 88.0 44.0
-          C 84.5 39.5 80.5 37.0 77.0 38.5
-          C 74.0 44.0 73.5 50.0 73.0 56.0
-          C 72.0 46.0 67.0 30.0 62.0 19.0
-          C 60.5 15.0 59.0 11.5 58.0 10.0
-          C 54.0 14.0 44.0 23.0 38.5 33.0
-          C 35.0 39.5 33.0 46.5 31.0 52.0
-          C 28.0 46.0 23.0 38.0 15.0 32.0
-          C 17.0 42.0 15.0 54.0 10.0 63.0
-          C 6.5 70.0 7.0 79.0 11.5 86.0
-          C 16.0 92.0 28.0 93.0 38.0 91.5
-          C 33.0 86.0 29.5 79.0 30.0 72.0
-          C 32.0 75.0 35.0 78.0 37.5 78.0
-          C 36.5 70.0 40.0 60.0 45.0 54.0
-          C 49.0 49.5 52.0 48.0 53.0 50.0
-          C 52.5 55.0 53.0 63.0 58.0 72.0
-          C 63.5 81.0 66.5 87.0 57.0 92.0
+          M 6.8 29.5
+          C 12.0 30.2 20.0 30.2 25.2 29.5
+          C 27.6 29.2 29.0 27.2 28.8 24.2
+          C 28.5 19.5 27.2 15.2 24.5 10.8
+          C 23.2 8.8 21.0 9.2 19.8 11.8
+          C 18.5 13.5 17.5 12.8 16.5 9.8
+          C 15.2 5.8 13.2 6.5 11.2 10.5
+          C 9.8 13.2 8.5 14.0 7.2 14.8
+          C 4.2 16.8 2.8 20.5 3.2 24.5
+          C 3.5 27.5 4.8 29.2 6.8 29.5
           Z
         "
+        fill="#FF6D00"
+        stroke="#1A2038"
+        strokeWidth="1.2"
+        strokeLinejoin="round"
+      />
+
+      {/* 4. Warm Golden-Amber Inner Glow */}
+      <path
+        d="
+          M 7.2 28.6
+          C 12.0 29.2 19.0 29.2 23.5 28.6
+          C 24.0 24.5 22.0 20.2 18.5 17.0
+          C 16.0 14.8 14.0 15.5 13.5 17.5
+          C 11.2 19.0 8.0 22.0 7.2 28.6
+          Z
+        "
+        fill="#FFA000"
+      />
+
+      {/* 5. Closed Squinting (> <) Anime Eyes */}
+      {/* Left Eye (>) */}
+      <path
+        d="M 10.6 19.2 L 14.4 21.8 L 9.6 21.8"
+        fill="none"
+        stroke="#1A2038"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+
+      {/* Right Eye (<) */}
+      <path
+        d="M 20.4 19.2 L 16.6 21.8 L 21.4 21.8"
+        fill="none"
+        stroke="#1A2038"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
