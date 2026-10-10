@@ -1414,6 +1414,22 @@ export default function App() {
   const [selectedRank, setSelectedRank] = useState<number | 'all'>(1);
   const [creatorsData, setCreatorsData] = useState<Record<string, Creator[]>>(ALL_TOP_CREATORS);
   const [previewCreator, setPreviewCreator] = useState<Creator | null>(null);
+  const [likedCreatorPosts, setLikedCreatorPosts] = useState<Record<number, boolean>>({});
+  const [honeyJarCounts, setHoneyJarCounts] = useState<Record<number, number>>({});
+
+  const toggleLikedCreatorPost = (rank: number) => {
+    setLikedCreatorPosts((prev) => ({
+      ...prev,
+      [rank]: !prev[rank],
+    }));
+  };
+
+  const handleHoneyJarClick = (rank: number) => {
+    setHoneyJarCounts((prev) => ({
+      ...prev,
+      [rank]: (prev[rank] || 0) + 1,
+    }));
+  };
 
   // 3rd Icon: Control Screen Sub-tab ('fairy-control' by default or 'dm-control' or 'matches')
   const [controlSubTab, setControlSubTab] = useState<'fairy-control' | 'dm-control' | 'matches'>('fairy-control');
@@ -2231,69 +2247,150 @@ export default function App() {
                   </button>
                 </div>
 
-                {/* Their Post Card */}
-                <div className="rounded-2xl overflow-hidden border border-slate-200/80 bg-slate-50 shadow-2xs">
-                  {/* Media Preview */}
+                {/* Their Post Card (Displayed in Full) */}
+                <div className="rounded-2xl overflow-hidden border border-slate-200/80 bg-white shadow-2xs">
+                  {/* Full Media Display */}
                   <div
                     onClick={() => setPreviewCreator(person)}
-                    className="relative w-full h-44 bg-slate-900 overflow-hidden group cursor-pointer"
+                    className="relative w-full min-h-[260px] max-h-[460px] bg-slate-950 overflow-hidden group cursor-pointer"
                   >
                     {person.topPost.imageUrl ? (
                       <img
                         src={person.topPost.imageUrl}
                         alt={person.topPost.title}
-                        className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
+                        className="w-full h-full min-h-[260px] max-h-[460px] object-cover object-center group-hover:scale-101 transition-transform duration-300"
                       />
                     ) : (
                       <div
-                        className={`w-full h-full bg-gradient-to-tr ${person.topPost.gradientBg} flex flex-col items-center justify-center text-white p-4 text-center`}
+                        className={`w-full min-h-[260px] bg-gradient-to-tr ${person.topPost.gradientBg} flex flex-col items-center justify-center text-white p-6 text-center`}
                       >
-                        <Sparkles className="w-8 h-8 opacity-80 mb-1.5 animate-pulse" />
-                        <span className="text-sm font-black tracking-tight">{person.topPost.title}</span>
+                        <Sparkles className="w-10 h-10 opacity-80 mb-2 animate-pulse" />
+                        <span className="text-base font-black tracking-tight">{person.topPost.title}</span>
                       </div>
                     )}
 
                     {/* Tag badge */}
-                    <div className="absolute top-2 left-2 flex items-center gap-1.5">
-                      <span className="text-[9.5px] uppercase font-black tracking-wider text-white bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/20">
+                    <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
+                      <span className="text-[10px] uppercase font-black tracking-wider text-white bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20 shadow-xs">
                         {person.topPost.tag || 'Top Post'}
                       </span>
                     </div>
 
                     {/* Audio pill if any */}
                     {person.topPost.hasAudio && (
-                      <div className="absolute bottom-2 right-2 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-full flex items-center gap-1 text-white border border-white/20">
-                        <Music className="w-2.5 h-2.5" />
-                        <span className="text-[9.5px] font-bold">
+                      <div className="absolute bottom-2.5 right-2.5 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full flex items-center gap-1.5 text-white border border-white/20 shadow-xs">
+                        <Music className="w-3 h-3 text-purple-300" />
+                        <span className="text-[10px] font-bold">
                           {person.topPost.audioTitle || 'Track'}
                         </span>
                       </div>
                     )}
                   </div>
 
-                  {/* Post Writing & Caption */}
-                  <div className="p-3 bg-white">
-                    <h4 className="text-xs font-black text-slate-900 leading-snug">
-                      {person.topPost.title}
-                    </h4>
-                    <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                      Created by <span className="font-extrabold text-slate-900">{person.name}</span> &middot; Ranked #{person.rank} in {CATEGORY_TABS.find((t) => t.id === selectedCategory)?.label}.
-                    </p>
-
-                    {/* Post Footer: Comments and View (NO UPVOTE) */}
-                    <div className="flex items-center justify-between pt-2 mt-2 border-t border-slate-100 text-xs text-slate-500 font-semibold">
-                      <span className="flex items-center gap-1.5 text-slate-600 font-medium">
-                        <AeriCommentIcon className="w-3.5 h-3.5 text-slate-400" />
-                        <span>{person.topPost.comments} comments</span>
-                      </span>
-
+                  {/* 5+ Action Button Row: Flame, Comment, Honeyjar, Phone Hand, Masked 2 Eyes, Hydrant, Raygun */}
+                  <div className="flex items-center justify-between pt-2.5 pb-1 px-3 text-black border-t border-slate-100">
+                    <div className="flex items-center gap-3.5 sm:gap-4 flex-wrap">
+                      {/* 1. Flame Icon */}
                       <button
-                        onClick={() => setPreviewCreator(person)}
-                        className="text-purple-600 hover:text-purple-800 font-bold text-xs cursor-pointer flex items-center gap-1"
+                        onClick={() => toggleLikedCreatorPost(person.rank)}
+                        className="cursor-pointer transition-transform active:scale-90"
+                        aria-label="Like post"
+                        title="Flame Like"
                       >
-                        <span>Full View</span>
-                        <ArrowUpRight className="w-3.5 h-3.5" />
+                        <AeriFlameIcon
+                          filled={likedCreatorPosts[person.rank]}
+                          className={`w-5.5 h-5.5 transition-colors ${
+                            likedCreatorPosts[person.rank]
+                              ? 'text-[#FF6D00]'
+                              : 'text-[#FF6D00] stroke-[1.8]'
+                          }`}
+                        />
                       </button>
+
+                      {/* 2. Comment Icon */}
+                      <button
+                        onClick={() => setIsDrawerOpen(true)}
+                        className="cursor-pointer transition-transform active:scale-90 hover:opacity-75"
+                        aria-label="Comments"
+                        title="Comments"
+                      >
+                        <AeriCommentIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
+                      </button>
+
+                      {/* 3. Honeyjar Icon (Fairy Pot) */}
+                      <button
+                        onClick={() => handleHoneyJarClick(person.rank)}
+                        className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5 relative"
+                        aria-label="Honey Jar / Fairy Pot"
+                        title="Honey Jar"
+                      >
+                        <FairyPotIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
+                        {honeyJarCounts[person.rank] ? (
+                          <span className="absolute -top-1 -right-2 bg-amber-400 text-amber-950 text-[9px] font-black px-1 rounded-full leading-none py-0.5">
+                            +{honeyJarCounts[person.rank]}
+                          </span>
+                        ) : null}
+                      </button>
+
+                      {/* 4. Phone Hand Icon */}
+                      <button
+                        className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
+                        title="Phone Hand"
+                        aria-label="Smartphone"
+                      >
+                        <AeriHandPhoneIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
+                      </button>
+
+                      {/* 5. Masked 2 Eyes Icon */}
+                      <button
+                        onClick={() => setShowInfluenceRatingModal(true)}
+                        className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
+                        aria-label="Masked 2 Eyes"
+                        title="Masked 2 Eyes"
+                      >
+                        <AeriMaskedEyesIcon className="w-[31px] h-[21px] text-black shrink-0" />
+                      </button>
+
+                      {/* 6. Fire Hydrant Icon */}
+                      <button
+                        className="flex items-center justify-center transition-transform active:scale-90 hover:scale-105 cursor-pointer"
+                        title="Fire Hydrant"
+                        aria-label="Fire Hydrant"
+                      >
+                        <AeriHydrantIcon size={24} className="w-[24px] h-[32px] drop-shadow-2xs" />
+                      </button>
+
+                      {/* 7. Raygun Icon */}
+                      <button
+                        className="flex items-center justify-center text-slate-800 hover:text-black transition-transform active:scale-90 hover:scale-105 cursor-pointer"
+                        title="Raygun"
+                        aria-label="Raygun"
+                      >
+                        <AeriRaygunIcon className="w-7.5 h-7.5 text-slate-800 stroke-[1.3]" />
+                      </button>
+                    </div>
+
+                    <span className="text-[11px] font-bold text-slate-400 tabular-nums shrink-0">
+                      {person.topPost.comments} comments
+                    </span>
+                  </div>
+
+                  {/* Full Post Writing & Caption */}
+                  <div className="p-3 pt-1.5 bg-white">
+                    <div className="flex items-start gap-2">
+                      <img
+                        src={person.avatarUrl}
+                        alt={person.name}
+                        className="w-5.5 h-5.5 rounded-full object-cover shrink-0 mt-0.5 ring-1 ring-purple-500/20"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[12px] leading-relaxed text-slate-800">
+                          <span className="font-extrabold text-slate-900 mr-1.5">
+                            {person.handle}
+                          </span>
+                          <span className="font-bold text-slate-900">{person.topPost.title}</span> — Created by <span className="font-extrabold text-slate-900">{person.name}</span> for Fairy {CATEGORY_TABS.find((t) => t.id === selectedCategory)?.label} ranking (Rank #{person.rank}).
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2465,17 +2562,17 @@ export default function App() {
         </div>
       )}
 
-      {/* Fallback for other tabs */}
-      {(activeNavIndex === 3 || activeNavIndex === 4) && (
+      {/* TAB 3: TRENDING FEED */}
+      {activeNavIndex === 3 && (
         <div className="flex-1 flex flex-col items-center justify-center p-6 text-center bg-slate-50">
-          <div className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold mb-3 shadow-xs">
-            ✨
+          <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold mb-3 shadow-xs">
+            <AeriFlameIcon filled className="w-6 h-6 text-[#FF5722]" />
           </div>
           <h3 className="font-black text-base text-slate-900 mb-1">
-            {activeNavIndex === 3 ? 'Trending Feed' : 'Profile & Settings'}
+            Trending Feed & Notifications
           </h3>
           <p className="text-xs text-slate-500 max-w-xs mb-4">
-            Discover community vibes and manage your Fairy creator profile.
+            Discover community vibes, trending creators, and live rankings.
           </p>
           <button
             onClick={() => setActiveNavIndex(0)}
@@ -2483,6 +2580,221 @@ export default function App() {
           >
             Back to Feed
           </button>
+        </div>
+      )}
+
+      {/* TAB 4: PROFILE SCREEN WITH FULL PROFILE POST */}
+      {activeNavIndex === 4 && (
+        <div className="flex-1 flex flex-col overflow-y-auto bg-slate-50/70 scrollbar-thin">
+          {/* Profile Top Bar */}
+          <div className="px-4 py-3 bg-white border-b border-slate-100 flex items-center justify-between sticky top-0 z-10 shadow-2xs">
+            <div className="flex items-center gap-1.5">
+              <span className="font-black text-sm text-slate-900">aerifairy</span>
+              <CheckCircle2 className="w-3.5 h-3.5 text-blue-500 fill-blue-500" />
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setActiveNavIndex(0)}
+                className="px-3 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-extrabold rounded-full cursor-pointer transition-colors"
+              >
+                Feed
+              </button>
+            </div>
+          </div>
+
+          {/* Profile Header Details */}
+          <div className="bg-white px-4 pt-4 pb-3 border-b border-slate-100 shadow-2xs">
+            <div className="flex items-center gap-3.5 mb-3">
+              <div className="relative shrink-0">
+                <img
+                  src={feedPosts[0].authorAvatar}
+                  alt="Aeri Fairy"
+                  className="w-16 h-16 rounded-full object-cover ring-2 ring-purple-600/40 p-0.5 shadow-xs"
+                />
+                {/* Trending Flame on top of profile pic */}
+                <div
+                  className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-gradient-to-tr from-[#FF5722] to-amber-400 flex items-center justify-center ring-2 ring-white shadow-xs"
+                  title="Trending Creator"
+                >
+                  <AeriFlameIcon filled className="w-3 h-3 text-white" />
+                </div>
+              </div>
+
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-1.5">
+                  <h2 className="font-black text-base text-slate-900 leading-tight truncate">
+                    Aeri Fairy
+                  </h2>
+                  <CheckCircle2 className="w-4 h-4 text-purple-600 fill-purple-100 shrink-0" />
+                </div>
+                <p className="text-xs text-slate-400 font-medium">@aerifairy &middot; Seoul &middot; Creator</p>
+                <div className="flex items-center gap-4 mt-2 text-xs text-slate-700 font-bold">
+                  <span><b className="text-slate-900">14</b> Posts</span>
+                  <span><b className="text-slate-900">48.2k</b> Followers</span>
+                  <span><b className="text-slate-900">238</b> Following</span>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-600 leading-relaxed">
+              ✨ Concept visual artist, creator & beatmaker. Welcome to my Fairy profile! Exploring dynamic anime aesthetics and synth sounds.
+            </p>
+
+            <div className="flex items-center gap-2 mt-3">
+              <button className="flex-1 py-1.5 bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs rounded-xl shadow-xs transition-colors cursor-pointer">
+                Followed
+              </button>
+              <button className="flex-1 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold text-xs rounded-xl transition-colors cursor-pointer">
+                Share Profile
+              </button>
+            </div>
+          </div>
+
+          {/* Profile Section Tabs */}
+          <div className="px-4 py-2 bg-white border-b border-slate-100 flex items-center justify-around text-xs font-black text-slate-700">
+            <span className="text-purple-600 border-b-2 border-purple-600 pb-1">Featured Post</span>
+            <span className="text-slate-400 hover:text-slate-700 cursor-pointer">Media</span>
+            <span className="text-slate-400 hover:text-slate-700 cursor-pointer">Collabs</span>
+          </div>
+
+          {/* Profile Post Displayed in Full */}
+          <div className="p-3.5 space-y-3">
+            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-xs overflow-hidden">
+              {/* Post Author Bar with Flame Badge */}
+              <div className="flex items-center justify-between p-3 pb-2 bg-white">
+                <div className="flex items-center gap-2.5">
+                  <div className="relative">
+                    <img
+                      src={feedPosts[0].authorAvatar}
+                      alt="Aeri Fairy"
+                      className="w-9 h-9 rounded-full object-cover ring-2 ring-purple-600/30 p-0.5 shadow-xs"
+                    />
+                    <div
+                      className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-gradient-to-tr from-[#FF5722] to-amber-400 flex items-center justify-center ring-1.5 ring-white shadow-2xs"
+                      title="Trending Creator"
+                    >
+                      <AeriFlameIcon filled className="w-2.5 h-2.5 text-white" />
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs font-black text-slate-900">Aeri Fairy</span>
+                      <CheckCircle2 className="w-3.5 h-3.5 text-purple-600 fill-purple-100" />
+                    </div>
+                    <span className="text-[10px] text-slate-400 font-medium">@aerifairy &middot; Just now</span>
+                  </div>
+                </div>
+
+                <div className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-pink-50 border border-pink-100 rounded-full">
+                  <AeriFlameIcon filled className="w-3 h-3 text-[#FF5722]" />
+                  <span className="text-[10px] font-black text-purple-700">Pinned Top Post</span>
+                </div>
+              </div>
+
+              {/* Full Post Media Display */}
+              <div className="relative w-full min-h-[300px] max-h-[480px] bg-black overflow-hidden group">
+                <img
+                  src={feedPosts[0].mediaUrl}
+                  alt={feedPosts[0].caption}
+                  className="w-full h-full min-h-[300px] max-h-[480px] object-cover object-center"
+                />
+                <div className="absolute right-3 bottom-3 bg-white/80 backdrop-blur-md px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-xs border border-white/40">
+                  <Music className="w-3 h-3 text-slate-800" />
+                  <span className="text-[9.5px] font-semibold text-slate-900 tracking-tight">
+                    {feedPosts[0].audioTitle || 'Original Audio'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Action Buttons Row: Flame, Comment, Honeyjar, Phone Hand, Masked 2 Eyes, Hydrant, Raygun */}
+              <div className="flex items-center justify-between pt-2.5 pb-1 px-3.5 text-black border-t border-slate-100">
+                <div className="flex items-center gap-3.5 sm:gap-4 flex-wrap">
+                  {/* 1. Flame */}
+                  <button
+                    onClick={() => handleTogglePostLike(feedPosts[0].id)}
+                    className="cursor-pointer transition-transform active:scale-90"
+                    title="Flame Like"
+                  >
+                    <AeriFlameIcon
+                      filled={feedPosts[0].isLiked}
+                      className={`w-5.5 h-5.5 transition-colors ${
+                        feedPosts[0].isLiked ? 'text-[#FF6D00]' : 'text-[#FF6D00] stroke-[1.8]'
+                      }`}
+                    />
+                  </button>
+
+                  {/* 2. Comment */}
+                  <button
+                    onClick={() => {
+                      setActiveNavIndex(0);
+                      setIsDrawerOpen(true);
+                    }}
+                    className="cursor-pointer transition-transform active:scale-90 hover:opacity-75"
+                    title="Comments"
+                  >
+                    <AeriCommentIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
+                  </button>
+
+                  {/* 3. Honeyjar (Fairy Pot) */}
+                  <button
+                    onClick={() => {
+                      setActiveNavIndex(2);
+                      setShowMatchesScreen(false);
+                    }}
+                    className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
+                    title="Honey Jar"
+                  >
+                    <FairyPotIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
+                  </button>
+
+                  {/* 4. Phone Hand */}
+                  <button
+                    className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
+                    title="Phone Hand"
+                  >
+                    <AeriHandPhoneIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
+                  </button>
+
+                  {/* 5. Masked 2 Eyes */}
+                  <button
+                    onClick={() => setShowInfluenceRatingModal(true)}
+                    className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
+                    title="Masked 2 Eyes"
+                  >
+                    <AeriMaskedEyesIcon className="w-[31px] h-[21px] text-black shrink-0" />
+                  </button>
+
+                  {/* 6. Fire Hydrant */}
+                  <button
+                    className="flex items-center justify-center transition-transform active:scale-90 hover:scale-105 cursor-pointer"
+                    title="Fire Hydrant"
+                  >
+                    <AeriHydrantIcon size={24} className="w-[24px] h-[32px] drop-shadow-2xs" />
+                  </button>
+
+                  {/* 7. Raygun Icon */}
+                  <button
+                    className="flex items-center justify-center text-slate-800 hover:text-black transition-transform active:scale-90 hover:scale-105 cursor-pointer"
+                    title="Raygun"
+                  >
+                    <AeriRaygunIcon className="w-7.5 h-7.5 text-slate-800 stroke-[1.3]" />
+                  </button>
+                </div>
+
+                <span className="text-[11px] font-bold text-slate-400 tabular-nums">
+                  {feedPosts[0].likeCount.toLocaleString()} likes
+                </span>
+              </div>
+
+              {/* Full Post Writing & Caption */}
+              <div className="p-3.5 pt-1 bg-white">
+                <p className="text-[12.5px] leading-relaxed text-slate-800">
+                  <span className="font-black text-slate-900 mr-1.5">{feedPosts[0].authorHandle}</span>
+                  {feedPosts[0].caption}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       )}
         </>
