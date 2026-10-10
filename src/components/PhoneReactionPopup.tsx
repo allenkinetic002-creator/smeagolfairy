@@ -93,7 +93,7 @@ export function PhoneReactionPopup({
           </div>
         </div>
 
-        {/* Blue Like Button (matching broken position on right, with thumbsup facing left) */}
+        {/* Blue Dislike Button (matching broken position on right, with thumbsup flipped up to down) */}
         <button
           type="button"
           onClick={() => handleVote('dislike')}
@@ -105,7 +105,7 @@ export function PhoneReactionPopup({
           title="Dislikes"
           aria-label="Dislike"
         >
-          <AeriBattleThumbsUpIcon className="w-3.5 h-3.5" contrastColor="#1D3D8F" facing="left" />
+          <AeriBattleThumbsUpIcon className="w-3.5 h-3.5" contrastColor="#1D3D8F" facing="left" direction="down" />
         </button>
       </div>
 
