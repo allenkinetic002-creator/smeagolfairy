@@ -194,20 +194,20 @@ export const TweetPostCard: React.FC<TweetPostCardProps> = ({
         {renderFormattedText(displayText)}
       </div>
 
-      {/* Attached Tweet Photo / Media if exists */}
+      {/* Attached Sitch Photo / Media if exists */}
       {post.mediaUrl && (
         <div className="rounded-xl overflow-hidden border border-slate-200 bg-slate-950 max-h-72 shadow-2xs">
           <img
             src={post.mediaUrl}
-            alt="Tweet attachment"
+            alt="Sitch attachment"
             className="w-full h-full max-h-72 object-cover object-center"
           />
         </div>
       )}
 
-      {/* User's Own Action Icons Bar (Flame, Comment, Double Triangle, Phone, Masked Eyes, Send Message) */}
+      {/* User's Own Action Icons Bar (Flame, Comment, Message, Phone, Masked Eyes) */}
       <div className="flex items-center justify-between gap-1 pt-2 border-t border-slate-100 text-slate-700 w-full max-w-full overflow-hidden">
-        <div className="flex items-center gap-2 sm:gap-3 shrink min-w-0">
+        <div className="flex items-center gap-2.5 sm:gap-4 shrink min-w-0">
           {/* 1. Like with AeriFlameIcon */}
           <button
             onClick={() => onToggleLike(post.id)}
@@ -243,26 +243,21 @@ export const TweetPostCard: React.FC<TweetPostCardProps> = ({
             </span>
           </button>
 
-          {/* 3. Retweet / Repost with AeriDoubleTriangleIcon */}
+          {/* 3. Message icon (replaces 3rd icon only on sitch/tweet box) */}
           <button
-            onClick={handleToggleRetweet}
-            className="cursor-pointer transition-transform active:scale-90 hover:opacity-80 flex items-center gap-1 group py-1"
-            title="Repost"
-            aria-label="Repost"
+            onClick={() =>
+              onOpenSendMessage({
+                id: 'p-' + post.authorHandle,
+                name: post.authorName,
+                handle: post.authorHandle,
+                avatarUrl: post.authorAvatar,
+              })
+            }
+            className="cursor-pointer transition-transform active:scale-90 hover:opacity-80 flex items-center gap-1.5 group py-1 text-slate-700"
+            title="Direct Message"
+            aria-label="Direct Message"
           >
-            <AeriDoubleTriangleIcon
-              size={19}
-              className={`w-4.5 h-4.5 transition-colors ${
-                isRetweeted ? 'text-emerald-600' : 'text-slate-700 group-hover:text-emerald-600'
-              }`}
-            />
-            <span
-              className={`text-xs tabular-nums font-semibold ${
-                isRetweeted ? 'text-emerald-600 font-bold' : 'text-slate-500'
-              }`}
-            >
-              {retweetCount}
-            </span>
+            <AeriMessageBubbleIcon className="w-5 h-5 text-slate-700 group-hover:text-black" color="#334155" />
           </button>
 
           {/* 4. Phone reaction with AeriHandPhoneIcon */}
@@ -286,20 +281,26 @@ export const TweetPostCard: React.FC<TweetPostCardProps> = ({
           </button>
         </div>
 
-        {/* Send me message pill */}
+        {/* Repost counter on far right */}
         <button
-          onClick={() =>
-            onOpenSendMessage({
-              id: 'p-' + post.authorHandle,
-              name: post.authorName,
-              handle: post.authorHandle,
-              avatarUrl: post.authorAvatar,
-            })
-          }
-          className="cursor-pointer px-2.5 sm:px-3 py-1 bg-[#E2E8F0] hover:bg-[#CBD5E1] text-black rounded-full text-[10px] sm:text-[10.5px] font-semibold flex items-center gap-1 transition-all border border-slate-300 shadow-2xs active:scale-95 shrink-0"
+          onClick={handleToggleRetweet}
+          className="cursor-pointer transition-transform active:scale-90 hover:opacity-80 flex items-center gap-1 group py-1 text-slate-500 hover:text-emerald-600 shrink-0"
+          title="Repost"
+          aria-label="Repost"
         >
-          <AeriMessageBubbleIcon className="w-3 h-3 text-black shrink-0" color="#000000" />
-          <span className="whitespace-nowrap">Send me message</span>
+          <AeriDoubleTriangleIcon
+            size={18}
+            className={`w-4.5 h-4.5 transition-colors ${
+              isRetweeted ? 'text-emerald-600' : 'text-slate-400 group-hover:text-emerald-600'
+            }`}
+          />
+          <span
+            className={`text-xs tabular-nums font-semibold ${
+              isRetweeted ? 'text-emerald-600 font-bold' : 'text-slate-400'
+            }`}
+          >
+            {retweetCount}
+          </span>
         </button>
       </div>
     </div>

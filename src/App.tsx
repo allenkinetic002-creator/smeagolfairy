@@ -1563,7 +1563,7 @@ export default function App() {
     setShowNormalMessagesScreen(false);
     setTargetMessagePerson(null);
 
-    setTweetSuccessToast('Your Tweet was posted!');
+    setTweetSuccessToast('Your Sitch was posted!');
     setTimeout(() => {
       setTweetSuccessToast(null);
     }, 3500);
@@ -3593,8 +3593,8 @@ export default function App() {
             onClick={() => {
               setShowCreateTweetModal(true);
             }}
-            aria-label="Honey Jar · Write and post a Tweet"
-            title="Honey Jar · Write and post a Tweet"
+            aria-label="Honey Jar · Write and post a Sitch"
+            title="Honey Jar · Write and post a Sitch"
             className="w-10 h-10 rounded-full bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white flex items-center justify-center shadow-md hover:scale-105 active:scale-95 transition-transform duration-150 cursor-pointer"
           >
             <FairyPotIcon size={20} className="w-5 h-5 text-white stroke-white stroke-[2.1]" />

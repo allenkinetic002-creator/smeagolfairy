@@ -114,11 +114,11 @@ export const CreateTweetModal: React.FC<CreateTweetModalProps> = ({
             <button
               onClick={onClose}
               className="p-1.5 rounded-full hover:bg-slate-100 text-slate-600 transition-colors cursor-pointer"
-              aria-label="Close tweet composer"
+              aria-label="Close sitch composer"
             >
               <X size={20} />
             </button>
-            <span className="text-sm font-bold text-slate-900 tracking-tight">Compose Tweet</span>
+            <span className="text-sm font-bold text-slate-900 tracking-tight">Compose Sitch</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -151,10 +151,10 @@ export const CreateTweetModal: React.FC<CreateTweetModalProps> = ({
         {/* Content body */}
         <div className="p-4 overflow-y-auto space-y-3">
           {showPreview ? (
-            /* Tweet Preview mode */
+            /* Sitch Preview mode */
             <div className="p-3.5 rounded-xl border border-slate-200 bg-white shadow-2xs space-y-2.5">
               <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                Live Tweet Preview
+                Live Sitch Preview
               </div>
 
               {/* Card header */}
@@ -174,7 +174,7 @@ export const CreateTweetModal: React.FC<CreateTweetModalProps> = ({
 
                   {/* Body text */}
                   <p className="text-[14px] leading-relaxed text-slate-900 mt-1 whitespace-pre-wrap">
-                    {tweetText || <span className="italic text-slate-400">Your tweet text will appear here...</span>}
+                    {tweetText || <span className="italic text-slate-400">Your sitch text will appear here...</span>}
                   </p>
 
                   {/* Attached media */}
@@ -198,7 +198,7 @@ export const CreateTweetModal: React.FC<CreateTweetModalProps> = ({
                         <AeriCommentIcon className="w-4.5 h-4.5 text-slate-700" /> 0
                       </span>
                       <span className="flex items-center gap-1.5 text-xs text-slate-600">
-                        <AeriDoubleTriangleIcon size={18} className="w-4.5 h-4.5 text-slate-700" /> 0
+                        <AeriMessageBubbleIcon className="w-4.5 h-4.5 text-slate-700" color="#334155" /> 0
                       </span>
                       <span className="flex items-center gap-1 text-xs text-slate-600">
                         <AeriHandPhoneIcon className="w-4.5 h-4.5 text-slate-700" />
@@ -208,16 +208,16 @@ export const CreateTweetModal: React.FC<CreateTweetModalProps> = ({
                       </span>
                     </div>
 
-                    <div className="px-2.5 py-0.5 bg-[#E2E8F0] text-black rounded-full text-[10px] font-semibold flex items-center gap-1 border border-slate-300">
-                      <AeriMessageBubbleIcon className="w-3 h-3 text-black" color="#000000" />
-                      <span>Send me message</span>
+                    <div className="flex items-center gap-1 text-xs text-slate-400 font-medium">
+                      <AeriDoubleTriangleIcon size={16} className="text-slate-400" />
+                      <span>0</span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           ) : (
-            /* Tweet Edit mode */
+            /* Sitch Edit mode */
             <>
               {/* Author header */}
               <div className="flex items-start gap-3">
@@ -231,7 +231,7 @@ export const CreateTweetModal: React.FC<CreateTweetModalProps> = ({
                     <span className="text-sm font-bold text-slate-900">{authorName}</span>
                     <span className="text-xs text-slate-400">{authorHandle}</span>
                   </div>
-                  <span className="text-[11px] text-purple-600 font-medium">Public Tweet</span>
+                  <span className="text-[11px] text-purple-600 font-medium">Public Sitch</span>
                 </div>
               </div>
 
@@ -301,7 +301,7 @@ export const CreateTweetModal: React.FC<CreateTweetModalProps> = ({
               {showImagePicker && (
                 <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2 animate-fadeIn">
                   <div className="flex items-center justify-between text-xs font-bold text-slate-700">
-                    <span>Select an image for your Tweet</span>
+                    <span>Select an image for your Sitch</span>
                     <button
                       onClick={() => fileInputRef.current?.click()}
                       className="text-purple-600 hover:underline cursor-pointer"
@@ -454,7 +454,7 @@ export const CreateTweetModal: React.FC<CreateTweetModalProps> = ({
                   : 'bg-purple-200 text-purple-400 cursor-not-allowed'
               }`}
             >
-              Tweet
+              Sitch
             </button>
           </div>
         </div>
