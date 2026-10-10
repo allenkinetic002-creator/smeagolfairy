@@ -1863,8 +1863,7 @@ export default function App() {
 
                 {/* 4. Action Row */}
                 <div className="flex items-end justify-between pt-1.5 shrink-0 text-black">
-                  {/* All icons grouped closely together on the left */}
-                  <div className="flex items-end gap-3.5 sm:gap-4 pb-0.5">
+                  <div className="flex items-center gap-4 pb-0.5">
                     <button
                       onClick={() => handleTogglePostLike(post.id)}
                       className="cursor-pointer transition-transform active:scale-90"
@@ -1900,48 +1899,45 @@ export default function App() {
                     >
                       <FairyPotIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
                     </button>
-
-                    {/* Long gray pill directly above the Phone Hand icon and Masked 2 Eyes icon */}
-                    <div className="flex flex-col items-center gap-1">
-                      {/* Long gray pill like icon with "Send me message" */}
-                      <button
-                        onClick={() => setShowNormalMessagesScreen(true)}
-                        className="cursor-pointer px-3.5 py-1 bg-[#E2E8F0] hover:bg-[#CBD5E1] text-slate-700 hover:text-slate-950 rounded-full text-[10.5px] font-semibold flex items-center justify-center gap-1.5 border border-slate-300 shadow-2xs transition-all active:scale-95 whitespace-nowrap"
-                        title="Send me message"
-                        aria-label="Send me message"
-                      >
-                        <AeriMessageBubbleIcon className="w-3.5 h-3.5 text-slate-600 shrink-0" />
-                        <span>Send me message</span>
-                      </button>
-
-                      <div className="flex items-center gap-3">
-                        {/* 4th icon: Hand holding smartphone */}
-                        <button
-                          className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
-                          title="Smartphone / Social Reach"
-                          aria-label="Smartphone"
-                        >
-                          <AeriHandPhoneIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
-                        </button>
-
-                        {/* 5th icon: Masked 2 eyes */}
-                        <button
-                          onClick={() => setShowInfluenceRatingModal(true)}
-                          className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
-                          aria-label="View Fairy ratings and social reach"
-                          title="Overall ratings & Social reach"
-                        >
-                          <AeriMaskedEyesIcon className="w-[33px] h-[23px] text-black shrink-0" />
-                        </button>
-                      </div>
-                    </div>
                   </div>
 
-                  {/* Likes counter on the right */}
-                  <div className="pb-1 shrink-0">
-                    <span className="text-[11px] font-bold text-slate-500 tabular-nums">
-                      {post.likeCount.toLocaleString()} likes
-                    </span>
+                  {/* Right column: Long gray pill directly above the Phone Hand icon and Masked 2 Eyes icon */}
+                  <div className="flex flex-col items-end gap-1.5">
+                    {/* Long gray pill like icon with "Send me message" */}
+                    <button
+                      onClick={() => setShowNormalMessagesScreen(true)}
+                      className="cursor-pointer px-4 py-1 bg-[#E2E8F0] hover:bg-[#CBD5E1] text-black hover:text-black rounded-full text-[11px] font-semibold flex items-center justify-center gap-1.5 border border-slate-300 shadow-2xs transition-all active:scale-95 whitespace-nowrap"
+                      title="Send me message"
+                      aria-label="Send me message"
+                    >
+                      <AeriMessageBubbleIcon className="w-3.5 h-3.5 text-black shrink-0" color="#000000" />
+                      <span className="text-black font-semibold">Send me message</span>
+                    </button>
+
+                    <div className="flex items-center gap-3">
+                      {/* 4th icon: Hand holding smartphone */}
+                      <button
+                        className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
+                        title="Smartphone / Social Reach"
+                        aria-label="Smartphone"
+                      >
+                        <AeriHandPhoneIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
+                      </button>
+
+                      {/* 5th icon: Masked 2 eyes */}
+                      <button
+                        onClick={() => setShowInfluenceRatingModal(true)}
+                        className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
+                        aria-label="View Fairy ratings and social reach"
+                        title="Overall ratings & Social reach"
+                      >
+                        <AeriMaskedEyesIcon className="w-[33px] h-[23px] text-black shrink-0" />
+                      </button>
+
+                      <span className="text-[11px] font-bold text-slate-500 tabular-nums ml-1">
+                        {post.likeCount.toLocaleString()} likes
+                      </span>
+                    </div>
                   </div>
                 </div>
 
@@ -2418,8 +2414,7 @@ export default function App() {
 
                   {/* 4. Action Button Row: Flame, Comment, Honeyjar, Phone Hand, Masked 2 Eyes, Long Gray Pill */}
                   <div className="flex items-end justify-between pt-2.5 pb-1 px-3.5 text-black border-t border-slate-100 bg-white">
-                    {/* All icons grouped closely together on the left */}
-                    <div className="flex items-end gap-3.5 sm:gap-4 pb-0.5">
+                    <div className="flex items-center gap-3.5 sm:gap-4 pb-0.5">
                       {/* 1. Flame Icon */}
                       <button
                         onClick={() => toggleLikedCreatorPost(person.rank)}
@@ -2461,48 +2456,45 @@ export default function App() {
                           </span>
                         )}
                       </button>
-
-                      {/* Long gray pill directly above the Phone Hand icon and Masked 2 Eyes icon */}
-                      <div className="flex flex-col items-center gap-1">
-                        {/* Long gray pill like icon with "Send me message" */}
-                        <button
-                          onClick={() => setShowNormalMessagesScreen(true)}
-                          className="cursor-pointer px-3.5 py-1 bg-[#E2E8F0] hover:bg-[#CBD5E1] text-slate-700 hover:text-slate-950 rounded-full text-[10.5px] font-semibold flex items-center justify-center gap-1.5 border border-slate-300 shadow-2xs transition-all active:scale-95 whitespace-nowrap"
-                          title="Send me message"
-                          aria-label="Send me message"
-                        >
-                          <AeriMessageBubbleIcon className="w-3.5 h-3.5 text-slate-600 shrink-0" />
-                          <span>Send me message</span>
-                        </button>
-
-                        <div className="flex items-center gap-3">
-                          {/* 4. Phone Hand Icon */}
-                          <button
-                            className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
-                            title="Phone Hand"
-                            aria-label="Smartphone"
-                          >
-                            <AeriHandPhoneIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
-                          </button>
-
-                          {/* 5. Masked 2 Eyes Icon */}
-                          <button
-                            onClick={() => setShowInfluenceRatingModal(true)}
-                            className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
-                            aria-label="Masked 2 Eyes"
-                            title="Masked 2 Eyes"
-                          >
-                            <AeriMaskedEyesIcon className="w-[31px] h-[21px] text-black shrink-0" />
-                          </button>
-                        </div>
-                      </div>
                     </div>
 
-                    {/* Right side: Likes counter */}
-                    <div className="pb-1 shrink-0">
-                      <span className="text-[11px] font-bold text-slate-500 tabular-nums">
-                        {isLiked ? `${person.topPost.likes} + 1` : `${person.topPost.likes}`} likes
-                      </span>
+                    {/* Right column: Long gray pill directly above the Phone Hand icon and Masked 2 Eyes icon */}
+                    <div className="flex flex-col items-end gap-1.5">
+                      {/* Long gray pill like icon with "Send me message" */}
+                      <button
+                        onClick={() => setShowNormalMessagesScreen(true)}
+                        className="cursor-pointer px-4 py-1 bg-[#E2E8F0] hover:bg-[#CBD5E1] text-black hover:text-black rounded-full text-[11px] font-semibold flex items-center justify-center gap-1.5 border border-slate-300 shadow-2xs transition-all active:scale-95 whitespace-nowrap"
+                        title="Send me message"
+                        aria-label="Send me message"
+                      >
+                        <AeriMessageBubbleIcon className="w-3.5 h-3.5 text-black shrink-0" color="#000000" />
+                        <span className="text-black font-semibold">Send me message</span>
+                      </button>
+
+                      <div className="flex items-center gap-3">
+                        {/* 4. Phone Hand Icon */}
+                        <button
+                          className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
+                          title="Phone Hand"
+                          aria-label="Smartphone"
+                        >
+                          <AeriHandPhoneIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
+                        </button>
+
+                        {/* 5. Masked 2 Eyes Icon */}
+                        <button
+                          onClick={() => setShowInfluenceRatingModal(true)}
+                          className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
+                          aria-label="Masked 2 Eyes"
+                          title="Masked 2 Eyes"
+                        >
+                          <AeriMaskedEyesIcon className="w-[31px] h-[21px] text-black shrink-0" />
+                        </button>
+
+                        <span className="text-[11px] font-bold text-slate-500 tabular-nums shrink-0 ml-1">
+                          {isLiked ? `${person.topPost.likes} + 1` : `${person.topPost.likes}`} likes
+                        </span>
+                      </div>
                     </div>
                   </div>
 
@@ -2917,12 +2909,12 @@ export default function App() {
                   <div className="flex flex-col items-center gap-1">
                     <button
                       onClick={() => setShowNormalMessagesScreen(true)}
-                      className="cursor-pointer px-3 py-0.5 bg-[#E2E8F0] hover:bg-[#CBD5E1] text-slate-700 hover:text-slate-950 rounded-full text-[10px] font-semibold flex items-center justify-center gap-1 border border-slate-300 shadow-2xs transition-all active:scale-95 whitespace-nowrap"
+                      className="cursor-pointer px-3 py-0.5 bg-[#E2E8F0] hover:bg-[#CBD5E1] text-black hover:text-black rounded-full text-[10px] font-semibold flex items-center justify-center gap-1 border border-slate-300 shadow-2xs transition-all active:scale-95 whitespace-nowrap"
                       title="Send me message"
                       aria-label="Send me message"
                     >
-                      <AeriMessageBubbleIcon className="w-3 h-3 text-slate-600 shrink-0" />
-                      <span>Send me message</span>
+                      <AeriMessageBubbleIcon className="w-3 h-3 text-black shrink-0" color="#000000" />
+                      <span className="text-black font-semibold">Send me message</span>
                     </button>
 
                     <div className="flex items-center gap-2.5">
