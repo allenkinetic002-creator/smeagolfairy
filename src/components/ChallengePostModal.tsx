@@ -207,20 +207,20 @@ export const ChallengePostModal: React.FC<ChallengePostModalProps> = ({
           <span>{opponentName}</span>
         </div>
 
-        {/* 6. Interaction Row (Blue button + Likes | Dislikes + Red button) */}
+        {/* 6. Interaction Row (Red button + Likes | Dislikes + Blue button) */}
         <div className="w-full flex items-center justify-between gap-2 mt-2.5">
-          {/* Blue Like Button (switched to left, facing left) */}
+          {/* Red Like Button (in former place on left) */}
           <button
             type="button"
-            onClick={() => handleVote('blue')}
+            onClick={() => handleVote('red')}
             className={`cursor-pointer w-[56px] sm:w-[62px] h-[28px] rounded-[8px] flex items-center justify-center transition-all active:scale-90 ${
-              userVote === 'blue'
-                ? 'bg-[#1D3D8F] ring-2 ring-blue-400 ring-offset-1'
-                : 'bg-[#1D3D8F] hover:bg-[#183275]'
+              userVote === 'red'
+                ? 'bg-[#E51E2B] ring-2 ring-red-400 ring-offset-1'
+                : 'bg-[#E51E2B] hover:bg-[#D41825]'
             }`}
-            title="Vote Blue"
+            title="Vote Red"
           >
-            <AeriBattleThumbsUpIcon className="w-3.5 h-3.5" contrastColor="#1D3D8F" facing="left" />
+            <AeriBattleThumbsUpIcon className="w-3.5 h-3.5" contrastColor="#E51E2B" facing="right" />
           </button>
 
           {/* Likes & Dislikes Counters */}
@@ -246,18 +246,18 @@ export const ChallengePostModal: React.FC<ChallengePostModalProps> = ({
             </div>
           </div>
 
-          {/* Red Like Button (switched to right, facing right) */}
+          {/* Blue Like Button (in former place on right, facing left) */}
           <button
             type="button"
-            onClick={() => handleVote('red')}
+            onClick={() => handleVote('blue')}
             className={`cursor-pointer w-[56px] sm:w-[62px] h-[28px] rounded-[8px] flex items-center justify-center transition-all active:scale-90 ${
-              userVote === 'red'
-                ? 'bg-[#E51E2B] ring-2 ring-red-400 ring-offset-1'
-                : 'bg-[#E51E2B] hover:bg-[#D41825]'
+              userVote === 'blue'
+                ? 'bg-[#1D3D8F] ring-2 ring-blue-400 ring-offset-1'
+                : 'bg-[#1D3D8F] hover:bg-[#183275]'
             }`}
-            title="Vote Red"
+            title="Vote Blue"
           >
-            <AeriBattleThumbsUpIcon className="w-3.5 h-3.5" contrastColor="#E51E2B" facing="right" />
+            <AeriBattleThumbsUpIcon className="w-3.5 h-3.5" contrastColor="#1D3D8F" facing="left" />
           </button>
         </div>
 

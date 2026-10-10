@@ -189,14 +189,14 @@ export const PastChallengesModal: React.FC<PastChallengesModalProps> = ({
           <span>{current.blueParticipant.name}</span>
         </div>
 
-        {/* 6. Interaction Row (Blue button + Likes | Dislikes + Red button) */}
+        {/* 6. Interaction Row (Red button + Likes | Dislikes + Blue button) */}
         <div className="w-full flex items-center justify-between gap-2 mt-2.5">
-          {/* Blue Like Button (switched to left, facing left) */}
+          {/* Red Like Button (in former place on left) */}
           <button
             type="button"
-            className="cursor-default w-[56px] sm:w-[62px] h-[28px] rounded-[8px] flex items-center justify-center bg-[#1D3D8F]"
+            className="cursor-default w-[56px] sm:w-[62px] h-[28px] rounded-[8px] flex items-center justify-center bg-[#E51E2B]"
           >
-            <AeriBattleThumbsUpIcon className="w-3.5 h-3.5" contrastColor="#1D3D8F" facing="left" />
+            <AeriBattleThumbsUpIcon className="w-3.5 h-3.5" contrastColor="#E51E2B" facing="right" />
           </button>
 
           <div className="flex items-center justify-center gap-2 shrink-0">
@@ -221,12 +221,12 @@ export const PastChallengesModal: React.FC<PastChallengesModalProps> = ({
             </div>
           </div>
 
-          {/* Red Like Button (switched to right, facing right) */}
+          {/* Blue Like Button (in former place on right, facing left) */}
           <button
             type="button"
-            className="cursor-default w-[56px] sm:w-[62px] h-[28px] rounded-[8px] flex items-center justify-center bg-[#E51E2B]"
+            className="cursor-default w-[56px] sm:w-[62px] h-[28px] rounded-[8px] flex items-center justify-center bg-[#1D3D8F]"
           >
-            <AeriBattleThumbsUpIcon className="w-3.5 h-3.5" contrastColor="#E51E2B" facing="right" />
+            <AeriBattleThumbsUpIcon className="w-3.5 h-3.5" contrastColor="#1D3D8F" facing="left" />
           </button>
         </div>
 
