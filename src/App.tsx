@@ -1557,12 +1557,10 @@ export default function App() {
   const [showNormalMessagesScreen, setShowNormalMessagesScreen] = useState(false);
   const [targetMessagePerson, setTargetMessagePerson] = useState<TargetMessagePerson | null>(null);
   const [showInfluenceRatingModal, setShowInfluenceRatingModal] = useState(false);
-  const [showPhoneReactionModal, setShowPhoneReactionModal] = useState(false);
-  const [phoneReactionAuthor, setPhoneReactionAuthor] = useState('Elena Vance');
+  const [activePhoneReactionId, setActivePhoneReactionId] = useState<string | null>(null);
 
-  const handleOpenPhoneReaction = (author?: string) => {
-    if (author) setPhoneReactionAuthor(author);
-    setShowPhoneReactionModal(true);
+  const handleTogglePhoneReaction = (id: string) => {
+    setActivePhoneReactionId((prev) => (prev === id ? null : id));
   };
 
   const handleOpenSendPersonMessage = (person: TargetMessagePerson) => {
@@ -1816,10 +1814,17 @@ export default function App() {
                 <div className="flex items-center justify-between py-1 px-0.5 shrink-0 bg-white">
                   <div className="flex items-center gap-2.5">
                     <div className="relative">
+                      {/* Reaction Widget placed directly on top of the profile pic */}
+                      <PhoneReactionPopup
+                        isOpen={activePhoneReactionId === post.id}
+                        onClose={() => setActivePhoneReactionId(null)}
+                        postAuthor={post.authorName}
+                      />
                       <img
                         src={post.authorAvatar}
                         alt={post.authorName}
-                        className="w-9 h-9 rounded-full object-cover ring-2 ring-purple-600/30 p-0.5 shadow-xs"
+                        onClick={() => handleTogglePhoneReaction(post.id)}
+                        className="w-9 h-9 rounded-full object-cover ring-2 ring-purple-600/30 p-0.5 shadow-xs cursor-pointer hover:ring-purple-600/60 transition-all"
                       />
                       {/* Flame Badge directly on top of the profile pic */}
                       <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-gradient-to-tr from-[#FF5722] to-amber-400 flex items-center justify-center ring-1.5 ring-white shadow-2xs" title="Trending Creator">
@@ -1952,7 +1957,7 @@ export default function App() {
                       <div className="flex items-center gap-2.5 ml-1.5 sm:ml-2">
                         {/* 4th icon: Hand holding smartphone */}
                         <button
-                          onClick={() => handleOpenPhoneReaction(post.authorName)}
+                          onClick={() => handleTogglePhoneReaction(post.id)}
                           className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
                           title="Smartphone / Social Reach"
                           aria-label="Smartphone"
@@ -2366,15 +2371,23 @@ export default function App() {
                     <div className="flex items-center justify-between p-3.5 pb-2.5 bg-white">
                     <div className="flex items-center gap-2.5 min-w-0">
                       <div className="relative shrink-0">
+                        {/* Reaction Widget placed directly on top of the profile pic */}
+                        <PhoneReactionPopup
+                          isOpen={activePhoneReactionId === `person-${person.name}`}
+                          onClose={() => setActivePhoneReactionId(null)}
+                          postAuthor={person.name}
+                        />
                         {person.avatarUrl ? (
                           <img
                             src={person.avatarUrl}
                             alt={person.name}
-                            className="w-10 h-10 rounded-full object-cover ring-2 ring-purple-600/30 p-0.5 shadow-xs"
+                            onClick={() => handleTogglePhoneReaction(`person-${person.name}`)}
+                            className="w-10 h-10 rounded-full object-cover ring-2 ring-purple-600/30 p-0.5 shadow-xs cursor-pointer hover:ring-purple-600/60 transition-all"
                           />
                         ) : (
                           <div
-                            className={`w-10 h-10 rounded-full ${person.avatarBg} text-white font-black flex items-center justify-center text-sm shadow-xs ring-1 ring-purple-600/20`}
+                            onClick={() => handleTogglePhoneReaction(`person-${person.name}`)}
+                            className={`w-10 h-10 rounded-full ${person.avatarBg} text-white font-black flex items-center justify-center text-sm shadow-xs ring-1 ring-purple-600/20 cursor-pointer hover:ring-purple-600/60 transition-all`}
                           >
                             {person.avatarInitial}
                           </div>
@@ -2527,7 +2540,7 @@ export default function App() {
                         <div className="flex items-center gap-2 ml-1.5 sm:ml-2">
                           {/* 4. Phone Hand Icon */}
                           <button
-                            onClick={() => handleOpenPhoneReaction(person.name)}
+                            onClick={() => handleTogglePhoneReaction(`person-${person.name}`)}
                             className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
                             title="Phone Hand"
                             aria-label="Smartphone"
@@ -2880,10 +2893,17 @@ export default function App() {
               <div className="flex items-center justify-between p-3 pb-2 bg-white">
                 <div className="flex items-center gap-2.5">
                   <div className="relative">
+                    {/* Reaction Widget placed directly on top of the profile pic */}
+                    <PhoneReactionPopup
+                      isOpen={activePhoneReactionId === 'creator-preview'}
+                      onClose={() => setActivePhoneReactionId(null)}
+                      postAuthor="Aeri Fairy"
+                    />
                     <img
                       src={feedPosts[0].authorAvatar}
                       alt="Aeri Fairy"
-                      className="w-9 h-9 rounded-full object-cover ring-2 ring-purple-600/30 p-0.5 shadow-xs"
+                      onClick={() => handleTogglePhoneReaction('creator-preview')}
+                      className="w-9 h-9 rounded-full object-cover ring-2 ring-purple-600/30 p-0.5 shadow-xs cursor-pointer hover:ring-purple-600/60 transition-all"
                     />
                     <div
                       className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-gradient-to-tr from-[#FF5722] to-amber-400 flex items-center justify-center ring-1.5 ring-white shadow-2xs"
@@ -2985,7 +3005,7 @@ export default function App() {
                     <div className="flex items-center gap-2.5">
                       {/* 4. Phone Hand */}
                       <button
-                        onClick={() => handleOpenPhoneReaction(previewCreator?.name || 'Creator')}
+                        onClick={() => handleTogglePhoneReaction('creator-preview')}
                         className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
                         title="Phone Hand"
                       >
@@ -3157,12 +3177,7 @@ export default function App() {
         onClose={() => setShowInfluenceRatingModal(false)}
       />
 
-      {/* Phone Reaction Popout Modal (Opens from Phone Hand icon, inspired by Likes/Dislikes & Double Yellow line design) */}
-      <PhoneReactionPopup
-        isOpen={showPhoneReactionModal}
-        onClose={() => setShowPhoneReactionModal(false)}
-        postAuthor={phoneReactionAuthor}
-      />
+
 
       {/* Create Post Modal (Allows posting video, pic, and writing) */}
       <CreatePostModal
