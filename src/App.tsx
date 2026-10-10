@@ -47,6 +47,7 @@ import { AeriDiggingDogIcon } from './components/AeriDiggingDogIcon';
 import { AeriGuacamoleBowlIcon } from './components/AeriGuacamoleBowlIcon';
 import { AeriMaskedEyesIcon } from './components/AeriMaskedEyesIcon';
 import { AeriOneEyeHatGuyIcon } from './components/AeriOneEyeHatGuyIcon';
+import { BrokenPencilIcon } from './components/BrokenPencilIcon';
 import { AeriOneEyeGhostIcon } from './components/AeriOneEyeGhostIcon';
 import { AeriRaygunIcon } from './components/AeriRaygunIcon';
 import { AeriSearchIcon } from './components/AeriSearchIcon';
@@ -1558,6 +1559,7 @@ export default function App() {
   const [targetMessagePerson, setTargetMessagePerson] = useState<TargetMessagePerson | null>(null);
   const [showInfluenceRatingModal, setShowInfluenceRatingModal] = useState(false);
   const [activePhoneReactionId, setActivePhoneReactionId] = useState<string | null>('post-default-elena');
+  const [showBrokenPencil, setShowBrokenPencil] = useState(false);
 
   const handleTogglePhoneReaction = (id: string) => {
     setActivePhoneReactionId((prev) => (prev === id ? null : id));
@@ -1706,14 +1708,44 @@ export default function App() {
                 <AeriConcentricCircleIcon className="w-[27px] h-[27px] text-black" />
               </button>
 
-              {/* 3rd header icon: One-Eye Hat Guy icon beside Search inspired by unnamed (26).jpg */}
-              <button
-                aria-label="One-Eye Hat Guy"
-                title="One-Eye Hat Guy"
-                className="hover:opacity-75 transition-opacity cursor-pointer p-0.5 flex items-center justify-center"
-              >
-                <AeriOneEyeHatGuyIcon className="w-[33px] h-[33px] text-black" />
-              </button>
+              {/* 3rd header icon: One-Eye Hat Guy icon beside Search */}
+              <div className="relative">
+                <button
+                  onClick={() => setShowBrokenPencil((prev) => !prev)}
+                  aria-label="One-Eye Hat Guy"
+                  title="One-Eye Hat Guy · Click to reveal broken pencil"
+                  className="hover:opacity-75 transition-transform active:scale-90 cursor-pointer p-0.5 flex items-center justify-center"
+                >
+                  <AeriOneEyeHatGuyIcon className="w-[33px] h-[33px] text-black" />
+                </button>
+
+                {/* Broken Pencil appears when clicking One-Eye Hat Guy */}
+                {showBrokenPencil && (
+                  <div
+                    onClick={() => setShowBrokenPencil(false)}
+                    className="absolute right-0 top-[calc(100%+8px)] z-50 bg-white/98 backdrop-blur-md rounded-2xl p-3 shadow-[0_12px_30px_-6px_rgba(0,0,0,0.3)] border border-slate-200 flex flex-col items-center animate-in fade-in zoom-in-95 duration-150 cursor-pointer hover:shadow-2xl select-none min-w-[260px]"
+                    title="Click to dismiss"
+                  >
+                    <div className="flex items-center justify-between w-full mb-1 px-1">
+                      <span className="text-[10px] font-black uppercase tracking-wider text-slate-500 flex items-center gap-1">
+                        ✏️ Snapped Pencil
+                      </span>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowBrokenPencil(false);
+                        }}
+                        className="text-slate-400 hover:text-slate-700 p-0.5 cursor-pointer"
+                        aria-label="Close broken pencil"
+                      >
+                        <X className="w-3.5 h-3.5 stroke-[2.5]" />
+                      </button>
+                    </div>
+                    <BrokenPencilIcon className="w-60 sm:w-64 h-auto drop-shadow-sm hover:scale-105 active:scale-95 transition-transform" />
+                  </div>
+                )}
+              </div>
 
               <button
                 aria-label="Search"
