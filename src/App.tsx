@@ -1864,9 +1864,9 @@ export default function App() {
                 {/* 4. Action Row */}
                 <div className="flex items-end justify-between pt-1.5 shrink-0 text-black">
                   {/* All icons grouped closely together on the left */}
-                  <div className="flex items-end gap-3.5 sm:gap-4">
+                  <div className="flex items-end gap-1.5 sm:gap-2">
                     {/* Left 3 icons: Flame, Comment, Honeyjar */}
-                    <div className="flex items-center gap-3.5 sm:gap-4 pb-0.5">
+                    <div className="flex items-center gap-3 pb-0.5">
                       <button
                         onClick={() => handleTogglePostLike(post.id)}
                         className="cursor-pointer transition-transform active:scale-90"
@@ -1904,12 +1904,12 @@ export default function App() {
                       </button>
                     </div>
 
-                    {/* Phone Hand & Masked 2 Eyes directly beside the other 3 icons, with "Send me message" pill above them */}
-                    <div className="flex flex-col items-center gap-1.5">
+                    {/* Phone Hand & Masked 2 Eyes moved much more to the left */}
+                    <div className="flex flex-col items-center gap-1.5 -ml-0.5">
                       {/* Long gray pill like icon with "Send me message" */}
                       <button
                         onClick={() => setShowNormalMessagesScreen(true)}
-                        className="cursor-pointer px-4 py-1 bg-[#E2E8F0] hover:bg-[#CBD5E1] text-black hover:text-black rounded-full text-[11px] font-semibold flex items-center justify-center gap-1.5 border border-slate-300 shadow-2xs transition-all active:scale-95 whitespace-nowrap"
+                        className="cursor-pointer px-3.5 py-1 bg-[#E2E8F0] hover:bg-[#CBD5E1] text-black hover:text-black rounded-full text-[11px] font-semibold flex items-center justify-center gap-1.5 border border-slate-300 shadow-2xs transition-all active:scale-95 whitespace-nowrap"
                         title="Send me message"
                         aria-label="Send me message"
                       >
@@ -1917,7 +1917,7 @@ export default function App() {
                         <span className="text-black font-semibold">Send me message</span>
                       </button>
 
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2.5">
                         {/* 4th icon: Hand holding smartphone */}
                         <button
                           className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
@@ -2422,9 +2422,9 @@ export default function App() {
                   {/* 4. Action Button Row: Flame, Comment, Honeyjar, Phone Hand, Masked 2 Eyes, Long Gray Pill */}
                   <div className="flex items-end justify-between pt-2.5 pb-1 px-3.5 text-black border-t border-slate-100 bg-white">
                     {/* All icons grouped closely together on the left */}
-                    <div className="flex items-end gap-3.5 sm:gap-4">
+                    <div className="flex items-end gap-1.5 sm:gap-2">
                       {/* Left 3 icons: Flame, Comment, Honeyjar */}
-                      <div className="flex items-center gap-3.5 sm:gap-4 pb-0.5">
+                      <div className="flex items-center gap-3 pb-0.5">
                         {/* 1. Flame Icon */}
                         <button
                           onClick={() => toggleLikedCreatorPost(person.rank)}
@@ -2468,12 +2468,12 @@ export default function App() {
                         </button>
                       </div>
 
-                      {/* Phone Hand & Masked 2 Eyes directly beside the other 3 icons, with "Send me message" pill above them */}
-                      <div className="flex flex-col items-center gap-1.5">
+                      {/* Phone Hand & Masked 2 Eyes moved much more to the left */}
+                      <div className="flex flex-col items-center gap-1.5 -ml-0.5">
                         {/* Long gray pill like icon with "Send me message" */}
                         <button
                           onClick={() => setShowNormalMessagesScreen(true)}
-                          className="cursor-pointer px-4 py-1 bg-[#E2E8F0] hover:bg-[#CBD5E1] text-black hover:text-black rounded-full text-[11px] font-semibold flex items-center justify-center gap-1.5 border border-slate-300 shadow-2xs transition-all active:scale-95 whitespace-nowrap"
+                          className="cursor-pointer px-3.5 py-1 bg-[#E2E8F0] hover:bg-[#CBD5E1] text-black hover:text-black rounded-full text-[11px] font-semibold flex items-center justify-center gap-1.5 border border-slate-300 shadow-2xs transition-all active:scale-95 whitespace-nowrap"
                           title="Send me message"
                           aria-label="Send me message"
                         >
@@ -2481,7 +2481,7 @@ export default function App() {
                           <span className="text-black font-semibold">Send me message</span>
                         </button>
 
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2.5">
                           {/* 4. Phone Hand Icon */}
                           <button
                             className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
