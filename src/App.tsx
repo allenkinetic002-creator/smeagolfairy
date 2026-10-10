@@ -1559,7 +1559,7 @@ export default function App() {
   const [targetMessagePerson, setTargetMessagePerson] = useState<TargetMessagePerson | null>(null);
   const [showInfluenceRatingModal, setShowInfluenceRatingModal] = useState(false);
   const [activePhoneReactionId, setActivePhoneReactionId] = useState<string | null>('post-default-elena');
-  const [showBrokenPencil, setShowBrokenPencil] = useState(false);
+  const [isPencilMorphed, setIsPencilMorphed] = useState(false);
 
   const handleTogglePhoneReaction = (id: string) => {
     setActivePhoneReactionId((prev) => (prev === id ? null : id));
@@ -1709,43 +1709,16 @@ export default function App() {
               </button>
 
               {/* 3rd header icon: One-Eye Hat Guy icon beside Search */}
-              <div className="relative">
-                <button
-                  onClick={() => setShowBrokenPencil((prev) => !prev)}
-                  aria-label="One-Eye Hat Guy"
-                  title="One-Eye Hat Guy · Click to reveal broken pencil"
-                  className="hover:opacity-75 transition-transform active:scale-90 cursor-pointer p-0.5 flex items-center justify-center"
-                >
-                  <AeriOneEyeHatGuyIcon className="w-[33px] h-[33px] text-black" />
-                </button>
-
-                {/* Broken Pencil appears when clicking One-Eye Hat Guy */}
-                {showBrokenPencil && (
-                  <div
-                    onClick={() => setShowBrokenPencil(false)}
-                    className="absolute right-0 top-[calc(100%+8px)] z-50 bg-white/98 backdrop-blur-md rounded-2xl p-3 shadow-[0_12px_30px_-6px_rgba(0,0,0,0.3)] border border-slate-200 flex flex-col items-center animate-in fade-in zoom-in-95 duration-150 cursor-pointer hover:shadow-2xl select-none min-w-[260px]"
-                    title="Click to dismiss"
-                  >
-                    <div className="flex items-center justify-between w-full mb-1 px-1">
-                      <span className="text-[10px] font-black uppercase tracking-wider text-slate-500 flex items-center gap-1">
-                        ✏️ Snapped Pencil
-                      </span>
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setShowBrokenPencil(false);
-                        }}
-                        className="text-slate-400 hover:text-slate-700 p-0.5 cursor-pointer"
-                        aria-label="Close broken pencil"
-                      >
-                        <X className="w-3.5 h-3.5 stroke-[2.5]" />
-                      </button>
-                    </div>
-                    <BrokenPencilIcon className="w-60 sm:w-64 h-auto drop-shadow-sm hover:scale-105 active:scale-95 transition-transform" />
-                  </div>
-                )}
-              </div>
+              <button
+                onClick={() => setIsPencilMorphed((prev) => !prev)}
+                aria-label="One-Eye Hat Guy"
+                title={isPencilMorphed ? "One-Eye Hat Guy · Click to restore Follow button" : "One-Eye Hat Guy · Click to morph Follow into broken pencil"}
+                className={`transition-all active:scale-90 cursor-pointer p-0.5 flex items-center justify-center rounded-lg ${
+                  isPencilMorphed ? 'bg-amber-100 ring-2 ring-amber-400 scale-105' : 'hover:opacity-75'
+                }`}
+              >
+                <AeriOneEyeHatGuyIcon className="w-[33px] h-[33px] text-black" />
+              </button>
 
               <button
                 aria-label="Search"
@@ -1880,11 +1853,24 @@ export default function App() {
                   </div>
 
                   <div className="flex items-center gap-1.5">
-                    <button
-                      className="px-3 py-1 rounded-full bg-purple-50 hover:bg-purple-100 text-purple-700 font-extrabold text-[11px] transition-colors cursor-pointer"
-                    >
-                      Follow
-                    </button>
+                    {/* Follow button morphs into smaller broken pencil icon */}
+                    {isPencilMorphed ? (
+                      <button
+                        onClick={() => setIsPencilMorphed(false)}
+                        title="Snapped pencil · Click to restore Follow button"
+                        aria-label="Snapped pencil"
+                        className="h-[25px] px-1.5 rounded-full bg-amber-50 hover:bg-amber-100 border border-amber-300 shadow-2xs flex items-center justify-center transition-all duration-200 animate-in zoom-in-90 cursor-pointer active:scale-95"
+                      >
+                        <BrokenPencilIcon className="w-[52px] sm:w-[58px] h-auto" />
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => setIsPencilMorphed(true)}
+                        className="px-3 py-1 rounded-full bg-purple-50 hover:bg-purple-100 text-purple-700 font-extrabold text-[11px] transition-colors cursor-pointer active:scale-95"
+                      >
+                        Follow
+                      </button>
+                    )}
                     <button
                       aria-label="Post options"
                       className="p-1 text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
@@ -2452,16 +2438,27 @@ export default function App() {
                       <span className="text-[10px] font-black text-purple-700 bg-purple-50 border border-purple-100/80 px-2 py-0.5 rounded-full">
                         {CATEGORY_TABS.find((t) => t.id === selectedCategory)?.label}
                       </span>
-                      <button
-                        onClick={() => handleToggleFollow(selectedCategory, person.rank)}
-                        className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${
-                          person.isFollowing
-                            ? 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                            : 'bg-purple-600 hover:bg-purple-700 text-white shadow-xs'
-                        }`}
-                      >
-                        {person.isFollowing ? 'Following' : 'Follow'}
-                      </button>
+                      {isPencilMorphed ? (
+                        <button
+                          onClick={() => setIsPencilMorphed(false)}
+                          title="Snapped pencil · Click to restore Follow button"
+                          aria-label="Snapped pencil"
+                          className="h-[26px] px-1.5 rounded-full bg-amber-50 hover:bg-amber-100 border border-amber-300 shadow-2xs flex items-center justify-center transition-all duration-200 animate-in zoom-in-90 cursor-pointer active:scale-95"
+                        >
+                          <BrokenPencilIcon className="w-[52px] sm:w-[58px] h-auto" />
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => handleToggleFollow(selectedCategory, person.rank)}
+                          className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                            person.isFollowing
+                              ? 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                              : 'bg-purple-600 hover:bg-purple-700 text-white shadow-xs'
+                          }`}
+                        >
+                          {person.isFollowing ? 'Following' : 'Follow'}
+                        </button>
+                      )}
                       <button
                         aria-label="Options"
                         className="p-1 text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
@@ -2726,16 +2723,27 @@ export default function App() {
                   </h3>
 
                   <div className="flex items-center justify-between pt-3 mt-3 border-t border-slate-100">
-                    <button
-                      onClick={() => handleToggleFollow(selectedCategory, previewCreator.rank)}
-                      className={`px-3.5 py-1.5 rounded-full text-xs font-extrabold cursor-pointer transition-all ${
-                        previewCreator.isFollowing
-                          ? 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                          : 'bg-purple-600 hover:bg-purple-700 text-white shadow-2xs'
-                      }`}
-                    >
-                      {previewCreator.isFollowing ? 'Following' : 'Follow'}
-                    </button>
+                    {isPencilMorphed ? (
+                      <button
+                        onClick={() => setIsPencilMorphed(false)}
+                        title="Snapped pencil · Click to restore Follow button"
+                        aria-label="Snapped pencil"
+                        className="h-[28px] px-2 rounded-full bg-amber-50 hover:bg-amber-100 border border-amber-300 shadow-2xs flex items-center justify-center transition-all duration-200 animate-in zoom-in-90 cursor-pointer active:scale-95"
+                      >
+                        <BrokenPencilIcon className="w-[56px] sm:w-[62px] h-auto" />
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleToggleFollow(selectedCategory, previewCreator.rank)}
+                        className={`px-3.5 py-1.5 rounded-full text-xs font-extrabold cursor-pointer transition-all ${
+                          previewCreator.isFollowing
+                            ? 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                            : 'bg-purple-600 hover:bg-purple-700 text-white shadow-2xs'
+                        }`}
+                      >
+                        {previewCreator.isFollowing ? 'Following' : 'Follow'}
+                      </button>
+                    )}
 
                     <button
                       onClick={() => {

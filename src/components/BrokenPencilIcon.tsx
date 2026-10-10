@@ -13,13 +13,13 @@ export interface BrokenPencilIconProps extends React.SVGProps<SVGSVGElement> {
  */
 export const BrokenPencilIcon: React.FC<BrokenPencilIconProps> = ({
   size,
-  width = 240,
-  height = 80,
+  width,
+  height,
   className = '',
   ...props
 }) => {
-  const finalWidth = size || width;
-  const finalHeight = size ? undefined : height;
+  const finalWidth = size || width || (className ? undefined : 240);
+  const finalHeight = size || height || (className ? undefined : 80);
 
   return (
     <svg
