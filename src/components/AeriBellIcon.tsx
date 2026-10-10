@@ -7,85 +7,55 @@ export interface AeriBellIconProps extends React.SVGProps<SVGSVGElement> {
 
 /**
  * AeriBellIcon (Notification Icon)
- * Faithfully matches the uploaded headset profile illustration (rip3 (2).png):
- * - Stylized profile silhouette of a human head with prominent nose, chin, and angled neck collar
- * - Concentric outer halo arc curving behind the skull
- * - Inner headset band running up along the neck and arching over the cranium
- * - Solid circular ear-piece pad node
- * - Smooth swooping microphone boom terminating in a solid circular microphone node
+ * Faithfully matches the uploaded flame illustration (hon.png):
+ * - Stylized multi-tongued fire flame silhouette
+ * - Tall central flame tongue cresting smoothly at the top
+ * - Sharp dynamic left and right flame spurs
+ * - Bulbous base with open lower-center flame core cutout
+ * - Inner flame silhouette with secondary left spur and central inner tongue
+ * - Solid fill in currentColor (black when active, slate when inactive)
  */
 export const AeriBellIcon: React.FC<AeriBellIconProps> = ({
   size = 24,
-  strokeWidth = 2.6,
   className = '',
-  fill = '#FFFFFF',
+  fill = 'currentColor',
   ...props
 }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 34 34"
+      viewBox="0 0 100 100"
       width={size}
       height={size}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={strokeWidth}
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      fill={fill}
       className={className}
       style={{ shapeRendering: 'geometricPrecision' }}
       {...props}
     >
-      {/* 1. Outer Concentric Arc behind head */}
       <path
         d="
-          M 22.5 3.8
-          C 16.2 1.2 9.0 3.2 5.5 9.0
-          C 2.2 14.5 3.6 21.2 9.2 24.5
-        "
-      />
-
-      {/* 2. Head Silhouette: Cranium, Forehead, Nose, Chin, Jawline, and Angled Collar */}
-      <path
-        d="
-          M 21.2 7.2
-          C 23.8 10.5 25.2 14.2 25.2 17.5
-          L 28.5 21.0
-          L 25.0 21.2
-          C 25.0 22.8 26.4 24.2 26.4 25.6
-          C 26.4 27.8 23.2 28.6 21.4 29.5
-          L 20.6 33.0
-          L 10.6 27.2
-          L 12.2 22.0
-          C 12.0 15.2 16.0 8.0 21.2 7.2
+          M 57.0 92.0
+          C 70.0 92.0 85.0 85.0 91.5 73.0
+          C 96.0 64.0 94.0 52.0 88.0 44.0
+          C 84.5 39.5 80.5 37.0 77.0 38.5
+          C 74.0 44.0 73.5 50.0 73.0 56.0
+          C 72.0 46.0 67.0 30.0 62.0 19.0
+          C 60.5 15.0 59.0 11.5 58.0 10.0
+          C 54.0 14.0 44.0 23.0 38.5 33.0
+          C 35.0 39.5 33.0 46.5 31.0 52.0
+          C 28.0 46.0 23.0 38.0 15.0 32.0
+          C 17.0 42.0 15.0 54.0 10.0 63.0
+          C 6.5 70.0 7.0 79.0 11.5 86.0
+          C 16.0 92.0 28.0 93.0 38.0 91.5
+          C 33.0 86.0 29.5 79.0 30.0 72.0
+          C 32.0 75.0 35.0 78.0 37.5 78.0
+          C 36.5 70.0 40.0 60.0 45.0 54.0
+          C 49.0 49.5 52.0 48.0 53.0 50.0
+          C 52.5 55.0 53.0 63.0 58.0 72.0
+          C 63.5 81.0 66.5 87.0 57.0 92.0
           Z
         "
-        fill={fill}
       />
-
-      {/* 3. Inner Headset Arc */}
-      <path
-        d="
-          M 12.6 26.0
-          L 13.8 20.0
-          C 13.8 13.8 16.5 10.5 20.0 10.5
-          C 22.8 10.5 23.8 13.8 23.8 16.5
-        "
-      />
-
-      {/* 4. Microphone Boom */}
-      <path
-        d="
-          M 23.8 16.5
-          C 23.8 21.0 20.8 23.8 16.8 23.5
-        "
-      />
-
-      {/* 5. Ear Pad Node */}
-      <circle cx="23.8" cy="16.5" r="2.2" fill="currentColor" stroke="none" />
-
-      {/* 6. Microphone Tip Node */}
-      <circle cx="16.8" cy="23.5" r="1.8" fill="currentColor" stroke="none" />
     </svg>
   );
 };
