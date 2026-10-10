@@ -1917,8 +1917,8 @@ export default function App() {
                         <span className="text-black font-semibold">Send me message</span>
                       </button>
 
-                      {/* Only those two icons moved slightly right */}
-                      <div className="flex items-center gap-2.5 -ml-1 sm:-ml-1">
+                      {/* Only those two icons moved slightly right again */}
+                      <div className="flex items-center gap-2.5 ml-0.5 sm:ml-1">
                         {/* 4th icon: Hand holding smartphone */}
                         <button
                           className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
@@ -2482,8 +2482,8 @@ export default function App() {
                           <span className="text-black font-semibold">Send me message</span>
                         </button>
 
-                        {/* Only those two icons moved slightly right */}
-                        <div className="flex items-center gap-2 -ml-1 sm:-ml-1">
+                        {/* Only those two icons moved slightly right again */}
+                        <div className="flex items-center gap-2 ml-0.5 sm:ml-1">
                           {/* 4. Phone Hand Icon */}
                           <button
                             className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
