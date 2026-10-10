@@ -1500,14 +1500,14 @@ export default function App() {
       authorName: 'Elena Vance',
       authorHandle: '@elena_aeri',
       authorAvatar: elenaAvatar,
-      isVerified: true,
+      isVerified: false,
       timeAgo: '15m ago',
       isTweet: true,
-      tweetContent: 'Just tuned into the fairy frequency 🍯✨ New creative drop coming soon. Buzz your thoughts below and make sure to grab the honey jar before sunset! 🧚💜 #fairy #honeyjar #creativevibes',
+      tweetContent: 'Working on new designs today. Excited to share what we have been building! What is everyone creating this weekend?',
       mediaType: 'tweet',
-      caption: 'Just tuned into the fairy frequency 🍯✨ New creative drop coming soon.',
-      tags: ['#fairy', '#honeyjar', '#creativevibes'],
-      audioTitle: 'Fairy Chimes',
+      caption: 'Working on new designs today.',
+      tags: ['#design', '#creators', '#build'],
+      audioTitle: 'Original Audio',
       likeCount: 342,
       isLiked: false,
       isTrending: true,
@@ -1540,15 +1540,15 @@ export default function App() {
       authorName: 'Elena Vance',
       authorHandle: '@elena_aeri',
       authorAvatar: elenaAvatar,
-      isVerified: true,
+      isVerified: false,
       timeAgo: 'Just now',
       isTweet: true,
       tweetContent: payload.text,
       mediaType: payload.mediaUrl ? 'image' : 'tweet',
       mediaUrl: payload.mediaUrl,
       caption: payload.text,
-      tags: payload.tags && payload.tags.length > 0 ? payload.tags : ['#fairy', '#honeyjar'],
-      audioTitle: 'Fairy Chimes',
+      tags: payload.tags && payload.tags.length > 0 ? payload.tags : ['#creators', '#design'],
+      audioTitle: 'Original Audio',
       likeCount: 1,
       isLiked: true,
       isTrending: true,
@@ -1563,7 +1563,7 @@ export default function App() {
     setShowNormalMessagesScreen(false);
     setTargetMessagePerson(null);
 
-    setTweetSuccessToast('Your Tweet was posted to Fairy! 🍯');
+    setTweetSuccessToast('Your Tweet was posted!');
     setTimeout(() => {
       setTweetSuccessToast(null);
     }, 3500);
@@ -2006,8 +2006,8 @@ export default function App() {
             {/* Success toast if tweet published */}
             {tweetSuccessToast && (
               <div className="sticky top-1 z-30 w-full flex justify-center animate-fadeIn pointer-events-none">
-                <div className="bg-purple-900/95 text-white text-xs font-bold px-4 py-2 rounded-full shadow-lg backdrop-blur-xs flex items-center gap-2 border border-purple-400/40">
-                  <FairyPotIcon size={14} className="text-amber-300 stroke-amber-300 stroke-[2.2]" />
+                <div className="bg-slate-900/95 text-white text-xs font-bold px-4 py-2 rounded-full shadow-lg backdrop-blur-xs flex items-center gap-2 border border-slate-700">
+                  <AeriFlameIcon filled className="w-3.5 h-3.5 text-[#FF6D00]" />
                   <span>{tweetSuccessToast}</span>
                 </div>
               </div>
