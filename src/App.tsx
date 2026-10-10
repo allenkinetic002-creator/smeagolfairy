@@ -1712,10 +1712,8 @@ export default function App() {
               <button
                 onClick={() => setIsPencilMorphed((prev) => !prev)}
                 aria-label="One-Eye Hat Guy"
-                title={isPencilMorphed ? "One-Eye Hat Guy · Click to restore Follow button" : "One-Eye Hat Guy · Click to morph Follow into broken pencil"}
-                className={`transition-all active:scale-90 cursor-pointer p-0.5 flex items-center justify-center rounded-lg ${
-                  isPencilMorphed ? 'bg-amber-100 ring-2 ring-amber-400 scale-105' : 'hover:opacity-75'
-                }`}
+                title="One-Eye Hat Guy"
+                className="hover:opacity-75 transition-opacity cursor-pointer p-0.5 flex items-center justify-center"
               >
                 <AeriOneEyeHatGuyIcon className="w-[33px] h-[33px] text-black" />
               </button>
