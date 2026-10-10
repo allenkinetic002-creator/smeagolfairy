@@ -2043,29 +2043,35 @@ export default function App() {
             </span>
           </div>
 
-          {/* RANK SWITCHER BAR (1, 2, 3... and All - where the buttons ARE them) */}
-          <div className="px-3.5 py-2 bg-white border-b border-slate-100 flex items-center gap-1.5 overflow-x-auto scrollbar-none shrink-0 shadow-2xs">
-            {/* All 10 List Toggle Button */}
+          {/* RANK SWITCHER BAR (1, 2, 3... 10 where the buttons ARE them with profile pic and rank) */}
+          <div className="px-3 py-2 bg-white border-b border-slate-100 flex items-center gap-1.5 overflow-x-auto scrollbar-none shrink-0 shadow-2xs sticky top-0 z-10">
+            {/* Quick Jump to Top */}
             <button
-              onClick={() => setSelectedRank('all')}
-              className={`px-3 py-1.5 rounded-xl font-black text-xs transition-all cursor-pointer flex items-center gap-1.5 shrink-0 border ${
-                selectedRank === 'all'
-                  ? 'bg-purple-600 border-purple-600 text-white shadow-xs scale-102'
-                  : 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-700'
-              }`}
+              onClick={() => {
+                setSelectedRank(1);
+                document.getElementById('creator-rank-card-1')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="px-2.5 py-1.5 rounded-xl font-black text-xs transition-all cursor-pointer flex items-center gap-1 shrink-0 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700"
+              title="Jump to Top #1"
             >
-              <Trophy className="w-3.5 h-3.5" />
-              <span>All 10</span>
+              <Trophy className="w-3.5 h-3.5 text-amber-500" />
+              <span>Top</span>
             </button>
 
-            {/* Buttons 1, 2, 3 ... 10 where the buttons ARE them with profile pic and rank */}
+            {/* Buttons 1, 2, 3 ... 10 where the buttons ARE them */}
             {currentCreators.map((creator) => {
               const isSelected = selectedRank === creator.rank;
               return (
                 <button
                   key={creator.rank}
-                  onClick={() => setSelectedRank(creator.rank)}
-                  className={`flex items-center gap-2 px-2.5 py-1.5 rounded-xl transition-all cursor-pointer shrink-0 border ${
+                  onClick={() => {
+                    setSelectedRank(creator.rank);
+                    const el = document.getElementById(`creator-rank-card-${creator.rank}`);
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                  }}
+                  className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl transition-all cursor-pointer shrink-0 border ${
                     isSelected
                       ? creator.rank === 1
                         ? 'bg-amber-50 border-amber-400 text-amber-950 ring-2 ring-amber-400/50 shadow-xs'
@@ -2076,7 +2082,7 @@ export default function App() {
                         : 'bg-purple-50 border-purple-500 text-purple-950 ring-2 ring-purple-400/40 shadow-xs'
                       : 'bg-white hover:bg-slate-50 border-slate-200 text-slate-700'
                   }`}
-                  title={`Rank #${creator.rank}: ${creator.name}`}
+                  title={`Jump to #${creator.rank}: ${creator.name}`}
                 >
                   {/* Rank Number Badge */}
                   <span
@@ -2116,7 +2122,7 @@ export default function App() {
                   </div>
 
                   {/* Creator Name */}
-                  <span className="text-xs font-extrabold max-w-[85px] truncate leading-tight">
+                  <span className="text-xs font-extrabold max-w-[80px] truncate leading-tight">
                     {creator.name.split(' ')[0]}
                   </span>
                 </button>
@@ -2124,396 +2130,176 @@ export default function App() {
             })}
           </div>
 
-          {/* MAIN DISPLAY AREA: Spotlight Rank View (1, 2, 3...) OR All 10 List */}
-          {selectedRank !== 'all' ? (
-            (() => {
-              const person = currentCreators.find((c) => c.rank === selectedRank) || currentCreators[0];
-              return (
-                <div className="flex-1 overflow-y-auto p-3.5 space-y-3 scrollbar-thin animate-fadeIn">
-                  {/* Creator Spotlight Showcase Card */}
-                  <div
-                    className={`bg-white rounded-3xl p-4 border transition-all shadow-md ${
-                      person.rank === 1
-                        ? 'border-amber-300 ring-2 ring-amber-300/40 bg-gradient-to-b from-amber-50/30 via-white to-white'
+          {/* CONTINUOUS SCROLLABLE CREATORS FEED (Scroll freely through 1, 2, 3... 10 with profile pic & their post) */}
+          <div className="flex-1 overflow-y-auto p-3.5 space-y-4 scrollbar-thin">
+            {currentCreators.map((person) => (
+              <div
+                key={person.rank}
+                id={`creator-rank-card-${person.rank}`}
+                className={`bg-white rounded-3xl p-3.5 border transition-all shadow-xs scroll-mt-2 ${
+                  person.rank === 1
+                    ? 'border-amber-300 ring-2 ring-amber-300/40 bg-gradient-to-b from-amber-50/25 via-white to-white'
+                    : person.rank === 2
+                    ? 'border-slate-300 ring-1 ring-slate-200'
+                    : person.rank === 3
+                    ? 'border-amber-700/30 ring-1 ring-amber-700/20'
+                    : 'border-slate-200'
+                }`}
+              >
+                {/* Header Row: Rank Badge & Category Info */}
+                <div className="flex items-center justify-between pb-2 mb-2.5 border-b border-slate-100">
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={`w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shadow-xs shrink-0 ${
+                        person.rank === 1
+                          ? 'bg-amber-400 text-slate-950 ring-1 ring-amber-500/40'
+                          : person.rank === 2
+                          ? 'bg-slate-300 text-slate-900'
+                          : person.rank === 3
+                          ? 'bg-amber-700 text-white'
+                          : 'bg-purple-600 text-white'
+                      }`}
+                    >
+                      #{person.rank}
+                    </span>
+                    <span className="text-xs font-black text-slate-900 flex items-center gap-1">
+                      {person.rank === 1
+                        ? '👑 Top #1 Creator'
                         : person.rank === 2
-                        ? 'border-slate-300 ring-2 ring-slate-200'
+                        ? '🥈 #2 Runner-Up'
                         : person.rank === 3
-                        ? 'border-amber-700/30 ring-2 ring-amber-700/20'
-                        : 'border-slate-200 ring-1 ring-slate-100'
-                    }`}
-                  >
-                    {/* Rank Ribbon Header */}
-                    <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100">
-                      <div className="flex items-center gap-2">
-                        <span
-                          className={`w-7 h-7 rounded-full flex items-center justify-center font-black text-xs shadow-xs ${
-                            person.rank === 1
-                              ? 'bg-amber-400 text-slate-950 ring-2 ring-amber-500/40'
-                              : person.rank === 2
-                              ? 'bg-slate-300 text-slate-900'
-                              : person.rank === 3
-                              ? 'bg-amber-700 text-white'
-                              : 'bg-purple-600 text-white'
-                          }`}
-                        >
-                          #{person.rank}
-                        </span>
-                        <div>
-                          <span className="text-xs font-black text-slate-900 flex items-center gap-1 leading-none">
-                            {person.rank === 1
-                              ? '👑 Top #1 Ranked Creator'
-                              : person.rank === 2
-                              ? '🥈 #2 Runner-Up Creator'
-                              : person.rank === 3
-                              ? '🥉 #3 Podium Creator'
-                              : `#${person.rank} Top Creator`}
-                          </span>
-                          <span className="text-[10px] text-slate-400 font-medium mt-0.5 inline-block">
-                            {CATEGORY_TABS.find((t) => t.id === selectedCategory)?.label} Leaderboard
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Rank Stepper (Prev / Next) */}
-                      <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
-                        <button
-                          onClick={() => setSelectedRank(person.rank > 1 ? person.rank - 1 : currentCreators.length)}
-                          className="px-2 py-0.5 text-[10px] font-bold text-slate-700 hover:text-black hover:bg-white rounded transition-colors cursor-pointer"
-                          title="Previous Creator"
-                        >
-                          &larr; Prev
-                        </button>
-                        <span className="text-[10px] text-slate-500 font-bold px-1">{person.rank}/10</span>
-                        <button
-                          onClick={() => setSelectedRank(person.rank < currentCreators.length ? person.rank + 1 : 1)}
-                          className="px-2 py-0.5 text-[10px] font-bold text-slate-700 hover:text-black hover:bg-white rounded transition-colors cursor-pointer"
-                          title="Next Creator"
-                        >
-                          Next &rarr;
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Profile Header: Avatar, Name, Handle, Upvote & Follow buttons */}
-                    <div className="flex items-center justify-between mb-3.5">
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div className="relative shrink-0">
-                          {person.avatarUrl ? (
-                            <img
-                              src={person.avatarUrl}
-                              alt={person.name}
-                              className="w-13 h-13 rounded-full object-cover ring-2 ring-purple-600/30 p-0.5 shadow-xs"
-                            />
-                          ) : (
-                            <div
-                              className={`w-13 h-13 rounded-full ${person.avatarBg} text-white font-black flex items-center justify-center text-lg shadow-xs ring-2 ring-purple-600/20`}
-                            >
-                              {person.avatarInitial}
-                            </div>
-                          )}
-                          <span className="absolute -bottom-1 -right-1 text-sm leading-none">
-                            {person.rank === 1 ? '👑' : person.rank === 2 ? '🥈' : person.rank === 3 ? '🥉' : '✨'}
-                          </span>
-                        </div>
-
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-1.5">
-                            <h3 className="font-black text-sm text-slate-900 leading-tight truncate">
-                              {person.name}
-                            </h3>
-                            <CheckCircle2 className="w-3.5 h-3.5 text-blue-500 fill-blue-500 shrink-0" />
-                          </div>
-                          <p className="text-xs text-slate-500 font-medium leading-tight truncate mt-0.5">
-                            {person.handle}
-                          </p>
-                          <p className="text-[11px] text-slate-600 font-semibold leading-tight truncate mt-0.5">
-                            {person.role} {person.location ? `· ${person.location}` : ''}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Action Buttons: Upvote & Follow */}
-                      <div className="flex flex-col items-end gap-1.5 shrink-0 ml-2">
-                        <button
-                          onClick={() => handleToggleUpvoteCreator(selectedCategory, person.rank)}
-                          className={`px-3 py-1.5 rounded-full text-xs font-black flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shadow-xs ${
-                            person.isUpvoted
-                              ? 'bg-blue-600 text-white ring-2 ring-blue-500/30'
-                              : 'bg-slate-100 text-slate-800 hover:bg-slate-200 border border-slate-200'
-                          }`}
-                          title="Give thumbs up"
-                        >
-                          <AeriDiggingDogIcon
-                            className={`w-4 h-4 ${
-                              person.isUpvoted ? 'fill-white stroke-white' : 'stroke-[1.8]'
-                            }`}
-                            filled={person.isUpvoted}
-                          />
-                          <span className="tabular-nums">
-                            {(person.upvotes / 1000).toFixed(1)}k
-                          </span>
-                        </button>
-
-                        <button
-                          onClick={() => handleToggleFollow(selectedCategory, person.rank)}
-                          className={`px-3.5 py-1 rounded-full text-[11px] font-extrabold transition-all active:scale-95 cursor-pointer ${
-                            person.isFollowing
-                              ? 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                              : 'bg-purple-600 hover:bg-purple-700 text-white shadow-xs'
-                          }`}
-                        >
-                          {person.isFollowing ? 'Following' : 'Follow'}
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Featured Post Card (Their Post!) */}
-                    <div className="rounded-2xl overflow-hidden border border-slate-200/80 bg-slate-50 shadow-2xs">
-                      {/* Post Media */}
-                      <div className="relative w-full h-52 bg-slate-900 overflow-hidden group">
-                        {person.topPost.imageUrl ? (
-                          <img
-                            src={person.topPost.imageUrl}
-                            alt={person.topPost.title}
-                            className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
-                          />
-                        ) : (
-                          <div
-                            className={`w-full h-full bg-gradient-to-tr ${person.topPost.gradientBg} flex flex-col items-center justify-center text-white p-4 text-center`}
-                          >
-                            <Sparkles className="w-10 h-10 opacity-80 mb-2 animate-pulse" />
-                            <span className="text-base font-black tracking-tight">{person.topPost.title}</span>
-                          </div>
-                        )}
-
-                        {/* Top tag & audio indicators */}
-                        <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
-                          <span className="text-[10px] uppercase font-black tracking-wider text-white bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/20">
-                            {person.topPost.tag || 'Top Creation'}
-                          </span>
-                        </div>
-
-                        {person.topPost.hasAudio && (
-                          <div className="absolute bottom-2.5 right-2.5 bg-black/60 backdrop-blur-md px-2.5 py-0.5 rounded-full flex items-center gap-1 text-white border border-white/20">
-                            <Music className="w-3 h-3" />
-                            <span className="text-[10px] font-bold">
-                              {person.topPost.audioTitle || 'Featured Track'}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Post Writing & Caption */}
-                      <div className="p-3 bg-white">
-                        <h4 className="text-sm font-black text-slate-900 leading-snug">
-                          {person.topPost.title}
-                        </h4>
-                        <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                          Created by <span className="font-extrabold text-slate-900">{person.name}</span> for Fairy&apos;s {CATEGORY_TABS.find((t) => t.id === selectedCategory)?.label} ranking. Ranked #{person.rank} with {(person.upvotes / 1000).toFixed(1)}k upvotes.
-                        </p>
-
-                        {/* Engagement stats */}
-                        <div className="flex items-center justify-between pt-2.5 mt-2.5 border-t border-slate-100 text-xs text-slate-500 font-semibold">
-                          <div className="flex items-center gap-3">
-                            <span className="flex items-center gap-1 text-blue-600 font-bold">
-                              <AeriDiggingDogIcon className="w-3.5 h-3.5 text-blue-600 stroke-[1.8]" />
-                              {person.topPost.likes} upvotes
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <AeriCommentIcon className="w-3.5 h-3.5 text-slate-400" />
-                              {person.topPost.comments} comments
-                            </span>
-                          </div>
-                          <button
-                            onClick={() => setPreviewCreator(person)}
-                            className="text-purple-600 hover:text-purple-800 font-black text-[11px] cursor-pointer flex items-center gap-0.5"
-                          >
-                            Full View &rarr;
-                          </button>
-                        </div>
-                      </div>
-                    </div>
+                        ? '🥉 #3 Podium'
+                        : `Top #${person.rank}`}
+                    </span>
                   </div>
+
+                  <span className="text-[10px] text-slate-400 font-semibold">
+                    {CATEGORY_TABS.find((t) => t.id === selectedCategory)?.label}
+                  </span>
                 </div>
-              );
-            })()
-          ) : (
-            /* Top 10 Creators Scrollable List (All 10 View) */
-            <div className="flex-1 overflow-y-auto p-3 space-y-2.5 scrollbar-thin">
-              {currentCreators.map((person) => (
-                <div
-                  key={person.rank}
-                  className={`bg-white rounded-2xl p-3 border transition-all shadow-xs ${
-                    person.rank === 1
-                      ? 'border-amber-300 ring-1 ring-amber-300/40 bg-gradient-to-b from-amber-50/25 to-white'
-                      : person.rank === 2
-                      ? 'border-slate-300 ring-1 ring-slate-200'
-                      : person.rank === 3
-                      ? 'border-amber-700/30 ring-1 ring-amber-700/20'
-                      : 'border-slate-100'
-                  }`}
-                >
-                  {/* Profile Header Row */}
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      {/* Rank Badge */}
-                      <div
-                        className={`w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shrink-0 ${
-                          person.rank === 1
-                            ? 'bg-amber-400 text-slate-950 shadow-xs ring-1 ring-amber-500/40'
-                            : person.rank === 2
-                            ? 'bg-slate-300 text-slate-900'
-                            : person.rank === 3
-                            ? 'bg-amber-700/80 text-white'
-                            : 'bg-slate-100 text-slate-600'
-                        }`}
-                      >
-                        {person.rank}
-                      </div>
 
-                      {/* Profile Avatar / Icon */}
-                      <div className="relative shrink-0">
-                        {person.avatarUrl ? (
-                          <img
-                            src={person.avatarUrl}
-                            alt={person.name}
-                            className="w-9 h-9 rounded-full object-cover border border-white shadow-xs"
-                          />
-                        ) : (
-                          <div
-                            className={`w-9 h-9 rounded-full ${person.avatarBg} text-white font-extrabold flex items-center justify-center text-xs shadow-xs border border-white`}
-                          >
-                            {person.avatarInitial}
-                          </div>
-                        )}
-                        {person.rank <= 3 && (
-                          <span className="absolute -bottom-1 -right-1 text-[11px] leading-none">
-                            {person.rank === 1 ? '👑' : person.rank === 2 ? '🥈' : '🥉'}
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Name, Handle & Bio / City */}
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-1">
-                          <span className="font-extrabold text-xs text-slate-900 leading-tight truncate">
-                            {person.name}
-                          </span>
-                          <CheckCircle2 className="w-3.5 h-3.5 text-blue-500 fill-blue-500 shrink-0" />
-                          {person.location && (
-                            <span className="text-[9.5px] text-slate-400 font-medium truncate hidden sm:inline">
-                              &middot; {person.location}
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-[10.5px] text-slate-400 leading-tight truncate">
-                          {person.handle} &middot;{' '}
-                          <span className="text-slate-600 font-medium">
-                            {person.role}
-                          </span>
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Upvote & Follow Button */}
-                    <div className="flex items-center gap-1.5 shrink-0 ml-2">
-                      <button
-                        onClick={() => handleToggleUpvoteCreator(selectedCategory, person.rank)}
-                        className={`px-2.5 py-1 rounded-full text-xs font-extrabold flex items-center gap-1.5 transition-all cursor-pointer ${
-                          person.isUpvoted
-                            ? 'bg-blue-600 text-white shadow-xs'
-                            : 'bg-slate-100 text-slate-800 hover:bg-slate-200'
-                        }`}
-                        title="Give thumbs up"
-                      >
-                        <AeriDiggingDogIcon
-                          className={`w-4 h-4 ${
-                            person.isUpvoted ? 'fill-white stroke-white' : 'stroke-[1.8]'
-                          }`}
-                          filled={person.isUpvoted}
-                        />
-                        <span className="tabular-nums">
-                          {(person.upvotes / 1000).toFixed(1)}k
-                        </span>
-                      </button>
-
-                      <button
-                        onClick={() => handleToggleFollow(selectedCategory, person.rank)}
-                        className={`px-2.5 py-1 rounded-full text-[10.5px] font-bold transition-all cursor-pointer ${
-                          person.isFollowing
-                            ? 'bg-slate-100 text-slate-600'
-                            : 'bg-purple-600 hover:bg-purple-700 text-white shadow-2xs'
-                        }`}
-                      >
-                        {person.isFollowing ? 'Following' : 'Follow'}
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Featured Profile Post Card */}
-                  <div
-                    onClick={() => setPreviewCreator(person)}
-                    className="bg-slate-50 hover:bg-slate-100/90 rounded-xl p-2.5 transition-colors cursor-pointer border border-slate-100 flex items-center gap-2.5 group"
-                  >
-                    <div className="w-14 h-14 rounded-lg overflow-hidden shrink-0 relative shadow-2xs">
-                      {person.topPost.imageUrl ? (
+                {/* Profile Row: Pic, Name, Handle, Role, and Follow Button (NO UPVOTE) */}
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="relative shrink-0">
+                      {person.avatarUrl ? (
                         <img
-                          src={person.topPost.imageUrl}
-                          alt={person.topPost.title}
-                          className="w-full h-full object-cover group-hover:scale-102 transition-transform"
+                          src={person.avatarUrl}
+                          alt={person.name}
+                          className="w-11 h-11 rounded-full object-cover ring-2 ring-purple-600/30 p-0.5 shadow-xs"
                         />
                       ) : (
                         <div
-                          className={`w-full h-full bg-gradient-to-tr ${person.topPost.gradientBg} flex items-center justify-center text-white`}
+                          className={`w-11 h-11 rounded-full ${person.avatarBg} text-white font-black flex items-center justify-center text-base shadow-xs ring-1 ring-purple-600/20`}
                         >
-                          <Sparkles className="w-5 h-5 opacity-70" />
+                          {person.avatarInitial}
                         </div>
                       )}
-
-                      {person.topPost.hasAudio && (
-                        <div className="absolute bottom-1 right-1 bg-black/60 rounded-full p-0.5 text-white">
-                          <Music className="w-2.5 h-2.5" />
-                        </div>
+                      {person.rank <= 3 && (
+                        <span className="absolute -bottom-1 -right-1 text-xs leading-none">
+                          {person.rank === 1 ? '👑' : person.rank === 2 ? '🥈' : '🥉'}
+                        </span>
                       )}
                     </div>
 
-                    <div className="flex-1 min-w-0">
+                    <div className="min-w-0">
                       <div className="flex items-center gap-1.5">
-                        <span className="text-[9px] uppercase font-bold tracking-wider text-purple-700 bg-purple-100/80 px-1.5 py-0.5 rounded">
-                          {person.topPost.tag || 'Top Post'}
-                        </span>
-                        {person.location && (
-                          <span className="text-[9px] text-slate-400 font-medium truncate sm:hidden">
-                            {person.location}
-                          </span>
-                        )}
+                        <h3 className="font-extrabold text-xs text-slate-900 leading-tight truncate">
+                          {person.name}
+                        </h3>
+                        <CheckCircle2 className="w-3.5 h-3.5 text-blue-500 fill-blue-500 shrink-0" />
                       </div>
-                      <h4 className="text-[11.5px] font-bold text-slate-900 truncate mt-0.5 group-hover:text-purple-700 transition-colors leading-snug">
-                        {person.topPost.title}
-                      </h4>
-                      <div className="flex items-center gap-3 mt-1 text-[10px] text-slate-500 font-medium">
-                        <span className="flex items-center gap-1">
-                          <AeriDiggingDogIcon className="w-3.5 h-3.5 text-blue-600 stroke-[1.8]" />
-                          {person.topPost.likes}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <AeriCommentIcon className="w-3 h-3 text-slate-400" />
-                          {person.topPost.comments}
-                        </span>
-                        {person.topPost.hasAudio && (
-                          <span className="truncate text-slate-400 text-[9.5px]">
-                            &middot; {person.topPost.audioTitle}
-                          </span>
-                        )}
+                      <p className="text-[11px] text-slate-400 font-medium leading-tight truncate mt-0.5">
+                        {person.handle}
+                      </p>
+                      <p className="text-[10.5px] text-slate-600 font-semibold leading-tight truncate mt-0.5">
+                        {person.role} {person.location ? `· ${person.location}` : ''}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Clean Follow Button */}
+                  <button
+                    onClick={() => handleToggleFollow(selectedCategory, person.rank)}
+                    className={`px-3.5 py-1 rounded-full text-xs font-bold transition-all cursor-pointer shrink-0 ml-2 ${
+                      person.isFollowing
+                        ? 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                        : 'bg-purple-600 hover:bg-purple-700 text-white shadow-xs'
+                    }`}
+                  >
+                    {person.isFollowing ? 'Following' : 'Follow'}
+                  </button>
+                </div>
+
+                {/* Their Post Card */}
+                <div className="rounded-2xl overflow-hidden border border-slate-200/80 bg-slate-50 shadow-2xs">
+                  {/* Media Preview */}
+                  <div
+                    onClick={() => setPreviewCreator(person)}
+                    className="relative w-full h-44 bg-slate-900 overflow-hidden group cursor-pointer"
+                  >
+                    {person.topPost.imageUrl ? (
+                      <img
+                        src={person.topPost.imageUrl}
+                        alt={person.topPost.title}
+                        className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
+                      />
+                    ) : (
+                      <div
+                        className={`w-full h-full bg-gradient-to-tr ${person.topPost.gradientBg} flex flex-col items-center justify-center text-white p-4 text-center`}
+                      >
+                        <Sparkles className="w-8 h-8 opacity-80 mb-1.5 animate-pulse" />
+                        <span className="text-sm font-black tracking-tight">{person.topPost.title}</span>
                       </div>
+                    )}
+
+                    {/* Tag badge */}
+                    <div className="absolute top-2 left-2 flex items-center gap-1.5">
+                      <span className="text-[9.5px] uppercase font-black tracking-wider text-white bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/20">
+                        {person.topPost.tag || 'Top Post'}
+                      </span>
                     </div>
 
-                    <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-slate-800 transition-colors shrink-0" />
+                    {/* Audio pill if any */}
+                    {person.topPost.hasAudio && (
+                      <div className="absolute bottom-2 right-2 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-full flex items-center gap-1 text-white border border-white/20">
+                        <Music className="w-2.5 h-2.5" />
+                        <span className="text-[9.5px] font-bold">
+                          {person.topPost.audioTitle || 'Track'}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Post Writing & Caption */}
+                  <div className="p-3 bg-white">
+                    <h4 className="text-xs font-black text-slate-900 leading-snug">
+                      {person.topPost.title}
+                    </h4>
+                    <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                      Created by <span className="font-extrabold text-slate-900">{person.name}</span> &middot; Ranked #{person.rank} in {CATEGORY_TABS.find((t) => t.id === selectedCategory)?.label}.
+                    </p>
+
+                    {/* Post Footer: Comments and View (NO UPVOTE) */}
+                    <div className="flex items-center justify-between pt-2 mt-2 border-t border-slate-100 text-xs text-slate-500 font-semibold">
+                      <span className="flex items-center gap-1.5 text-slate-600 font-medium">
+                        <AeriCommentIcon className="w-3.5 h-3.5 text-slate-400" />
+                        <span>{person.topPost.comments} comments</span>
+                      </span>
+
+                      <button
+                        onClick={() => setPreviewCreator(person)}
+                        className="text-purple-600 hover:text-purple-800 font-bold text-xs cursor-pointer flex items-center gap-1"
+                      >
+                        <span>Full View</span>
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
+              </div>
+            ))}
+          </div>
 
           {/* Modal to Preview Creator's Post when tapped */}
           {previewCreator && (
@@ -2581,15 +2367,14 @@ export default function App() {
 
                   <div className="flex items-center justify-between pt-3 mt-3 border-t border-slate-100">
                     <button
-                      onClick={() => handleToggleUpvoteCreator(selectedCategory, previewCreator.rank)}
-                      className={`px-3 py-1.5 rounded-full text-xs font-extrabold flex items-center gap-1.5 cursor-pointer ${
-                        previewCreator.isUpvoted
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-slate-100 text-slate-800'
+                      onClick={() => handleToggleFollow(selectedCategory, previewCreator.rank)}
+                      className={`px-3.5 py-1.5 rounded-full text-xs font-extrabold cursor-pointer transition-all ${
+                        previewCreator.isFollowing
+                          ? 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                          : 'bg-purple-600 hover:bg-purple-700 text-white shadow-2xs'
                       }`}
                     >
-                      <AeriDiggingDogIcon className="w-4 h-4 stroke-[1.8]" filled={previewCreator.isUpvoted} />
-                      {(previewCreator.upvotes / 1000).toFixed(1)}k Upvotes
+                      {previewCreator.isFollowing ? 'Following' : 'Follow'}
                     </button>
 
                     <button
