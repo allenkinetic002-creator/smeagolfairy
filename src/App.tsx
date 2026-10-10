@@ -1341,6 +1341,88 @@ const CATEGORY_TABS = [
   { id: 'innovators', label: 'Innovators', icon: Lightbulb, emoji: '💡' },
 ];
 
+const CATEGORY_POST_IMAGES: Record<string, string[]> = {
+  new_artists: [
+    topPostPhoto,
+    'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1549490349-8643362247b5?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1572945758420-798858348ee1?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1000&q=80',
+  ],
+  comedians: [
+    'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1526478806334-5fd488fcaabc?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1000&q=80',
+  ],
+  photographers: [
+    postImage,
+    topPostPhoto,
+    'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80',
+  ],
+  character_designers: [
+    charDesignPhoto,
+    'https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1618172193763-c511deb635ca?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1569705460033-cfaa4bf9f822?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1580927752452-89d86da3fa0a?auto=format&fit=crop&w=1000&q=80',
+  ],
+  us_top: [
+    topPostPhoto,
+    postImage,
+    'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1534430480872-3498386e7856?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1000&q=80',
+  ],
+  innovators: [
+    topPostPhoto,
+    'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=1000&q=80',
+  ],
+};
+
+function getCreatorPostImage(creator: Creator): string {
+  if (creator.topPost.imageUrl) return creator.topPost.imageUrl;
+  const list = CATEGORY_POST_IMAGES[creator.category];
+  if (list && list[creator.rank - 1]) return list[creator.rank - 1];
+  return topPostPhoto;
+}
+
 export default function App() {
   // Nav index: 0 = Home (Post Screen), 1 = Thumbs Up (Top 10 People Leaderboard), 2 = Comments, 3 = Trending, 4 = Profile
   const [activeNavIndex, setActiveNavIndex] = useState(0);
@@ -2059,19 +2141,23 @@ export default function App() {
             </span>
           </div>
 
-          {/* RANK SWITCHER BAR (1, 2, 3... 10 where the buttons ARE them with profile pic and rank) */}
+          {/* RANK SWITCHER BAR (1, 2, 3... 10 and All 10 Feed toggle) */}
           <div className="px-3 py-2 bg-white border-b border-slate-100 flex items-center gap-1.5 overflow-x-auto scrollbar-none shrink-0 shadow-2xs sticky top-0 z-10">
-            {/* Quick Jump to Top */}
+            {/* All 10 Feed button */}
             <button
               onClick={() => {
-                setSelectedRank(1);
+                setSelectedRank('all');
                 document.getElementById('creator-rank-card-1')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }}
-              className="px-2.5 py-1.5 rounded-xl font-black text-xs transition-all cursor-pointer flex items-center gap-1 shrink-0 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700"
-              title="Jump to Top #1"
+              className={`px-3 py-1.5 rounded-xl font-black text-xs transition-all cursor-pointer flex items-center gap-1.5 shrink-0 border ${
+                selectedRank === 'all'
+                  ? 'bg-purple-600 border-purple-600 text-white shadow-xs'
+                  : 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-700'
+              }`}
+              title="View All 10 Posts"
             >
-              <Trophy className="w-3.5 h-3.5 text-amber-500" />
-              <span>Top</span>
+              <Trophy className="w-3.5 h-3.5 text-amber-300" />
+              <span>All 10 Feed</span>
             </button>
 
             {/* Buttons 1, 2, 3 ... 10 where the buttons ARE them */}
@@ -2146,128 +2232,135 @@ export default function App() {
             })}
           </div>
 
-          {/* CONTINUOUS SCROLLABLE CREATORS FEED (Scroll freely through 1, 2, 3... 10 with profile pic & their post) */}
+          {/* CONTINUOUS SCROLLABLE CREATORS FEED (Posts Fully Displayed) */}
           <div className="flex-1 overflow-y-auto p-3.5 space-y-4 scrollbar-thin">
-            {currentCreators.map((person) => (
-              <div
-                key={person.rank}
-                id={`creator-rank-card-${person.rank}`}
-                className={`bg-white rounded-3xl p-3.5 border transition-all shadow-xs scroll-mt-2 ${
-                  person.rank === 1
-                    ? 'border-amber-300 ring-2 ring-amber-300/40 bg-gradient-to-b from-amber-50/25 via-white to-white'
-                    : person.rank === 2
-                    ? 'border-slate-300 ring-1 ring-slate-200'
-                    : person.rank === 3
-                    ? 'border-amber-700/30 ring-1 ring-amber-700/20'
-                    : 'border-slate-200'
-                }`}
-              >
-                {/* Header Row: Rank Badge & Category Info */}
-                <div className="flex items-center justify-between pb-2 mb-2.5 border-b border-slate-100">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shadow-xs shrink-0 ${
-                        person.rank === 1
-                          ? 'bg-amber-400 text-slate-950 ring-1 ring-amber-500/40'
+            {currentCreators.map((person) => {
+              const isSelected = selectedRank === person.rank;
+              const postImg = getCreatorPostImage(person);
+              const isLiked = !!likedCreatorPosts[person.rank];
+              const honeyCount = honeyJarCounts[person.rank] || 0;
+
+              return (
+                <div
+                  key={person.rank}
+                  id={`creator-rank-card-${person.rank}`}
+                  className={`bg-white rounded-3xl border transition-all shadow-xs scroll-mt-2 overflow-hidden ${
+                    isSelected
+                      ? 'border-purple-400 ring-2 ring-purple-400/50 shadow-md'
+                      : person.rank === 1
+                      ? 'border-amber-300 ring-1 ring-amber-300/40 bg-gradient-to-b from-amber-50/15 via-white to-white'
+                      : person.rank === 2
+                      ? 'border-slate-300 ring-1 ring-slate-200'
+                      : person.rank === 3
+                      ? 'border-amber-700/30 ring-1 ring-amber-700/20'
+                      : 'border-slate-200/90'
+                  }`}
+                >
+                  {/* 1. Header Row: Rank Badge & Category Info */}
+                  <div className="flex items-center justify-between px-3.5 py-2 bg-slate-50/90 border-b border-slate-100">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`w-6.5 h-6.5 rounded-full flex items-center justify-center font-black text-xs shadow-xs shrink-0 ${
+                          person.rank === 1
+                            ? 'bg-amber-400 text-slate-950 ring-1 ring-amber-500/40'
+                            : person.rank === 2
+                            ? 'bg-slate-300 text-slate-900'
+                            : person.rank === 3
+                            ? 'bg-amber-700 text-white'
+                            : 'bg-purple-600 text-white'
+                        }`}
+                      >
+                        #{person.rank}
+                      </span>
+                      <span className="text-xs font-black text-slate-900 flex items-center gap-1">
+                        {person.rank === 1
+                          ? '👑 Top #1 Ranked Post'
                           : person.rank === 2
-                          ? 'bg-slate-300 text-slate-900'
+                          ? '🥈 #2 Runner-Up Post'
                           : person.rank === 3
-                          ? 'bg-amber-700 text-white'
-                          : 'bg-purple-600 text-white'
-                      }`}
-                    >
-                      #{person.rank}
-                    </span>
-                    <span className="text-xs font-black text-slate-900 flex items-center gap-1">
-                      {person.rank === 1
-                        ? '👑 Top #1 Creator'
-                        : person.rank === 2
-                        ? '🥈 #2 Runner-Up'
-                        : person.rank === 3
-                        ? '🥉 #3 Podium'
-                        : `Top #${person.rank}`}
-                    </span>
+                          ? '🥉 #3 Podium Post'
+                          : `Top #${person.rank} Featured Post`}
+                      </span>
+                    </div>
+
+                    <div className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-pink-50 border border-pink-100/80 rounded-full">
+                      <AeriFlameIcon filled className="w-3 h-3 text-[#FF5722]" />
+                      <span className="text-[10px] font-black text-purple-700">
+                        {CATEGORY_TABS.find((t) => t.id === selectedCategory)?.label}
+                      </span>
+                    </div>
                   </div>
 
-                  <span className="text-[10px] text-slate-400 font-semibold">
-                    {CATEGORY_TABS.find((t) => t.id === selectedCategory)?.label}
-                  </span>
-                </div>
-
-                {/* Profile Row: Pic, Name, Handle, Role, and Follow Button (NO UPVOTE) */}
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="relative shrink-0">
-                      {person.avatarUrl ? (
-                        <img
-                          src={person.avatarUrl}
-                          alt={person.name}
-                          className="w-11 h-11 rounded-full object-cover ring-2 ring-purple-600/30 p-0.5 shadow-xs"
-                        />
-                      ) : (
+                  {/* 2. Post Author Header with Flame Badge */}
+                  <div className="flex items-center justify-between p-3.5 pb-2.5 bg-white">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="relative shrink-0">
+                        {person.avatarUrl ? (
+                          <img
+                            src={person.avatarUrl}
+                            alt={person.name}
+                            className="w-10 h-10 rounded-full object-cover ring-2 ring-purple-600/30 p-0.5 shadow-xs"
+                          />
+                        ) : (
+                          <div
+                            className={`w-10 h-10 rounded-full ${person.avatarBg} text-white font-black flex items-center justify-center text-sm shadow-xs ring-1 ring-purple-600/20`}
+                          >
+                            {person.avatarInitial}
+                          </div>
+                        )}
+                        {/* Flame Badge directly on top of profile pic */}
                         <div
-                          className={`w-11 h-11 rounded-full ${person.avatarBg} text-white font-black flex items-center justify-center text-base shadow-xs ring-1 ring-purple-600/20`}
+                          className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-gradient-to-tr from-[#FF5722] to-amber-400 flex items-center justify-center ring-1.5 ring-white shadow-2xs"
+                          title="Trending Creator"
                         >
-                          {person.avatarInitial}
+                          <AeriFlameIcon filled className="w-2.5 h-2.5 text-white" />
                         </div>
-                      )}
-                      {person.rank <= 3 && (
-                        <span className="absolute -bottom-1 -right-1 text-xs leading-none">
-                          {person.rank === 1 ? '👑' : person.rank === 2 ? '🥈' : '🥉'}
-                        </span>
-                      )}
+                      </div>
+
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-1.5">
+                          <h3 className="font-extrabold text-xs text-slate-900 leading-tight truncate">
+                            {person.name}
+                          </h3>
+                          <CheckCircle2 className="w-3.5 h-3.5 text-blue-500 fill-blue-500 shrink-0" />
+                        </div>
+                        <p className="text-[11px] text-slate-400 font-medium leading-tight truncate mt-0.5">
+                          {person.handle} &middot; {person.role} {person.location ? `· ${person.location}` : ''}
+                        </p>
+                      </div>
                     </div>
 
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-1.5">
-                        <h3 className="font-extrabold text-xs text-slate-900 leading-tight truncate">
-                          {person.name}
-                        </h3>
-                        <CheckCircle2 className="w-3.5 h-3.5 text-blue-500 fill-blue-500 shrink-0" />
-                      </div>
-                      <p className="text-[11px] text-slate-400 font-medium leading-tight truncate mt-0.5">
-                        {person.handle}
-                      </p>
-                      <p className="text-[10.5px] text-slate-600 font-semibold leading-tight truncate mt-0.5">
-                        {person.role} {person.location ? `· ${person.location}` : ''}
-                      </p>
+                    <div className="flex items-center gap-1.5 shrink-0 ml-2">
+                      <button
+                        onClick={() => handleToggleFollow(selectedCategory, person.rank)}
+                        className={`px-3.5 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                          person.isFollowing
+                            ? 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                            : 'bg-purple-600 hover:bg-purple-700 text-white shadow-xs'
+                        }`}
+                      >
+                        {person.isFollowing ? 'Following' : 'Follow'}
+                      </button>
+                      <button
+                        aria-label="Options"
+                        className="p-1 text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
+                      >
+                        <span className="text-base font-bold leading-none">&middot;&middot;&middot;</span>
+                      </button>
                     </div>
                   </div>
 
-                  {/* Clean Follow Button */}
-                  <button
-                    onClick={() => handleToggleFollow(selectedCategory, person.rank)}
-                    className={`px-3.5 py-1 rounded-full text-xs font-bold transition-all cursor-pointer shrink-0 ml-2 ${
-                      person.isFollowing
-                        ? 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                        : 'bg-purple-600 hover:bg-purple-700 text-white shadow-xs'
-                    }`}
-                  >
-                    {person.isFollowing ? 'Following' : 'Follow'}
-                  </button>
-                </div>
-
-                {/* Their Post Card (Displayed in Full) */}
-                <div className="rounded-2xl overflow-hidden border border-slate-200/80 bg-white shadow-2xs">
-                  {/* Full Media Display */}
+                  {/* 3. Full Post Media Display */}
                   <div
                     onClick={() => setPreviewCreator(person)}
-                    className="relative w-full min-h-[260px] max-h-[460px] bg-slate-950 overflow-hidden group cursor-pointer"
+                    className="relative w-full min-h-[300px] max-h-[480px] bg-slate-950 overflow-hidden group cursor-pointer"
                   >
-                    {person.topPost.imageUrl ? (
-                      <img
-                        src={person.topPost.imageUrl}
-                        alt={person.topPost.title}
-                        className="w-full h-full min-h-[260px] max-h-[460px] object-cover object-center group-hover:scale-101 transition-transform duration-300"
-                      />
-                    ) : (
-                      <div
-                        className={`w-full min-h-[260px] bg-gradient-to-tr ${person.topPost.gradientBg} flex flex-col items-center justify-center text-white p-6 text-center`}
-                      >
-                        <Sparkles className="w-10 h-10 opacity-80 mb-2 animate-pulse" />
-                        <span className="text-base font-black tracking-tight">{person.topPost.title}</span>
-                      </div>
-                    )}
+                    <img
+                      src={postImg}
+                      alt={person.topPost.title}
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full min-h-[300px] max-h-[480px] object-cover object-center group-hover:scale-101 transition-transform duration-300"
+                    />
 
                     {/* Tag badge */}
                     <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
@@ -2276,19 +2369,17 @@ export default function App() {
                       </span>
                     </div>
 
-                    {/* Audio pill if any */}
-                    {person.topPost.hasAudio && (
-                      <div className="absolute bottom-2.5 right-2.5 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full flex items-center gap-1.5 text-white border border-white/20 shadow-xs">
-                        <Music className="w-3 h-3 text-purple-300" />
-                        <span className="text-[10px] font-bold">
-                          {person.topPost.audioTitle || 'Track'}
-                        </span>
-                      </div>
-                    )}
+                    {/* Audio pill */}
+                    <div className="absolute bottom-2.5 right-2.5 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full flex items-center gap-1.5 text-white border border-white/20 shadow-xs">
+                      <Music className="w-3 h-3 text-purple-300" />
+                      <span className="text-[10px] font-bold">
+                        {person.topPost.audioTitle || 'Original Audio'}
+                      </span>
+                    </div>
                   </div>
 
-                  {/* 5+ Action Button Row: Flame, Comment, Honeyjar, Phone Hand, Masked 2 Eyes, Hydrant, Raygun */}
-                  <div className="flex items-center justify-between pt-2.5 pb-1 px-3 text-black border-t border-slate-100">
+                  {/* 4. Action Button Row: Flame, Comment, Honeyjar, Phone Hand, Masked 2 Eyes, Hydrant, Raygun */}
+                  <div className="flex items-center justify-between pt-2.5 pb-1 px-3.5 text-black border-t border-slate-100">
                     <div className="flex items-center gap-3.5 sm:gap-4 flex-wrap">
                       {/* 1. Flame Icon */}
                       <button
@@ -2298,9 +2389,9 @@ export default function App() {
                         title="Flame Like"
                       >
                         <AeriFlameIcon
-                          filled={likedCreatorPosts[person.rank]}
+                          filled={isLiked}
                           className={`w-5.5 h-5.5 transition-colors ${
-                            likedCreatorPosts[person.rank]
+                            isLiked
                               ? 'text-[#FF6D00]'
                               : 'text-[#FF6D00] stroke-[1.8]'
                           }`}
@@ -2325,11 +2416,11 @@ export default function App() {
                         title="Honey Jar"
                       >
                         <FairyPotIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
-                        {honeyJarCounts[person.rank] ? (
-                          <span className="absolute -top-1 -right-2 bg-amber-400 text-amber-950 text-[9px] font-black px-1 rounded-full leading-none py-0.5">
-                            +{honeyJarCounts[person.rank]}
+                        {honeyCount > 0 && (
+                          <span className="absolute -top-1 -right-2 bg-amber-400 text-amber-950 text-[9px] font-black px-1 rounded-full leading-none py-0.5 shadow-2xs">
+                            +{honeyCount}
                           </span>
-                        ) : null}
+                        )}
                       </button>
 
                       {/* 4. Phone Hand Icon */}
@@ -2350,52 +2441,75 @@ export default function App() {
                       >
                         <AeriMaskedEyesIcon className="w-[31px] h-[21px] text-black shrink-0" />
                       </button>
-
-                      {/* 6. Fire Hydrant Icon */}
-                      <button
-                        className="flex items-center justify-center transition-transform active:scale-90 hover:scale-105 cursor-pointer"
-                        title="Fire Hydrant"
-                        aria-label="Fire Hydrant"
-                      >
-                        <AeriHydrantIcon size={24} className="w-[24px] h-[32px] drop-shadow-2xs" />
-                      </button>
-
-                      {/* 7. Raygun Icon */}
-                      <button
-                        className="flex items-center justify-center text-slate-800 hover:text-black transition-transform active:scale-90 hover:scale-105 cursor-pointer"
-                        title="Raygun"
-                        aria-label="Raygun"
-                      >
-                        <AeriRaygunIcon className="w-7.5 h-7.5 text-slate-800 stroke-[1.3]" />
-                      </button>
                     </div>
 
-                    <span className="text-[11px] font-bold text-slate-400 tabular-nums shrink-0">
-                      {person.topPost.comments} comments
+                    <span className="text-[11px] font-bold text-slate-500 tabular-nums shrink-0">
+                      {isLiked ? `${person.topPost.likes} + 1` : `${person.topPost.likes}`} likes
                     </span>
                   </div>
 
-                  {/* Full Post Writing & Caption */}
-                  <div className="p-3 pt-1.5 bg-white">
+                  {/* 5. Full Post Writing & Caption */}
+                  <div className="p-3.5 pt-1.5 pb-2 bg-white">
                     <div className="flex items-start gap-2">
-                      <img
-                        src={person.avatarUrl}
-                        alt={person.name}
-                        className="w-5.5 h-5.5 rounded-full object-cover shrink-0 mt-0.5 ring-1 ring-purple-500/20"
-                      />
+                      {person.avatarUrl ? (
+                        <img
+                          src={person.avatarUrl}
+                          alt={person.name}
+                          className="w-5.5 h-5.5 rounded-full object-cover shrink-0 mt-0.5 ring-1 ring-purple-500/20"
+                        />
+                      ) : (
+                        <div
+                          className={`w-5.5 h-5.5 rounded-full ${person.avatarBg} text-white font-bold text-[9px] flex items-center justify-center shrink-0 mt-0.5`}
+                        >
+                          {person.avatarInitial}
+                        </div>
+                      )}
                       <div className="flex-1 min-w-0">
-                        <p className="text-[12px] leading-relaxed text-slate-800">
+                        <p className="text-[12.5px] leading-relaxed text-slate-800">
                           <span className="font-extrabold text-slate-900 mr-1.5">
                             {person.handle}
                           </span>
                           <span className="font-bold text-slate-900">{person.topPost.title}</span> — Created by <span className="font-extrabold text-slate-900">{person.name}</span> for Fairy {CATEGORY_TABS.find((t) => t.id === selectedCategory)?.label} ranking (Rank #{person.rank}).
                         </p>
+
+                        <div className="flex flex-wrap gap-1.5 mt-2">
+                          <span className="text-[11px] font-bold text-purple-600">#{selectedCategory.replace('_', '')}</span>
+                          <span className="text-[11px] font-bold text-purple-600">#top10</span>
+                          <span className="text-[11px] font-bold text-purple-600">#rank{person.rank}</span>
+                          <span className="text-[11px] font-bold text-purple-600">#fairysocial</span>
+                        </div>
+
+                        <button
+                          onClick={() => setIsDrawerOpen(true)}
+                          className="text-[11px] font-bold text-slate-400 hover:text-slate-600 mt-2 block cursor-pointer transition-colors"
+                        >
+                          View all {person.topPost.comments} comments &middot; Leave feedback
+                        </button>
                       </div>
                     </div>
                   </div>
+
+                  {/* Secondary Row: Fire Hydrant & Raygun (Where it was before) */}
+                  <div className="flex items-center gap-4 px-3.5 pb-3 pt-1 border-t border-slate-100/80 shrink-0 bg-white">
+                    <button
+                      className="flex items-center justify-center transition-transform active:scale-90 hover:scale-105 cursor-pointer"
+                      title="Fire Hydrant"
+                      aria-label="Fire Hydrant"
+                    >
+                      <AeriHydrantIcon size={26} className="w-[26px] h-[35px] drop-shadow-2xs" />
+                    </button>
+
+                    <button
+                      className="flex items-center justify-center text-slate-800 hover:text-black transition-transform active:scale-90 hover:opacity-80 hover:scale-105 cursor-pointer"
+                      title="Share post / Raygun"
+                      aria-label="Share post"
+                    >
+                      <AeriRaygunIcon className="w-8.5 h-8.5 text-slate-800 stroke-[1.3]" />
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Modal to Preview Creator's Post when tapped */}
@@ -2409,19 +2523,12 @@ export default function App() {
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="relative aspect-[4/3] bg-slate-900">
-                  {previewCreator.topPost.imageUrl ? (
-                    <img
-                      src={previewCreator.topPost.imageUrl}
-                      alt={previewCreator.topPost.title}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div
-                      className={`w-full h-full bg-gradient-to-tr ${previewCreator.topPost.gradientBg} flex items-center justify-center text-white`}
-                    >
-                      <Sparkles className="w-12 h-12 opacity-80" />
-                    </div>
-                  )}
+                  <img
+                    src={getCreatorPostImage(previewCreator)}
+                    alt={previewCreator.topPost.title}
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover"
+                  />
                   <button
                     onClick={() => setPreviewCreator(null)}
                     className="absolute top-2.5 right-2.5 w-7 h-7 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 cursor-pointer"

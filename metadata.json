@@ -1,6 +1,6 @@
 {
-  "name": "Fairy Post & Delete Modal",
-  "description": "Fairy social feed screen featuring trending banner, post card, backdrop-blurred delete confirmation modal, action controls, and bottom navigation.",
+  "name": "Fairy Social Feed",
+  "description": "Fairy social feed screen featuring trending banner, post card, action controls, and bottom navigation.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
