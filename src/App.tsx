@@ -1524,7 +1524,14 @@ export default function App() {
     };
     setFeedPosts((prev) => [newPost, ...prev]);
     if (payload.faceoffConfig) {
-      setActiveFaceoffPostId(newPost.id);
+      setOpenFaceoffPosts((prev) => ({
+        ...prev,
+        [newPost.id]: true,
+      }));
+      setMorphedPosts((prev) => ({
+        ...prev,
+        [newPost.id]: true,
+      }));
     }
   };
 
@@ -1580,8 +1587,35 @@ export default function App() {
   const [targetMessagePerson, setTargetMessagePerson] = useState<TargetMessagePerson | null>(null);
   const [showInfluenceRatingModal, setShowInfluenceRatingModal] = useState(false);
   const [activePhoneReactionId, setActivePhoneReactionId] = useState<string | null>(null);
-  const [isPencilMorphed, setIsPencilMorphed] = useState(false);
-  const [activeFaceoffPostId, setActiveFaceoffPostId] = useState<string | null>(null);
+
+  // Per-post broken pencil states to ensure each post is 100% independent (even from the same author)
+  const [openFaceoffPosts, setOpenFaceoffPosts] = useState<Record<string, boolean>>({
+    'post-default-elena': false,
+  });
+  const [morphedPosts, setMorphedPosts] = useState<Record<string, boolean>>({
+    'post-default-elena': false,
+  });
+
+  const handleToggleFaceoff = (id: string) => {
+    setOpenFaceoffPosts((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const handleCloseFaceoff = (id: string) => {
+    setOpenFaceoffPosts((prev) => ({
+      ...prev,
+      [id]: false,
+    }));
+  };
+
+  const handleMorphPencil = (id: string) => {
+    setMorphedPosts((prev) => ({
+      ...prev,
+      [id]: true,
+    }));
+  };
 
   // Raygun Modal states (Verb: Past Challenges / Adverb: Challenge Person)
   const [raygunTarget, setRaygunTarget] = useState<{
@@ -1633,12 +1667,15 @@ export default function App() {
       },
     };
     setFeedPosts((prev) => [newPost, ...prev]);
-    // Automatically pop out the broken pencil faceoff battle card attached directly on top of this newly created challenge post!
-    setActiveFaceoffPostId(newPostId);
-  };
-
-  const handleToggleFaceoff = (id: string) => {
-    setActiveFaceoffPostId((prev) => (prev === id ? null : id));
+    // Automatically pop out the broken pencil faceoff battle card attached directly on this new challenge post only!
+    setOpenFaceoffPosts((prev) => ({
+      ...prev,
+      [newPostId]: true,
+    }));
+    setMorphedPosts((prev) => ({
+      ...prev,
+      [newPostId]: true,
+    }));
   };
 
   const handleTogglePhoneReaction = (id: string) => {
@@ -1790,7 +1827,16 @@ export default function App() {
 
               {/* 3rd header icon: One-Eye Hat Guy icon beside Search */}
               <button
-                onClick={() => setIsPencilMorphed((prev) => !prev)}
+                onClick={() => {
+                  setMorphedPosts((prev) => {
+                    const next = !prev['post-default-elena'];
+                    const updated = { ...prev };
+                    feedPosts.forEach((p) => {
+                      updated[p.id] = next;
+                    });
+                    return updated;
+                  });
+                }}
                 aria-label="One-Eye Hat Guy"
                 title="One-Eye Hat Guy"
                 className="hover:opacity-75 transition-opacity cursor-pointer p-0.5 flex items-center justify-center"
@@ -1885,11 +1931,11 @@ export default function App() {
                   </div>
                 )}
 
-                {/* Broken Pencil Faceoff Battle Card attached to post on top of profile pic */}
-                {activeFaceoffPostId === post.id && (
+                {/* Broken Pencil Faceoff Battle Card attached to post on top of profile pic (strictly independent per post) */}
+                {Boolean(openFaceoffPosts[post.id]) && (
                   <div className="w-full flex justify-center pt-0 pb-1.5 -mt-0.5">
                     <FaceoffBattleModal
-                      onClose={() => setActiveFaceoffPostId(null)}
+                      onClose={() => handleCloseFaceoff(post.id)}
                       battleQuestion={post.faceoffConfig?.battleQuestion}
                       redParticipant={post.faceoffConfig?.redParticipant}
                       blueParticipant={post.faceoffConfig?.blueParticipant}
@@ -1943,8 +1989,8 @@ export default function App() {
                   </div>
 
                   <div className="flex items-center gap-1.5">
-                    {/* Follow button morphs into pure broken pencil icon (moved slightly upper, no button wrapper or background) */}
-                    {isPencilMorphed ? (
+                    {/* Follow button morphs into pure broken pencil icon (isolated per post, does not affect other posts) */}
+                    {(Boolean(post.faceoffConfig) || Boolean(morphedPosts[post.id])) ? (
                       <div
                         onClick={() => handleToggleFaceoff(post.id)}
                         title="Click to toggle faceoff battle"
@@ -1957,7 +2003,7 @@ export default function App() {
                       </div>
                     ) : (
                       <button
-                        onClick={() => setIsPencilMorphed(true)}
+                        onClick={() => handleMorphPencil(post.id)}
                         className="px-3 py-1 rounded-full bg-purple-50 hover:bg-purple-100 text-purple-700 font-extrabold text-[11px] transition-colors cursor-pointer active:scale-95"
                       >
                         Follow
@@ -2487,9 +2533,9 @@ export default function App() {
                     )}
 
                     {/* Broken Pencil Faceoff Battle Card attached on top of profile pic */}
-                    {activeFaceoffPostId === `person-${person.name}` && (
+                    {Boolean(openFaceoffPosts[`person-${person.name}`]) && (
                       <div className="w-full flex justify-center py-2 px-3 bg-white border-b border-slate-100">
-                        <FaceoffBattleModal onClose={() => setActiveFaceoffPostId(null)} />
+                        <FaceoffBattleModal onClose={() => handleCloseFaceoff(`person-${person.name}`)} />
                       </div>
                     )}
 
@@ -2538,7 +2584,7 @@ export default function App() {
                       <span className="text-[10px] font-black text-purple-700 bg-purple-50 border border-purple-100/80 px-2 py-0.5 rounded-full">
                         {CATEGORY_TABS.find((t) => t.id === selectedCategory)?.label}
                       </span>
-                      {isPencilMorphed ? (
+                      {Boolean(morphedPosts[`person-${person.name}`]) ? (
                         <div
                           onClick={() => handleToggleFaceoff(`person-${person.name}`)}
                           title="Click to toggle faceoff battle"
@@ -2826,7 +2872,7 @@ export default function App() {
                   </h3>
 
                   <div className="flex items-center justify-between pt-3 mt-3 border-t border-slate-100">
-                    {isPencilMorphed ? (
+                    {Boolean(morphedPosts['creator-preview']) ? (
                       <div
                         onClick={() => handleToggleFaceoff('creator-preview')}
                         title="Click to toggle faceoff battle"
@@ -3044,9 +3090,9 @@ export default function App() {
               )}
 
               {/* Broken Pencil Faceoff Battle Card attached on top of profile pic */}
-              {activeFaceoffPostId === 'creator-preview' && (
+              {Boolean(openFaceoffPosts['creator-preview']) && (
                 <div className="w-full flex justify-center py-2 px-3 bg-white border-b border-slate-100">
-                  <FaceoffBattleModal onClose={() => setActiveFaceoffPostId(null)} />
+                  <FaceoffBattleModal onClose={() => handleCloseFaceoff('creator-preview')} />
                 </div>
               )}
 
