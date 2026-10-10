@@ -3504,9 +3504,9 @@ export default function App() {
             }}
             aria-label="Honey Jar / Fairy Pot"
             title="Honey Jar · Open Fairy Pot & Matches"
-            className="w-14 h-14 rounded-full bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform duration-150 cursor-pointer"
+            className="w-10 h-10 rounded-full bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white flex items-center justify-center shadow-md hover:scale-105 active:scale-95 transition-transform duration-150 cursor-pointer"
           >
-            <FairyPotIcon className="w-7 h-7 text-white stroke-white stroke-[2.2]" />
+            <FairyPotIcon size={20} className="w-5 h-5 text-white stroke-white stroke-[2.1]" />
           </button>
         </aside>
       )}
