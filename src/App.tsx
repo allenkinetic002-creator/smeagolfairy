@@ -1841,7 +1841,7 @@ export default function App() {
   };
 
   return (
-    <div className="w-full h-screen max-h-screen overflow-hidden bg-white flex flex-col justify-between text-slate-900 font-sans antialiased select-none">
+    <div className="w-full max-w-full h-screen max-h-screen overflow-x-hidden overflow-y-hidden bg-white flex flex-col justify-between text-slate-900 font-sans antialiased select-none">
       {showMatchesScreen ? (
         <div className="flex-1 min-h-0 w-full overflow-hidden">
           <MatchesScreen onBackToFeed={() => setShowMatchesScreen(false)} />
@@ -2002,7 +2002,7 @@ export default function App() {
           </div>
 
           {/* Main Content Area */}
-          <div className="flex-1 min-h-0 w-full px-4 py-1 flex flex-col overflow-y-auto scrollbar-thin space-y-3 relative">
+          <div className="flex-1 min-h-0 w-full max-w-full px-3.5 sm:px-4 py-1 flex flex-col overflow-y-auto overflow-x-hidden scrollbar-thin space-y-3 relative">
             {/* Success toast if tweet published */}
             {tweetSuccessToast && (
               <div className="sticky top-1 z-30 w-full flex justify-center animate-fadeIn pointer-events-none">
@@ -2156,11 +2156,11 @@ export default function App() {
                 </div>
 
                 {/* 4. Action Row */}
-                <div className="flex items-end justify-between pt-1.5 shrink-0 text-black">
+                <div className="flex items-end justify-between pt-1.5 shrink-0 text-black w-full max-w-full overflow-hidden">
                   {/* All icons grouped closely together on the left */}
-                  <div className="flex items-end gap-1.5 sm:gap-2">
+                  <div className="flex items-end gap-1.5 sm:gap-2 min-w-0">
                     {/* Left 3 icons: Flame, Comment, Honeyjar (standard untouched spacing) */}
-                    <div className="flex items-center gap-3.5 sm:gap-4 pb-0.5">
+                    <div className="flex items-center gap-2.5 sm:gap-3.5 pb-0.5 shrink-0">
                       <button
                         onClick={() => handleTogglePostLike(post.id)}
                         className="cursor-pointer transition-transform active:scale-90"
@@ -2199,7 +2199,7 @@ export default function App() {
                     </div>
 
                     {/* Pill & Two Icons column */}
-                    <div className="flex flex-col items-start gap-1.5">
+                    <div className="flex flex-col items-start gap-1 min-w-0">
                       {/* Long gray pill like icon with "Send me message" */}
                       <button
                         onClick={() =>
@@ -2210,7 +2210,7 @@ export default function App() {
                             avatarUrl: post.authorAvatar,
                           })
                         }
-                        className="cursor-pointer px-3.5 py-1 bg-[#E2E8F0] hover:bg-[#CBD5E1] text-black hover:text-black rounded-full text-[11px] font-semibold flex items-center justify-center gap-1.5 border border-slate-300 shadow-2xs transition-all active:scale-95 whitespace-nowrap"
+                        className="cursor-pointer px-2.5 sm:px-3 py-1 bg-[#E2E8F0] hover:bg-[#CBD5E1] text-black hover:text-black rounded-full text-[10px] sm:text-[10.5px] font-semibold flex items-center justify-center gap-1 border border-slate-300 shadow-2xs transition-all active:scale-95 whitespace-nowrap"
                         title={`Send ${post.authorName} message`}
                         aria-label="Send me message"
                       >
@@ -2219,7 +2219,7 @@ export default function App() {
                       </button>
 
                       {/* Only those two icons moved slightly more to the right */}
-                      <div className="flex items-center gap-2.5 ml-1.5 sm:ml-2">
+                      <div className="flex items-center gap-2 ml-1 sm:ml-1.5">
                         {/* 4th icon: Hand holding smartphone */}
                         <button
                           onClick={() => handleTogglePhoneReaction(post.id)}
@@ -2237,15 +2237,15 @@ export default function App() {
                           aria-label="View Fairy ratings and social reach"
                           title="Overall ratings & Social reach"
                         >
-                          <AeriMaskedEyesIcon className="w-[33px] h-[23px] text-black shrink-0" />
+                          <AeriMaskedEyesIcon className="w-[30px] h-[21px] text-black shrink-0" />
                         </button>
                       </div>
                     </div>
                   </div>
 
                   {/* Likes count alone on the right */}
-                  <div className="pb-1">
-                    <span className="text-[11px] font-bold text-slate-500 tabular-nums">
+                  <div className="pb-1 shrink-0 ml-1">
+                    <span className="text-[11px] font-bold text-slate-500 tabular-nums whitespace-nowrap">
                       {post.likeCount.toLocaleString()} likes
                     </span>
                   </div>
@@ -2311,7 +2311,7 @@ export default function App() {
                         </button>
                       </div>
 
-                      <div className="flex-1 overflow-y-auto space-y-2 pr-1 scrollbar-thin">
+                      <div className="flex-1 overflow-y-auto overflow-x-hidden space-y-2 pr-1 scrollbar-thin">
                         {comments.slice(0, 3).map((item) => (
                           <div key={item.id} className="flex items-start gap-2 text-xs">
                             <div
@@ -2627,7 +2627,7 @@ export default function App() {
           </div>
 
           {/* CONTINUOUS SCROLLABLE CREATORS FEED (Posts Fully Displayed) */}
-          <div className="flex-1 overflow-y-auto p-3.5 space-y-4 scrollbar-thin">
+          <div className="flex-1 overflow-y-auto overflow-x-hidden p-3.5 space-y-4 scrollbar-thin">
             {currentCreators.map((person) => {
               const isSelected = selectedRank === person.rank;
               const postImg = getCreatorPostImage(person);
@@ -2788,9 +2788,9 @@ export default function App() {
                   {/* 4. Action Button Row: Flame, Comment, Honeyjar, Phone Hand, Masked 2 Eyes, Long Gray Pill */}
                   <div className="flex items-end justify-between pt-2.5 pb-1 px-3.5 text-black border-t border-slate-100 bg-white">
                     {/* All icons grouped closely together on the left */}
-                    <div className="flex items-end gap-1.5 sm:gap-2">
+                    <div className="flex items-end gap-1.5 sm:gap-2 min-w-0">
                       {/* Left 3 icons: Flame, Comment, Honeyjar (standard untouched spacing) */}
-                      <div className="flex items-center gap-3.5 sm:gap-4 pb-0.5">
+                      <div className="flex items-center gap-2.5 sm:gap-3.5 pb-0.5 shrink-0">
                         {/* 1. Flame Icon */}
                         <button
                           onClick={() => toggleLikedCreatorPost(person.rank)}
@@ -2835,7 +2835,7 @@ export default function App() {
                       </div>
 
                       {/* Pill & Two Icons column */}
-                      <div className="flex flex-col items-start gap-1.5">
+                      <div className="flex flex-col items-start gap-1 min-w-0">
                         {/* Long gray pill like icon with "Send me message" */}
                         <button
                           onClick={() =>
@@ -2848,7 +2848,7 @@ export default function App() {
                               city: person.location,
                             })
                           }
-                          className="cursor-pointer px-3.5 py-1 bg-[#E2E8F0] hover:bg-[#CBD5E1] text-black hover:text-black rounded-full text-[11px] font-semibold flex items-center justify-center gap-1.5 border border-slate-300 shadow-2xs transition-all active:scale-95 whitespace-nowrap"
+                          className="cursor-pointer px-2.5 sm:px-3 py-1 bg-[#E2E8F0] hover:bg-[#CBD5E1] text-black hover:text-black rounded-full text-[10px] sm:text-[10.5px] font-semibold flex items-center justify-center gap-1 border border-slate-300 shadow-2xs transition-all active:scale-95 whitespace-nowrap"
                           title={`Send ${person.name} message`}
                           aria-label="Send me message"
                         >
@@ -2857,7 +2857,7 @@ export default function App() {
                         </button>
 
                         {/* Only those two icons moved slightly more to the right */}
-                        <div className="flex items-center gap-2 ml-1.5 sm:ml-2">
+                        <div className="flex items-center gap-2 ml-1 sm:ml-1.5">
                           {/* 4. Phone Hand Icon */}
                           <button
                             onClick={() => handleTogglePhoneReaction(`person-${person.name}`)}
@@ -2875,15 +2875,15 @@ export default function App() {
                             aria-label="Masked 2 Eyes"
                             title="Masked 2 Eyes"
                           >
-                            <AeriMaskedEyesIcon className="w-[31px] h-[21px] text-black shrink-0" />
+                            <AeriMaskedEyesIcon className="w-[30px] h-[21px] text-black shrink-0" />
                           </button>
                         </div>
                       </div>
                     </div>
 
                     {/* Likes count on the right */}
-                    <div className="pb-1">
-                      <span className="text-[11px] font-bold text-slate-500 tabular-nums shrink-0">
+                    <div className="pb-1 shrink-0 ml-1">
+                      <span className="text-[11px] font-bold text-slate-500 tabular-nums shrink-0 whitespace-nowrap">
                         {isLiked ? `${person.topPost.likes} + 1` : `${person.topPost.likes}`} likes
                       </span>
                     </div>
@@ -3182,7 +3182,7 @@ export default function App() {
 
       {/* TAB 4: PROFILE SCREEN WITH FULL PROFILE POST */}
       {activeNavIndex === 4 && (
-        <div className="flex-1 flex flex-col overflow-y-auto bg-slate-50/70 scrollbar-thin">
+        <div className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden bg-slate-50/70 scrollbar-thin">
           {/* Profile Top Bar */}
           <div className="px-4 py-3 bg-white border-b border-slate-100 flex items-center justify-between sticky top-0 z-10 shadow-2xs">
             <div className="flex items-center gap-1.5">
