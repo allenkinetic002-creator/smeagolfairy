@@ -46,7 +46,7 @@ export function InfluenceRatingModal({
     setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);
-      onClose();
+      onClose?.();
     }, 1400);
   };
 

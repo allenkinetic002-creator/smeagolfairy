@@ -1631,17 +1631,21 @@ export default function App() {
     avatar: string;
     handle: string;
   } | null>(null);
-  const [showRaygunModal, setShowRaygunModal] = useState(false);
+  const [activeRaygunPostId, setActiveRaygunPostId] = useState<string | null>(null);
   const [showPastChallengesModal, setShowPastChallengesModal] = useState(false);
   const [showChallengeModal, setShowChallengeModal] = useState(false);
 
-  const handleOpenRaygun = (name: string, avatar?: string, handle?: string) => {
-    setRaygunTarget({
-      name,
-      avatar: avatar || elenaAvatar,
-      handle: handle || '@creator',
-    });
-    setShowRaygunModal(true);
+  const handleToggleRaygun = (id: string, name: string, avatar?: string, handle?: string) => {
+    if (activeRaygunPostId === id) {
+      setActiveRaygunPostId(null);
+    } else {
+      setActiveRaygunPostId(id);
+      setRaygunTarget({
+        name,
+        avatar: avatar || elenaAvatar,
+        handle: handle || '@creator',
+      });
+    }
   };
 
   const handlePublishChallenge = (payload: ChallengePostPayload) => {
@@ -2339,7 +2343,7 @@ export default function App() {
                   </button>
 
                   <button
-                    onClick={() => handleOpenRaygun(feedPosts[0]?.authorName || 'Elena Vance', feedPosts[0]?.authorAvatar, feedPosts[0]?.authorHandle)}
+                    onClick={() => handleToggleRaygun('feed-elena', feedPosts[0]?.authorName || 'Elena Vance', feedPosts[0]?.authorAvatar, feedPosts[0]?.authorHandle)}
                     className="flex items-center justify-center text-slate-800 hover:text-black transition-transform active:scale-90 hover:opacity-80 hover:scale-105 cursor-pointer"
                     title="Raygun Arena (Verb / Adverb)"
                     aria-label="Raygun Arena Actions"
@@ -2347,6 +2351,27 @@ export default function App() {
                     <AeriRaygunIcon className="w-8.5 h-8.5 text-slate-800 stroke-[1.3]" />
                   </button>
                 </div>
+
+                {/* Verb & Adverb Card placed down on post instead of modal */}
+                {activeRaygunPostId === 'feed-elena' && (
+                  <div className="w-full pt-1 pb-2 flex justify-start">
+                    <RaygunActionModal
+                      isOpen={true}
+                      isInline={true}
+                      targetPersonName={raygunTarget?.name || feedPosts[0]?.authorName || 'Elena Vance'}
+                      targetPersonAvatar={raygunTarget?.avatar || feedPosts[0]?.authorAvatar}
+                      onClose={() => setActiveRaygunPostId(null)}
+                      onSelectVerb={() => {
+                        setActiveRaygunPostId(null);
+                        setShowPastChallengesModal(true);
+                      }}
+                      onSelectAdverb={() => {
+                        setActiveRaygunPostId(null);
+                        setShowChallengeModal(true);
+                      }}
+                    />
+                  </div>
+                )}
           </div>
         </>
       )}
@@ -2819,7 +2844,7 @@ export default function App() {
                     </button>
 
                     <button
-                      onClick={() => handleOpenRaygun(person.name, person.avatarUrl, person.handle)}
+                      onClick={() => handleToggleRaygun(`person-${person.name}`, person.name, person.avatarUrl, person.handle)}
                       className="flex items-center justify-center text-slate-800 hover:text-black transition-transform active:scale-90 hover:opacity-80 hover:scale-105 cursor-pointer"
                       title="Raygun Arena (Verb / Adverb)"
                       aria-label="Raygun Arena Actions"
@@ -2827,6 +2852,29 @@ export default function App() {
                       <AeriRaygunIcon className="w-8.5 h-8.5 text-slate-800 stroke-[1.3]" />
                     </button>
                   </div>
+
+                  {/* Verb & Adverb Card placed down on post instead of modal */}
+                  {activeRaygunPostId === `person-${person.name}` && (
+                    <div className="w-full pt-1 pb-3 px-3.5 bg-white border-t border-slate-100 flex justify-start">
+                      <RaygunActionModal
+                        isOpen={true}
+                        isInline={true}
+                        targetPersonName={person.name}
+                        targetPersonAvatar={person.avatarUrl}
+                        onClose={() => setActiveRaygunPostId(null)}
+                        onSelectVerb={() => {
+                          setActiveRaygunPostId(null);
+                          setRaygunTarget({ name: person.name, avatar: person.avatarUrl || elenaAvatar, handle: person.handle });
+                          setShowPastChallengesModal(true);
+                        }}
+                        onSelectAdverb={() => {
+                          setActiveRaygunPostId(null);
+                          setRaygunTarget({ name: person.name, avatar: person.avatarUrl || elenaAvatar, handle: person.handle });
+                          setShowChallengeModal(true);
+                        }}
+                      />
+                    </div>
+                  )}
 
                   {/* Influence Rating Card placed down on post instead of modal */}
                   {activeInfluenceRatingId === `person-${person.name}` && (
@@ -3264,7 +3312,7 @@ export default function App() {
 
                   {/* 7. Raygun Icon */}
                   <button
-                    onClick={() => previewCreator && handleOpenRaygun(previewCreator.name, previewCreator.avatarUrl, previewCreator.handle)}
+                    onClick={() => previewCreator && handleToggleRaygun('creator-preview', previewCreator.name, previewCreator.avatarUrl, previewCreator.handle)}
                     className="flex items-center justify-center text-slate-800 hover:text-black transition-transform active:scale-90 hover:scale-105 cursor-pointer"
                     title="Raygun Arena (Verb / Adverb)"
                   >
@@ -3292,6 +3340,29 @@ export default function App() {
                     isOpen={true}
                     isInline={true}
                     onClose={handleCloseInfluenceRating}
+                  />
+                </div>
+              )}
+
+              {/* Verb & Adverb Card placed down on post instead of modal */}
+              {activeRaygunPostId === 'creator-preview' && previewCreator && (
+                <div className="w-full pt-1 pb-3 px-3.5 bg-white border-t border-slate-100 flex justify-start">
+                  <RaygunActionModal
+                    isOpen={true}
+                    isInline={true}
+                    targetPersonName={previewCreator.name}
+                    targetPersonAvatar={previewCreator.avatarUrl}
+                    onClose={() => setActiveRaygunPostId(null)}
+                    onSelectVerb={() => {
+                      setActiveRaygunPostId(null);
+                      setRaygunTarget({ name: previewCreator.name, avatar: previewCreator.avatarUrl || elenaAvatar, handle: previewCreator.handle });
+                      setShowPastChallengesModal(true);
+                    }}
+                    onSelectAdverb={() => {
+                      setActiveRaygunPostId(null);
+                      setRaygunTarget({ name: previewCreator.name, avatar: previewCreator.avatarUrl || elenaAvatar, handle: previewCreator.handle });
+                      setShowChallengeModal(true);
+                    }}
                   />
                 </div>
               )}
@@ -3425,21 +3496,6 @@ export default function App() {
       {/* Raygun Action Modals (Verb: Past Challenges / Adverb: Challenge Person to Online Fight) */}
       {raygunTarget && (
         <>
-          <RaygunActionModal
-            isOpen={showRaygunModal}
-            onClose={() => setShowRaygunModal(false)}
-            targetPersonName={raygunTarget.name}
-            targetPersonAvatar={raygunTarget.avatar}
-            onSelectVerb={() => {
-              setShowRaygunModal(false);
-              setShowPastChallengesModal(true);
-            }}
-            onSelectAdverb={() => {
-              setShowRaygunModal(false);
-              setShowChallengeModal(true);
-            }}
-          />
-
           <PastChallengesModal
             isOpen={showPastChallengesModal}
             onClose={() => setShowPastChallengesModal(false)}
