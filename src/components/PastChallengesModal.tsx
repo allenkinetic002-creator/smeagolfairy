@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { X, ThumbsUp, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { AeriBattleThumbsUpIcon } from './AeriBattleThumbsUpIcon';
 
 interface PastChallengeData {
   title: string;
@@ -192,9 +193,9 @@ export const PastChallengesModal: React.FC<PastChallengesModalProps> = ({
         <div className="w-full flex items-center justify-between gap-2 mt-2.5">
           <button
             type="button"
-            className="cursor-default w-[68px] sm:w-[74px] h-[33px] rounded-[9px] flex items-center justify-center bg-[#E51E2B]"
+            className="cursor-default w-[56px] sm:w-[62px] h-[28px] rounded-[8px] flex items-center justify-center bg-[#E51E2B]"
           >
-            <ThumbsUp className="w-4.5 h-4.5 text-white fill-white" />
+            <AeriBattleThumbsUpIcon className="w-3.5 h-3.5" contrastColor="#E51E2B" />
           </button>
 
           <div className="flex items-center justify-center gap-2 shrink-0">
@@ -221,9 +222,9 @@ export const PastChallengesModal: React.FC<PastChallengesModalProps> = ({
 
           <button
             type="button"
-            className="cursor-default w-[68px] sm:w-[74px] h-[33px] rounded-[9px] flex items-center justify-center bg-[#1D3D8F]"
+            className="cursor-default w-[56px] sm:w-[62px] h-[28px] rounded-[8px] flex items-center justify-center bg-[#1D3D8F]"
           >
-            <ThumbsUp className="w-4.5 h-4.5 text-white fill-white" />
+            <AeriBattleThumbsUpIcon className="w-3.5 h-3.5" contrastColor="#1D3D8F" />
           </button>
         </div>
 

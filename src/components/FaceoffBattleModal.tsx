@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { X, ThumbsUp } from 'lucide-react';
+import { X } from 'lucide-react';
+import { AeriBattleThumbsUpIcon } from './AeriBattleThumbsUpIcon';
 
 export interface FaceoffBattleModalProps {
   isOpen?: boolean;
@@ -157,18 +158,18 @@ export function FaceoffBattleModal({
 
       {/* 6. Interaction Row (Red button + Likes | Dislikes + Blue button) */}
       <div className="w-full flex items-center justify-between gap-2 mt-2.5">
-        {/* Red Like Button */}
+        {/* Red Like Button (Slightly reduced size with wrist line) */}
         <button
           type="button"
           onClick={() => handleVote('red')}
-          className={`cursor-pointer w-[68px] sm:w-[74px] h-[33px] rounded-[9px] flex items-center justify-center transition-all active:scale-90 ${
+          className={`cursor-pointer w-[56px] sm:w-[62px] h-[28px] rounded-[8px] flex items-center justify-center transition-all active:scale-90 ${
             userVote === 'red'
               ? 'bg-[#E51E2B] ring-2 ring-red-400 ring-offset-1'
               : 'bg-[#E51E2B] hover:bg-[#D41825]'
           }`}
-          title="Vote for Freda (Red)"
+          title={`Vote for ${redParticipant.name} (Red)`}
         >
-          <ThumbsUp className="w-4.5 h-4.5 text-white fill-white" />
+          <AeriBattleThumbsUpIcon className="w-3.5 h-3.5" contrastColor="#E51E2B" />
         </button>
 
         {/* Likes & Dislikes Counters */}
@@ -194,18 +195,18 @@ export function FaceoffBattleModal({
           </div>
         </div>
 
-        {/* Blue Like Button */}
+        {/* Blue Like Button (Slightly reduced size with wrist line) */}
         <button
           type="button"
           onClick={() => handleVote('blue')}
-          className={`cursor-pointer w-[68px] sm:w-[74px] h-[33px] rounded-[9px] flex items-center justify-center transition-all active:scale-90 ${
+          className={`cursor-pointer w-[56px] sm:w-[62px] h-[28px] rounded-[8px] flex items-center justify-center transition-all active:scale-90 ${
             userVote === 'blue'
               ? 'bg-[#1D3D8F] ring-2 ring-blue-400 ring-offset-1'
               : 'bg-[#1D3D8F] hover:bg-[#183275]'
           }`}
-          title="Vote for Heather (Blue)"
+          title={`Vote for ${blueParticipant.name} (Blue)`}
         >
-          <ThumbsUp className="w-4.5 h-4.5 text-white fill-white" />
+          <AeriBattleThumbsUpIcon className="w-3.5 h-3.5" contrastColor="#1D3D8F" />
         </button>
       </div>
 
