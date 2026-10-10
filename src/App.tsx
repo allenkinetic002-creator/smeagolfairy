@@ -1585,8 +1585,16 @@ export default function App() {
   const [showMatchesScreen, setShowMatchesScreen] = useState(false);
   const [showNormalMessagesScreen, setShowNormalMessagesScreen] = useState(false);
   const [targetMessagePerson, setTargetMessagePerson] = useState<TargetMessagePerson | null>(null);
-  const [showInfluenceRatingModal, setShowInfluenceRatingModal] = useState(false);
+  const [activeInfluenceRatingId, setActiveInfluenceRatingId] = useState<string | null>(null);
   const [activePhoneReactionId, setActivePhoneReactionId] = useState<string | null>(null);
+
+  const handleToggleInfluenceRating = (id: string) => {
+    setActiveInfluenceRatingId((prev) => (prev === id ? null : id));
+  };
+
+  const handleCloseInfluenceRating = () => {
+    setActiveInfluenceRatingId(null);
+  };
 
   // Per-post broken pencil states to ensure each post is 100% independent (even from the same author)
   const [openFaceoffPosts, setOpenFaceoffPosts] = useState<Record<string, boolean>>({
@@ -2124,7 +2132,7 @@ export default function App() {
 
                         {/* 5th icon: Masked 2 eyes */}
                         <button
-                          onClick={() => setShowInfluenceRatingModal(true)}
+                          onClick={() => handleToggleInfluenceRating(post.id)}
                           className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
                           aria-label="View Fairy ratings and social reach"
                           title="Overall ratings & Social reach"
@@ -2170,6 +2178,17 @@ export default function App() {
                     </div>
                   </div>
                 </div>
+
+                {/* Influence Rating Card placed down on post instead of modal */}
+                {activeInfluenceRatingId === post.id && (
+                  <div className="w-full pt-1 pb-2 px-0.5">
+                    <InfluenceRatingModal
+                      isOpen={true}
+                      isInline={true}
+                      onClose={handleCloseInfluenceRating}
+                    />
+                  </div>
+                )}
               </div>
             ))}
 
@@ -2729,7 +2748,7 @@ export default function App() {
 
                           {/* 5. Masked 2 Eyes Icon */}
                           <button
-                            onClick={() => setShowInfluenceRatingModal(true)}
+                            onClick={() => handleToggleInfluenceRating(`person-${person.name}`)}
                             className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
                             aria-label="Masked 2 Eyes"
                             title="Masked 2 Eyes"
@@ -2808,6 +2827,17 @@ export default function App() {
                       <AeriRaygunIcon className="w-8.5 h-8.5 text-slate-800 stroke-[1.3]" />
                     </button>
                   </div>
+
+                  {/* Influence Rating Card placed down on post instead of modal */}
+                  {activeInfluenceRatingId === `person-${person.name}` && (
+                    <div className="w-full pt-1 pb-3 px-3.5 bg-white border-t border-slate-100">
+                      <InfluenceRatingModal
+                        isOpen={true}
+                        isInline={true}
+                        onClose={handleCloseInfluenceRating}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             );
@@ -3215,7 +3245,7 @@ export default function App() {
 
                       {/* 5. Masked 2 Eyes */}
                       <button
-                        onClick={() => setShowInfluenceRatingModal(true)}
+                        onClick={() => handleToggleInfluenceRating('creator-preview')}
                         className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
                         title="Masked 2 Eyes"
                       >
@@ -3254,6 +3284,17 @@ export default function App() {
                   {feedPosts[0].caption}
                 </p>
               </div>
+
+              {/* Influence Rating Card placed down on post instead of modal */}
+              {activeInfluenceRatingId === 'creator-preview' && (
+                <div className="w-full pt-1 pb-3 px-3.5 bg-white border-t border-slate-100">
+                  <InfluenceRatingModal
+                    isOpen={true}
+                    isInline={true}
+                    onClose={handleCloseInfluenceRating}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -3372,16 +3413,6 @@ export default function App() {
           />
         </button>
       </nav>
-
-      {/* Fairy Influence & 5-Ratings Popout Modal (Opens from Aeri frog icon beside Phone icon) */}
-      <InfluenceRatingModal
-        isOpen={showInfluenceRatingModal}
-        onClose={() => setShowInfluenceRatingModal(false)}
-      />
-
-
-
-
 
       {/* Create Post Modal (Allows posting video, pic, and writing) */}
       <CreatePostModal
