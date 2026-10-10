@@ -1794,7 +1794,13 @@ export default function App() {
           {/* Main Content Area */}
           <div className="flex-1 min-h-0 w-full px-4 py-1 flex flex-col overflow-y-auto scrollbar-thin space-y-3 relative">
             {feedPosts.map((post) => (
-              <div key={post.id} className="space-y-2 shrink-0">
+              <div key={post.id} className="space-y-1.5 shrink-0">
+                {/* Reaction Widget moved upper to the very top of post */}
+                {activePhoneReactionId === post.id && (
+                  <div className="w-full flex justify-center pt-0 pb-1 -mt-0.5">
+                    <PhoneReactionPopup />
+                  </div>
+                )}
                 {/* 1. Trending Tag with Flame placed directly on top of the person profile pic */}
                 {post.isTrending && (
                   <div className="flex items-center justify-between pt-1 pb-0.5 px-0.5 shrink-0">
@@ -1810,12 +1816,6 @@ export default function App() {
                   </div>
                 )}
 
-                {/* Placed directly on top of the person profile pic */}
-                {activePhoneReactionId === post.id && (
-                  <div className="w-full flex justify-center py-1 bg-white rounded-xl">
-                    <PhoneReactionPopup />
-                  </div>
-                )}
 
                 {/* 2. Post Author Header with Profile Picture */}
                 <div className="flex items-center justify-between py-1 px-0.5 shrink-0 bg-white">
