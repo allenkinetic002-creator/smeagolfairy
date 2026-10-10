@@ -77,14 +77,28 @@ const INITIAL_REQUESTS: DMRequest[] = [
   },
 ];
 
+export interface TargetMessagePerson {
+  id?: string;
+  name: string;
+  handle?: string;
+  avatarUrl?: string;
+  avatarBg?: string;
+  avatarInitial?: string;
+  city?: string;
+}
+
 interface NormalMessagesScreenProps {
   onBackToFeed: () => void;
   onOpenExclusiveMatches: () => void;
+  targetPerson?: TargetMessagePerson | null;
+  onClearTargetPerson?: () => void;
 }
 
 export function NormalMessagesScreen({
   onBackToFeed,
   onOpenExclusiveMatches,
+  targetPerson,
+  onClearTargetPerson,
 }: NormalMessagesScreenProps) {
   // Conversations list state with persistence (paired directly with match screen)
   const [conversations, setConversations] = useState<SharedPerson[]>(() => loadSharedPeople());
@@ -129,8 +143,83 @@ export function NormalMessagesScreen({
   // Live clock tick (every second)
   const [now, setNow] = useState<number>(Date.now());
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatInputRef = useRef<HTMLInputElement>(null);
   const lastSelectedConvIdRef = useRef<string | null>(null);
   const lastConvMsgCountRef = useRef<number>(0);
+
+  // If targetPerson prop is passed, auto-select or dynamically create conversation for that person
+  useEffect(() => {
+    if (!targetPerson) return;
+
+    const currentPeople = loadSharedPeople();
+    const normTargetName = targetPerson.name.toLowerCase().trim();
+    const normTargetHandle = (targetPerson.handle || '').toLowerCase().trim();
+
+    // Check if this person already exists in conversations
+    let found = currentPeople.find((c) => {
+      if (targetPerson.id && c.id === targetPerson.id) return true;
+      if (c.name.toLowerCase().trim() === normTargetName) return true;
+      if (normTargetHandle && c.handle.toLowerCase().trim() === normTargetHandle) return true;
+      if (normTargetName.includes('elena') && c.name.toLowerCase().includes('elena')) return true;
+      return false;
+    });
+
+    if (found) {
+      setSelectedConvId(found.id);
+    } else {
+      // Create new shared person conversation entry
+      const newId = targetPerson.id || `person-${Date.now()}`;
+      const initials =
+        targetPerson.avatarInitial ||
+        targetPerson.name
+          .split(' ')
+          .map((n) => n[0])
+          .join('')
+          .toUpperCase()
+          .slice(0, 2) ||
+        'CR';
+
+      const newPerson: SharedPerson = {
+        id: newId,
+        name: targetPerson.name,
+        handle: targetPerson.handle || `@${targetPerson.name.toLowerCase().replace(/\s+/g, '_')}`,
+        city: targetPerson.city || 'Creator',
+        percent: 94,
+        matchPercent: 94,
+        approval: '85+',
+        avatarBg: targetPerson.avatarBg || 'bg-purple-600',
+        avatarInitial: initials,
+        avatarText: initials,
+        avatarUrl: targetPerson.avatarUrl,
+        isOnline: true,
+        unreadCount: 0,
+        lastActive: 'Active now',
+        messages: [
+          {
+            id: `msg-welcome-${Date.now()}`,
+            sender: 'them',
+            text: `Hey! Thanks for connecting. Drop me a message anytime! ✨`,
+            time: 'Just now',
+          },
+        ],
+      };
+
+      const updated = [newPerson, ...currentPeople];
+      setConversations(updated);
+      saveSharedPeople(updated);
+      setSelectedConvId(newId);
+    }
+  }, [targetPerson]);
+
+  // Auto-focus chat input whenever a conversation is active
+  useEffect(() => {
+    if (selectedConvId) {
+      const timer = setTimeout(() => {
+        chatInputRef.current?.focus();
+      }, 150);
+      return () => clearTimeout(timer);
+    }
+  }, [selectedConvId]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -495,9 +584,13 @@ export function NormalMessagesScreen({
         <header className="w-full px-3 py-2.5 bg-white border-b border-slate-100 flex items-center justify-between shrink-0 shadow-2xs z-10">
           <div className="flex items-center gap-2.5 min-w-0">
             <button
-              onClick={() => setSelectedConvId(null)}
+              onClick={() => {
+                setSelectedConvId(null);
+                if (onClearTargetPerson) onClearTargetPerson();
+              }}
               className="p-1 -ml-1 rounded-full text-slate-700 hover:bg-slate-100 active:bg-slate-200 transition-colors cursor-pointer shrink-0"
               aria-label="Back to conversations"
+              title="All conversations"
             >
               <ArrowLeft className="w-5 h-5 stroke-[2.2]" />
             </button>
@@ -571,6 +664,16 @@ export function NormalMessagesScreen({
               title="Open See for your matches screen"
             >
               <ExternalLink className="w-4 h-4 text-slate-700" />
+            </button>
+
+            {/* Return to Feed */}
+            <button
+              onClick={onBackToFeed}
+              className="p-1.5 rounded-full text-slate-600 hover:text-black hover:bg-slate-100 transition-colors cursor-pointer"
+              title="Close chat & return to feed"
+              aria-label="Return to feed"
+            >
+              <X className="w-4 h-4 text-slate-700" />
             </button>
           </div>
         </header>
@@ -657,6 +760,7 @@ export function NormalMessagesScreen({
             className="flex items-center gap-2 max-w-3xl mx-auto"
           >
             <input
+              ref={chatInputRef}
               type="text"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}

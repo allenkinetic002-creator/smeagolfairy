@@ -32,7 +32,7 @@ import charDesignPhoto from './assets/images/char_design_concept_1791018302239.j
 import { DMControl } from './components/DMControl';
 import { FairyControl } from './components/FairyControl';
 import { MatchesScreen } from './components/MatchesScreen';
-import { NormalMessagesScreen } from './components/NormalMessagesScreen';
+import { NormalMessagesScreen, TargetMessagePerson } from './components/NormalMessagesScreen';
 import { InfluenceRatingModal } from './components/InfluenceRatingModal';
 import { FairyPotIcon } from './components/FairyPotIcon';
 import { AeriFrogIcon } from './components/AeriFrogIcon';
@@ -1554,7 +1554,14 @@ export default function App() {
   const [controlSubTab, setControlSubTab] = useState<'fairy-control' | 'dm-control' | 'matches'>('fairy-control');
   const [showMatchesScreen, setShowMatchesScreen] = useState(false);
   const [showNormalMessagesScreen, setShowNormalMessagesScreen] = useState(false);
+  const [targetMessagePerson, setTargetMessagePerson] = useState<TargetMessagePerson | null>(null);
   const [showInfluenceRatingModal, setShowInfluenceRatingModal] = useState(false);
+
+  const handleOpenSendPersonMessage = (person: TargetMessagePerson) => {
+    setTargetMessagePerson(person);
+    setShowNormalMessagesScreen(true);
+    setShowMatchesScreen(false);
+  };
 
   const currentCreators = creatorsData[selectedCategory] || creatorsData.new_artists;
 
@@ -1637,11 +1644,17 @@ export default function App() {
       ) : showNormalMessagesScreen ? (
         <div className="flex-1 min-h-0 w-full overflow-hidden">
           <NormalMessagesScreen
-            onBackToFeed={() => setShowNormalMessagesScreen(false)}
+            onBackToFeed={() => {
+              setShowNormalMessagesScreen(false);
+              setTargetMessagePerson(null);
+            }}
             onOpenExclusiveMatches={() => {
               setShowNormalMessagesScreen(false);
               setShowMatchesScreen(true);
+              setTargetMessagePerson(null);
             }}
+            targetPerson={targetMessagePerson}
+            onClearTargetPerson={() => setTargetMessagePerson(null)}
           />
         </div>
       ) : (
@@ -1705,7 +1718,10 @@ export default function App() {
 
               {/* Message icon (where user messages normal users) */}
               <button
-                onClick={() => setShowNormalMessagesScreen(true)}
+                onClick={() => {
+                  setTargetMessagePerson(null);
+                  setShowNormalMessagesScreen(true);
+                }}
                 aria-label="Messages"
                 title="Messages · Direct messages with normal users"
                 className="hover:opacity-75 transition-all active:scale-90 cursor-pointer p-1 relative text-black flex items-center justify-center -translate-x-1.5 mr-1 translate-y-1"
@@ -1908,9 +1924,16 @@ export default function App() {
                     <div className="flex flex-col items-start gap-1.5">
                       {/* Long gray pill like icon with "Send me message" */}
                       <button
-                        onClick={() => setShowNormalMessagesScreen(true)}
+                        onClick={() =>
+                          handleOpenSendPersonMessage({
+                            id: 'p-elena',
+                            name: post.authorName,
+                            handle: post.authorHandle,
+                            avatarUrl: post.authorAvatar,
+                          })
+                        }
                         className="cursor-pointer px-3.5 py-1 bg-[#E2E8F0] hover:bg-[#CBD5E1] text-black hover:text-black rounded-full text-[11px] font-semibold flex items-center justify-center gap-1.5 border border-slate-300 shadow-2xs transition-all active:scale-95 whitespace-nowrap"
-                        title="Send me message"
+                        title={`Send ${post.authorName} message`}
                         aria-label="Send me message"
                       >
                         <AeriMessageBubbleIcon className="w-3.5 h-3.5 text-black shrink-0" color="#000000" />
@@ -2473,9 +2496,18 @@ export default function App() {
                       <div className="flex flex-col items-start gap-1.5">
                         {/* Long gray pill like icon with "Send me message" */}
                         <button
-                          onClick={() => setShowNormalMessagesScreen(true)}
+                          onClick={() =>
+                            handleOpenSendPersonMessage({
+                              name: person.name,
+                              handle: person.handle,
+                              avatarUrl: person.avatarUrl,
+                              avatarBg: person.avatarBg,
+                              avatarInitial: person.avatarInitial,
+                              city: person.location,
+                            })
+                          }
                           className="cursor-pointer px-3.5 py-1 bg-[#E2E8F0] hover:bg-[#CBD5E1] text-black hover:text-black rounded-full text-[11px] font-semibold flex items-center justify-center gap-1.5 border border-slate-300 shadow-2xs transition-all active:scale-95 whitespace-nowrap"
-                          title="Send me message"
+                          title={`Send ${person.name} message`}
                           aria-label="Send me message"
                         >
                           <AeriMessageBubbleIcon className="w-3.5 h-3.5 text-black shrink-0" color="#000000" />
@@ -2924,7 +2956,14 @@ export default function App() {
                   {/* Phone Hand & Masked 2 Eyes with Long Gray Pill directly above them */}
                   <div className="flex flex-col items-center gap-1">
                     <button
-                      onClick={() => setShowNormalMessagesScreen(true)}
+                      onClick={() =>
+                        handleOpenSendPersonMessage({
+                          id: 'p-elena',
+                          name: 'Aeri Fairy',
+                          handle: '@aerifairy',
+                          avatarUrl: feedPosts[0].authorAvatar,
+                        })
+                      }
                       className="cursor-pointer px-3 py-0.5 bg-[#E2E8F0] hover:bg-[#CBD5E1] text-black hover:text-black rounded-full text-[10px] font-semibold flex items-center justify-center gap-1 border border-slate-300 shadow-2xs transition-all active:scale-95 whitespace-nowrap"
                       title="Send me message"
                       aria-label="Send me message"
@@ -2995,6 +3034,7 @@ export default function App() {
           onClick={() => {
             setShowMatchesScreen(false);
             setShowNormalMessagesScreen(false);
+            setTargetMessagePerson(null);
             setActiveNavIndex(0);
           }}
           aria-label="Home"
@@ -3011,6 +3051,7 @@ export default function App() {
           onClick={() => {
             setShowMatchesScreen(false);
             setShowNormalMessagesScreen(false);
+            setTargetMessagePerson(null);
             setActiveNavIndex(1);
           }}
           aria-label="Top 10 Creators"
@@ -3034,6 +3075,7 @@ export default function App() {
           onClick={() => {
             setShowMatchesScreen(false);
             setShowNormalMessagesScreen(false);
+            setTargetMessagePerson(null);
             setActiveNavIndex(2);
             setIsDrawerOpen(false);
           }}
@@ -3059,6 +3101,7 @@ export default function App() {
           onClick={() => {
             setShowMatchesScreen(false);
             setShowNormalMessagesScreen(false);
+            setTargetMessagePerson(null);
             setActiveNavIndex(0);
           }}
           aria-label="Notifications"
@@ -3079,6 +3122,7 @@ export default function App() {
           onClick={() => {
             setShowMatchesScreen(false);
             setShowNormalMessagesScreen(false);
+            setTargetMessagePerson(null);
             setActiveNavIndex(0);
           }}
           aria-label="User profile"
