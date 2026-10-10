@@ -2188,17 +2188,7 @@ export default function App() {
                 >
                   {/* Rank Number Badge */}
                   <span
-                    className={`w-5 h-5 rounded-full flex items-center justify-center text-[10.5px] font-black shrink-0 ${
-                      creator.rank === 1
-                        ? 'bg-amber-400 text-slate-950 shadow-2xs'
-                        : creator.rank === 2
-                        ? 'bg-slate-300 text-slate-900'
-                        : creator.rank === 3
-                        ? 'bg-amber-700 text-white'
-                        : isSelected
-                        ? 'bg-purple-600 text-white'
-                        : 'bg-slate-100 text-slate-600'
-                    }`}
+                    className="w-5.5 h-5.5 rounded-full bg-[#FF0000] text-white flex items-center justify-center text-[11px] font-black shrink-0 shadow-2xs"
                   >
                     {creator.rank}
                   </span>
@@ -2256,43 +2246,19 @@ export default function App() {
                       : 'border-slate-200/90'
                   }`}
                 >
-                  {/* 1. Header Row: Rank Badge & Category Info */}
-                  <div className="flex items-center justify-between px-3.5 py-2 bg-slate-50/90 border-b border-slate-100">
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`w-6.5 h-6.5 rounded-full flex items-center justify-center font-black text-xs shadow-xs shrink-0 ${
-                          person.rank === 1
-                            ? 'bg-amber-400 text-slate-950 ring-1 ring-amber-500/40'
-                            : person.rank === 2
-                            ? 'bg-slate-300 text-slate-900'
-                            : person.rank === 3
-                            ? 'bg-amber-700 text-white'
-                            : 'bg-purple-600 text-white'
-                        }`}
-                      >
-                        #{person.rank}
-                      </span>
-                      <span className="text-xs font-black text-slate-900 flex items-center gap-1">
-                        {person.rank === 1
-                          ? '👑 Top #1 Ranked Post'
-                          : person.rank === 2
-                          ? '🥈 #2 Runner-Up Post'
-                          : person.rank === 3
-                          ? '🥉 #3 Podium Post'
-                          : `Top #${person.rank} Featured Post`}
-                      </span>
-                    </div>
+                  {/* 1. Rank Header Divider (Inspired by reference image: red horizontal line with centered solid red circle & bold white rank number) */}
+                  <div className="w-full px-4 pt-3.5 pb-1 flex items-center justify-center relative bg-white">
+                    {/* Horizontal Red Line */}
+                    <div className="w-full h-[2.5px] bg-[#FF0000] absolute left-0 right-0 top-1/2 -translate-y-1/2" />
 
-                    <div className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-pink-50 border border-pink-100/80 rounded-full">
-                      <AeriFlameIcon filled className="w-3 h-3 text-[#FF5722]" />
-                      <span className="text-[10px] font-black text-purple-700">
-                        {CATEGORY_TABS.find((t) => t.id === selectedCategory)?.label}
-                      </span>
+                    {/* Centered Red Circle with Bold White Rank Number */}
+                    <div className="relative z-10 w-7.5 h-7.5 rounded-full bg-[#FF0000] text-white font-black flex items-center justify-center text-[15px] shadow-xs border-2 border-white select-none">
+                      {person.rank}
                     </div>
                   </div>
 
-                  {/* 2. Post Author Header with Flame Badge */}
-                  <div className="flex items-center justify-between p-3.5 pb-2.5 bg-white">
+                  {/* 2. Post Author Header with Profile Picture */}
+                  <div className="flex items-center justify-between px-3.5 pt-1.5 pb-2.5 bg-white">
                     <div className="flex items-center gap-2.5 min-w-0">
                       <div className="relative shrink-0">
                         {person.avatarUrl ? (
@@ -2308,12 +2274,12 @@ export default function App() {
                             {person.avatarInitial}
                           </div>
                         )}
-                        {/* Flame Badge directly on top of profile pic */}
+                        {/* Red circle rank badge directly on top of profile pic */}
                         <div
-                          className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-gradient-to-tr from-[#FF5722] to-amber-400 flex items-center justify-center ring-1.5 ring-white shadow-2xs"
-                          title="Trending Creator"
+                          className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#FF0000] text-white font-black flex items-center justify-center text-[10px] ring-1.5 ring-white shadow-2xs"
+                          title={`Rank #${person.rank}`}
                         >
-                          <AeriFlameIcon filled className="w-2.5 h-2.5 text-white" />
+                          {person.rank}
                         </div>
                       </div>
 
@@ -2331,9 +2297,12 @@ export default function App() {
                     </div>
 
                     <div className="flex items-center gap-1.5 shrink-0 ml-2">
+                      <span className="text-[10px] font-black text-purple-700 bg-purple-50 border border-purple-100/80 px-2 py-0.5 rounded-full">
+                        {CATEGORY_TABS.find((t) => t.id === selectedCategory)?.label}
+                      </span>
                       <button
                         onClick={() => handleToggleFollow(selectedCategory, person.rank)}
-                        className={`px-3.5 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                        className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${
                           person.isFollowing
                             ? 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                             : 'bg-purple-600 hover:bg-purple-700 text-white shadow-xs'
