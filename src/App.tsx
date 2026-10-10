@@ -34,6 +34,7 @@ import { FairyControl } from './components/FairyControl';
 import { MatchesScreen } from './components/MatchesScreen';
 import { NormalMessagesScreen, TargetMessagePerson } from './components/NormalMessagesScreen';
 import { InfluenceRatingModal } from './components/InfluenceRatingModal';
+import { PhoneReactionPopup } from './components/PhoneReactionPopup';
 import { FairyPotIcon } from './components/FairyPotIcon';
 import { AeriFrogIcon } from './components/AeriFrogIcon';
 import { AeriFlameIcon } from './components/AeriFlameIcon';
@@ -1556,6 +1557,13 @@ export default function App() {
   const [showNormalMessagesScreen, setShowNormalMessagesScreen] = useState(false);
   const [targetMessagePerson, setTargetMessagePerson] = useState<TargetMessagePerson | null>(null);
   const [showInfluenceRatingModal, setShowInfluenceRatingModal] = useState(false);
+  const [showPhoneReactionModal, setShowPhoneReactionModal] = useState(false);
+  const [phoneReactionAuthor, setPhoneReactionAuthor] = useState('Elena Vance');
+
+  const handleOpenPhoneReaction = (author?: string) => {
+    if (author) setPhoneReactionAuthor(author);
+    setShowPhoneReactionModal(true);
+  };
 
   const handleOpenSendPersonMessage = (person: TargetMessagePerson) => {
     setTargetMessagePerson(person);
@@ -1944,6 +1952,7 @@ export default function App() {
                       <div className="flex items-center gap-2.5 ml-1.5 sm:ml-2">
                         {/* 4th icon: Hand holding smartphone */}
                         <button
+                          onClick={() => handleOpenPhoneReaction(post.authorName)}
                           className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
                           title="Smartphone / Social Reach"
                           aria-label="Smartphone"
@@ -2518,6 +2527,7 @@ export default function App() {
                         <div className="flex items-center gap-2 ml-1.5 sm:ml-2">
                           {/* 4. Phone Hand Icon */}
                           <button
+                            onClick={() => handleOpenPhoneReaction(person.name)}
                             className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
                             title="Phone Hand"
                             aria-label="Smartphone"
@@ -2975,6 +2985,7 @@ export default function App() {
                     <div className="flex items-center gap-2.5">
                       {/* 4. Phone Hand */}
                       <button
+                        onClick={() => handleOpenPhoneReaction(previewCreator?.name || 'Creator')}
                         className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
                         title="Phone Hand"
                       >
@@ -3144,6 +3155,13 @@ export default function App() {
       <InfluenceRatingModal
         isOpen={showInfluenceRatingModal}
         onClose={() => setShowInfluenceRatingModal(false)}
+      />
+
+      {/* Phone Reaction Popout Modal (Opens from Phone Hand icon, inspired by Likes/Dislikes & Double Yellow line design) */}
+      <PhoneReactionPopup
+        isOpen={showPhoneReactionModal}
+        onClose={() => setShowPhoneReactionModal(false)}
+        postAuthor={phoneReactionAuthor}
       />
 
       {/* Create Post Modal (Allows posting video, pic, and writing) */}
