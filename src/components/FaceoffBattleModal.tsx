@@ -105,11 +105,11 @@ export function FaceoffBattleModal({
 
       {/* 2. WINNER vs LOSER Header */}
       <div className="flex items-center justify-between mt-2.5 mb-0.5">
-        <span className="text-[20px] sm:text-[22px] font-black text-[#E51E2B] tracking-tight leading-none">
-          WINNER
-        </span>
         <span className="text-[20px] sm:text-[22px] font-black text-[#1D3D8F] tracking-tight leading-none">
           LOSER
+        </span>
+        <span className="text-[20px] sm:text-[22px] font-black text-[#E51E2B] tracking-tight leading-none">
+          WINNER
         </span>
       </div>
 
@@ -120,15 +120,15 @@ export function FaceoffBattleModal({
 
       {/* 4. Faces & Percentages Row */}
       <div className="flex items-center justify-between px-0.5">
-        {/* Freda Left / Red */}
+        {/* Blue Left */}
         <div className="flex items-center gap-1.5 sm:gap-2">
           <img
-            src={redParticipant.avatar}
-            alt={redParticipant.name}
+            src={blueParticipant.avatar}
+            alt={blueParticipant.name}
             className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover shadow-2xs ring-1 ring-slate-200"
           />
           <span className="text-[13.5px] sm:text-[14.5px] font-black text-slate-900 tabular-nums">
-            {redPct.toFixed(1)}%
+            {bluePct.toFixed(1)}%
           </span>
         </div>
 
@@ -137,14 +137,14 @@ export function FaceoffBattleModal({
           0:00:00
         </div>
 
-        {/* Heather Right / Blue */}
+        {/* Red Right */}
         <div className="flex items-center gap-1.5 sm:gap-2">
           <span className="text-[13.5px] sm:text-[14.5px] font-black text-slate-900 tabular-nums">
-            {bluePct.toFixed(1)}%
+            {redPct.toFixed(1)}%
           </span>
           <img
-            src={blueParticipant.avatar}
-            alt={blueParticipant.name}
+            src={redParticipant.avatar}
+            alt={redParticipant.name}
             className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover shadow-2xs ring-1 ring-slate-200"
           />
         </div>
@@ -152,24 +152,24 @@ export function FaceoffBattleModal({
 
       {/* 5. Names Row */}
       <div className="flex items-center justify-between mt-1 px-0.5 text-[11px] font-bold text-slate-900">
-        <span>{redParticipant.name}</span>
         <span>{blueParticipant.name}</span>
+        <span>{redParticipant.name}</span>
       </div>
 
-      {/* 6. Interaction Row (Red button + Likes | Dislikes + Blue button) */}
+      {/* 6. Interaction Row (Blue button + Likes | Dislikes + Red button) */}
       <div className="w-full flex items-center justify-between gap-2 mt-2.5">
-        {/* Red Like Button (Slightly reduced size with wrist line) */}
+        {/* Blue Like Button (switched to left, facing left) */}
         <button
           type="button"
-          onClick={() => handleVote('red')}
+          onClick={() => handleVote('blue')}
           className={`cursor-pointer w-[56px] sm:w-[62px] h-[28px] rounded-[8px] flex items-center justify-center transition-all active:scale-90 ${
-            userVote === 'red'
-              ? 'bg-[#E51E2B] ring-2 ring-red-400 ring-offset-1'
-              : 'bg-[#E51E2B] hover:bg-[#D41825]'
+            userVote === 'blue'
+              ? 'bg-[#1D3D8F] ring-2 ring-blue-400 ring-offset-1'
+              : 'bg-[#1D3D8F] hover:bg-[#183275]'
           }`}
-          title={`Vote for ${redParticipant.name} (Red)`}
+          title={`Vote for ${blueParticipant.name} (Blue)`}
         >
-          <AeriBattleThumbsUpIcon className="w-3.5 h-3.5" contrastColor="#E51E2B" />
+          <AeriBattleThumbsUpIcon className="w-3.5 h-3.5" contrastColor="#1D3D8F" facing="left" />
         </button>
 
         {/* Likes & Dislikes Counters */}
@@ -195,18 +195,18 @@ export function FaceoffBattleModal({
           </div>
         </div>
 
-        {/* Blue Like Button (Slightly reduced size with wrist line) */}
+        {/* Red Like Button (switched to right, facing right) */}
         <button
           type="button"
-          onClick={() => handleVote('blue')}
+          onClick={() => handleVote('red')}
           className={`cursor-pointer w-[56px] sm:w-[62px] h-[28px] rounded-[8px] flex items-center justify-center transition-all active:scale-90 ${
-            userVote === 'blue'
-              ? 'bg-[#1D3D8F] ring-2 ring-blue-400 ring-offset-1'
-              : 'bg-[#1D3D8F] hover:bg-[#183275]'
+            userVote === 'red'
+              ? 'bg-[#E51E2B] ring-2 ring-red-400 ring-offset-1'
+              : 'bg-[#E51E2B] hover:bg-[#D41825]'
           }`}
-          title={`Vote for ${blueParticipant.name} (Blue)`}
+          title={`Vote for ${redParticipant.name} (Red)`}
         >
-          <AeriBattleThumbsUpIcon className="w-3.5 h-3.5" contrastColor="#1D3D8F" />
+          <AeriBattleThumbsUpIcon className="w-3.5 h-3.5" contrastColor="#E51E2B" facing="right" />
         </button>
       </div>
 
@@ -214,18 +214,18 @@ export function FaceoffBattleModal({
       <div className="w-full mt-3">
         <div className="w-full flex items-center gap-[3px]">
           <div
-            className="h-[6px] bg-[#E51E2B] rounded-full transition-all duration-300"
-            style={{ width: `${redPct}%` }}
-          />
-          <div
             className="h-[6px] bg-[#1D3D8F] rounded-full transition-all duration-300"
             style={{ width: `${bluePct}%` }}
+          />
+          <div
+            className="h-[6px] bg-[#E51E2B] rounded-full transition-all duration-300"
+            style={{ width: `${redPct}%` }}
           />
         </div>
 
         <div className="flex items-center justify-between text-[10.5px] font-bold mt-0.5 px-0.5">
-          <span className="text-[#E51E2B]">Red</span>
           <span className="text-[#1D3D8F]">Blue</span>
+          <span className="text-[#E51E2B]">Red</span>
         </div>
       </div>
 
@@ -239,7 +239,7 @@ export function FaceoffBattleModal({
         {/* Upward yellow triangle pointer */}
         <div
           className="absolute -top-[5.5px] -translate-x-1/2 pointer-events-none transition-all duration-300"
-          style={{ left: `${redPct}%` }}
+          style={{ left: `${bluePct}%` }}
         >
           <div className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[9px] border-b-[#F5C21B]" />
         </div>
