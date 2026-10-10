@@ -35,6 +35,7 @@ import { MatchesScreen } from './components/MatchesScreen';
 import { NormalMessagesScreen, TargetMessagePerson } from './components/NormalMessagesScreen';
 import { InfluenceRatingModal } from './components/InfluenceRatingModal';
 import { PhoneReactionPopup } from './components/PhoneReactionPopup';
+import { FaceoffBattleModal } from './components/FaceoffBattleModal';
 import { FairyPotIcon } from './components/FairyPotIcon';
 import { AeriFrogIcon } from './components/AeriFrogIcon';
 import { AeriFlameIcon } from './components/AeriFlameIcon';
@@ -1560,6 +1561,7 @@ export default function App() {
   const [showInfluenceRatingModal, setShowInfluenceRatingModal] = useState(false);
   const [activePhoneReactionId, setActivePhoneReactionId] = useState<string | null>('post-default-elena');
   const [isPencilMorphed, setIsPencilMorphed] = useState(false);
+  const [showFaceoffModal, setShowFaceoffModal] = useState(false);
 
   const handleTogglePhoneReaction = (id: string) => {
     setActivePhoneReactionId((prev) => (prev === id ? null : id));
@@ -1854,11 +1856,11 @@ export default function App() {
                     {/* Follow button morphs into pure broken pencil icon (moved slightly upper, no button wrapper or background) */}
                     {isPencilMorphed ? (
                       <div
-                        onClick={() => setIsPencilMorphed(false)}
-                        title="Broken pencil · Click to restore Follow button"
+                        onClick={() => setShowFaceoffModal(true)}
+                        title="Click to view faceoff battle"
                         role="button"
                         tabIndex={0}
-                        aria-label="Broken pencil"
+                        aria-label="Broken pencil faceoff battle"
                         className="cursor-pointer -translate-y-1 hover:opacity-80 transition-transform active:scale-95 flex items-center justify-center p-0"
                       >
                         <BrokenPencilIcon className="w-[56px] sm:w-[62px] h-auto" />
@@ -2440,11 +2442,11 @@ export default function App() {
                       </span>
                       {isPencilMorphed ? (
                         <div
-                          onClick={() => setIsPencilMorphed(false)}
-                          title="Broken pencil · Click to restore Follow button"
+                          onClick={() => setShowFaceoffModal(true)}
+                          title="Click to view faceoff battle"
                           role="button"
                           tabIndex={0}
-                          aria-label="Broken pencil"
+                          aria-label="Broken pencil faceoff battle"
                           className="cursor-pointer -translate-y-1 hover:opacity-80 transition-transform active:scale-95 flex items-center justify-center p-0"
                         >
                           <BrokenPencilIcon className="w-[56px] sm:w-[62px] h-auto" />
@@ -2727,11 +2729,11 @@ export default function App() {
                   <div className="flex items-center justify-between pt-3 mt-3 border-t border-slate-100">
                     {isPencilMorphed ? (
                       <div
-                        onClick={() => setIsPencilMorphed(false)}
-                        title="Broken pencil · Click to restore Follow button"
+                        onClick={() => setShowFaceoffModal(true)}
+                        title="Click to view faceoff battle"
                         role="button"
                         tabIndex={0}
-                        aria-label="Broken pencil"
+                        aria-label="Broken pencil faceoff battle"
                         className="cursor-pointer -translate-y-1 hover:opacity-80 transition-transform active:scale-95 flex items-center justify-center p-0"
                       >
                         <BrokenPencilIcon className="w-[58px] sm:w-[64px] h-auto" />
@@ -3222,6 +3224,12 @@ export default function App() {
       <InfluenceRatingModal
         isOpen={showInfluenceRatingModal}
         onClose={() => setShowInfluenceRatingModal(false)}
+      />
+
+      {/* Faceoff Battle Modal (Pops out when clicking broken pencil icon) */}
+      <FaceoffBattleModal
+        isOpen={showFaceoffModal}
+        onClose={() => setShowFaceoffModal(false)}
       />
 
 
