@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
-import { X, Trophy, History, ThumbsUp, Calendar, ChevronRight, Sparkles } from 'lucide-react';
-import { BrokenPencilIcon } from './BrokenPencilIcon';
-import { FaceoffBattleModal } from './FaceoffBattleModal';
+import { X, ThumbsUp, ChevronLeft, ChevronRight } from 'lucide-react';
 
-export interface PastChallengeItem {
-  id: string;
+interface PastChallengeData {
   title: string;
-  opponentName: string;
-  opponentHandle: string;
-  opponentAvatar: string;
-  personName: string;
-  personAvatar: string;
-  personScore: number;
-  opponentScore: number;
-  totalVotes: number;
+  redParticipant: {
+    name: string;
+    avatar: string;
+  };
+  blueParticipant: {
+    name: string;
+    avatar: string;
+  };
+  likes: number;
+  dislikes: number;
+  redPct: number;
+  bluePct: number;
   date: string;
-  outcome: 'WIN' | 'LOSS' | 'ACTIVE';
 }
 
 interface PastChallengesModalProps {
@@ -25,251 +25,240 @@ interface PastChallengesModalProps {
   personAvatar?: string;
 }
 
-const DEFAULT_PAST_CHALLENGES: PastChallengeItem[] = [
+const SAMPLE_PAST_CHALLENGES: PastChallengeData[] = [
   {
-    id: 'pc-1',
     title: 'Who looks Hotter between me Freda pepper or this loser Slimy sticky',
-    personName: 'Freda Da. pepper',
-    personAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-    opponentName: 'Heather Slime',
-    opponentHandle: '@heatherslime',
-    opponentAvatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
-    personScore: 52.0,
-    opponentScore: 48.0,
-    totalVotes: 324095,
-    date: 'Yesterday &middot; Finished',
-    outcome: 'WIN',
+    redParticipant: {
+      name: 'Freda Da. pepper',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+    },
+    blueParticipant: {
+      name: 'Heather Slime',
+      avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
+    },
+    likes: 234095,
+    dislikes: 90000,
+    redPct: 52.0,
+    bluePct: 48.0,
+    date: 'Previous Challenge &bull; Finished',
   },
   {
-    id: 'pc-2',
-    title: 'Autumn Aesthetics Faceoff: Pure Photography vs Mixed Surrealism',
-    personName: 'Elena Rostova',
-    personAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-    opponentName: 'Milo Sterling',
-    opponentHandle: '@milo_sculpt',
-    opponentAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-    personScore: 54.2,
-    opponentScore: 45.8,
-    totalVotes: 184500,
-    date: '3 days ago',
-    outcome: 'WIN',
-  },
-  {
-    id: 'pc-3',
-    title: 'Speed Painting 30min Showdown: Midnight Tokyo vs Cyberpunk Neon',
-    personName: 'Elena Rostova',
-    personAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-    opponentName: 'Sora Takahashi',
-    opponentHandle: '@sora_canvas',
-    opponentAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
-    personScore: 49.1,
-    opponentScore: 50.9,
-    totalVotes: 219800,
-    date: 'Last week',
-    outcome: 'LOSS',
+    title: 'Who has better aesthetics: Elena Rostova or Milo Sterling',
+    redParticipant: {
+      name: 'Elena Rostova',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+    },
+    blueParticipant: {
+      name: 'Milo Sterling',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+    },
+    likes: 184500,
+    dislikes: 102000,
+    redPct: 54.2,
+    bluePct: 45.8,
+    date: 'Previous Challenge &bull; Finished',
   },
 ];
 
+/**
+ * Verb Mode - Shows the person's past / previous challenge(s) in the exact
+ * broken pencil feature card style.
+ */
 export const PastChallengesModal: React.FC<PastChallengesModalProps> = ({
   isOpen,
   onClose,
   personName,
-  personAvatar,
 }) => {
-  const [expandedBattleId, setExpandedBattleId] = useState<string | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   if (!isOpen) return null;
 
+  const current = SAMPLE_PAST_CHALLENGES[currentIndex] || SAMPLE_PAST_CHALLENGES[0];
+
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/65 backdrop-blur-xs animate-in fade-in duration-150"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-100"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-[460px] max-h-[90vh] bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col relative select-none animate-in zoom-in-95 duration-200"
+        className="w-full max-w-[420px] bg-white rounded-2xl shadow-2xl border border-slate-200/90 p-3.5 sm:p-4 relative select-none animate-in zoom-in-95 duration-150"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
-        <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 p-4 text-white flex items-center justify-between shrink-0">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center p-1.5 shadow-inner">
-              <BrokenPencilIcon className="w-8 h-auto" />
-            </div>
-            <div>
-              <div className="text-[10px] font-black uppercase tracking-widest text-amber-100 flex items-center gap-1">
-                <span>Verb Mode</span>
-                <span>&bull;</span>
-                <span>Challenge Records</span>
-              </div>
-              <h2 className="text-base font-black text-white leading-tight">
-                Past Challenges: {personName}
-              </h2>
-            </div>
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-2.5 right-2.5 text-slate-400 hover:text-slate-800 p-1 rounded-full hover:bg-slate-100 transition-colors cursor-pointer z-10"
+          aria-label="Close"
+          title="Close"
+        >
+          <X className="w-4 h-4 stroke-[2.5]" />
+        </button>
+
+        {/* Top Tag & Switcher */}
+        <div className="flex items-center justify-between mb-2 pr-6">
+          <div className="inline-block px-2 py-0.5 bg-amber-100 text-amber-800 text-[10px] font-black rounded-md uppercase tracking-wide">
+            Verb &bull; Past Challenge ({currentIndex + 1}/{SAMPLE_PAST_CHALLENGES.length})
           </div>
 
-          <button
-            onClick={onClose}
-            className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer"
-            aria-label="Close"
-          >
-            <X className="w-4.5 h-4.5 stroke-[2.5]" />
-          </button>
-        </div>
-
-        {/* Stats summary bar */}
-        <div className="px-4 py-2.5 bg-amber-50/70 border-b border-amber-100 flex items-center justify-between shrink-0 text-slate-800">
-          <div className="flex items-center gap-2">
-            {personAvatar && (
-              <img
-                src={personAvatar}
-                alt={personName}
-                className="w-6 h-6 rounded-full object-cover ring-1 ring-amber-400"
-              />
-            )}
-            <span className="text-[12px] font-extrabold text-slate-900">
-              Total Battles: <span className="text-amber-800">3 Fights</span>
-            </span>
-          </div>
-          <div className="flex items-center gap-3 text-[11px] font-black">
-            <span className="text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
-              2 Wins
-            </span>
-            <span className="text-rose-700 bg-rose-100 px-2 py-0.5 rounded-full">
-              1 Loss
-            </span>
-          </div>
-        </div>
-
-        {/* Scrollable list of battles */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-thin">
-          {DEFAULT_PAST_CHALLENGES.map((challenge) => {
-            const isExpanded = expandedBattleId === challenge.id;
-            return (
-              <div
-                key={challenge.id}
-                className="border border-slate-200 hover:border-amber-300 rounded-2xl bg-white shadow-2xs hover:shadow-xs transition-all overflow-hidden"
+          {SAMPLE_PAST_CHALLENGES.length > 1 && (
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={() =>
+                  setCurrentIndex((prev) =>
+                    prev > 0 ? prev - 1 : SAMPLE_PAST_CHALLENGES.length - 1
+                  )
+                }
+                className="p-1 rounded-md hover:bg-slate-100 text-slate-600 cursor-pointer"
+                title="Previous past challenge"
               >
-                <div
-                  className="p-3.5 cursor-pointer"
-                  onClick={() =>
-                    setExpandedBattleId(isExpanded ? null : challenge.id)
-                  }
-                >
-                  {/* Top row: Outcome badge + Date */}
-                  <div className="flex items-center justify-between mb-1.5">
-                    <span
-                      className={`text-[10px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider ${
-                        challenge.outcome === 'WIN'
-                          ? 'bg-[#E51E2B]/10 text-[#E51E2B] border border-[#E51E2B]/20'
-                          : 'bg-[#1D3D8F]/10 text-[#1D3D8F] border border-[#1D3D8F]/20'
-                      }`}
-                    >
-                      {challenge.outcome === 'WIN' ? 'WINNER (RED)' : 'DEFEAT'}
-                    </span>
-                    <span
-                      className="text-[10.5px] font-semibold text-slate-400"
-                      dangerouslySetInnerHTML={{ __html: challenge.date }}
-                    />
-                  </div>
-
-                  {/* Challenge Title */}
-                  <h3 className="text-[13px] font-black text-slate-900 leading-snug line-clamp-2">
-                    {challenge.title}
-                  </h3>
-
-                  {/* Faceoff Opponents comparison */}
-                  <div className="mt-2.5 flex items-center justify-between bg-slate-50 p-2 rounded-xl">
-                    <div className="flex items-center gap-2">
-                      <img
-                        src={challenge.personAvatar}
-                        alt={challenge.personName}
-                        className="w-7 h-7 rounded-full object-cover ring-1 ring-slate-300"
-                      />
-                      <div className="text-left">
-                        <div className="text-[11px] font-black text-slate-900 leading-none">
-                          {challenge.personName}
-                        </div>
-                        <div className="text-[10px] font-bold text-[#E51E2B] mt-0.5">
-                          {challenge.personScore.toFixed(1)}%
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="text-[11px] font-black text-slate-400">
-                      VS
-                    </div>
-
-                    <div className="flex items-center gap-2 flex-row-reverse text-right">
-                      <img
-                        src={challenge.opponentAvatar}
-                        alt={challenge.opponentName}
-                        className="w-7 h-7 rounded-full object-cover ring-1 ring-slate-300"
-                      />
-                      <div>
-                        <div className="text-[11px] font-black text-slate-900 leading-none">
-                          {challenge.opponentName}
-                        </div>
-                        <div className="text-[10px] font-bold text-[#1D3D8F] mt-0.5">
-                          {challenge.opponentScore.toFixed(1)}%
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Progress bar split */}
-                  <div className="w-full flex items-center gap-[2px] mt-2">
-                    <div
-                      className="h-1.5 bg-[#E51E2B] rounded-full"
-                      style={{ width: `${challenge.personScore}%` }}
-                    />
-                    <div
-                      className="h-1.5 bg-[#1D3D8F] rounded-full"
-                      style={{ width: `${challenge.opponentScore}%` }}
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between mt-2 pt-1.5 border-t border-slate-100 text-[10.5px] text-slate-500 font-semibold">
-                    <span>
-                      {challenge.totalVotes.toLocaleString()} community votes
-                    </span>
-                    <span className="text-amber-600 font-bold flex items-center gap-0.5">
-                      {isExpanded ? 'Hide faceoff card' : 'View faceoff card'} &rarr;
-                    </span>
-                  </div>
-                </div>
-
-                {/* Expanded full broken pencil faceoff battle card */}
-                {isExpanded && (
-                  <div className="p-3 bg-slate-50 border-t border-slate-200">
-                    <FaceoffBattleModal
-                      battleQuestion={challenge.title}
-                      redParticipant={{
-                        name: challenge.personName,
-                        avatar: challenge.personAvatar,
-                      }}
-                      blueParticipant={{
-                        name: challenge.opponentName,
-                        avatar: challenge.opponentAvatar,
-                      }}
-                    />
-                  </div>
-                )}
-              </div>
-            );
-          })}
+                <ChevronLeft className="w-3.5 h-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  setCurrentIndex((prev) =>
+                    prev < SAMPLE_PAST_CHALLENGES.length - 1 ? prev + 1 : 0
+                  )
+                }
+                className="p-1 rounded-md hover:bg-slate-100 text-slate-600 cursor-pointer"
+                title="Next past challenge"
+              >
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          )}
         </div>
 
-        {/* Footer */}
-        <div className="p-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between shrink-0">
-          <span className="text-[11px] text-slate-500 font-medium">
-            Broken pencil past challenges archive
+        {/* 1. Header Question */}
+        <h2 className="text-[14px] sm:text-[15px] font-black text-slate-900 leading-snug tracking-tight pr-4">
+          {current.title}
+        </h2>
+
+        {/* 2. WINNER vs LOSER Header */}
+        <div className="flex items-center justify-between mt-2.5 mb-0.5">
+          <span className="text-[20px] sm:text-[22px] font-black text-[#E51E2B] tracking-tight leading-none">
+            WINNER
           </span>
+          <span className="text-[20px] sm:text-[22px] font-black text-[#1D3D8F] tracking-tight leading-none">
+            LOSER
+          </span>
+        </div>
+
+        {/* 3. Sub-heading: Preference estimate */}
+        <div className="text-[11.5px] font-extrabold text-slate-900 mb-1.5">
+          Preference estimate
+        </div>
+
+        {/* 4. Faces & Percentages Row */}
+        <div className="flex items-center justify-between px-0.5">
+          {/* Winner Left / Red */}
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <img
+              src={current.redParticipant.avatar}
+              alt={current.redParticipant.name}
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover shadow-2xs ring-1 ring-slate-200"
+            />
+            <span className="text-[13.5px] sm:text-[14.5px] font-black text-slate-900 tabular-nums">
+              {current.redPct.toFixed(1)}%
+            </span>
+          </div>
+
+          {/* Center Timer */}
+          <div className="text-[12px] font-bold text-slate-900 tabular-nums px-1">
+            0:00:00
+          </div>
+
+          {/* Loser Right / Blue */}
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <span className="text-[13.5px] sm:text-[14.5px] font-black text-slate-900 tabular-nums">
+              {current.bluePct.toFixed(1)}%
+            </span>
+            <img
+              src={current.blueParticipant.avatar}
+              alt={current.blueParticipant.name}
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover shadow-2xs ring-1 ring-slate-200"
+            />
+          </div>
+        </div>
+
+        {/* 5. Names Row */}
+        <div className="flex items-center justify-between mt-1 px-0.5 text-[11px] font-bold text-slate-900">
+          <span>{current.redParticipant.name}</span>
+          <span>{current.blueParticipant.name}</span>
+        </div>
+
+        {/* 6. Interaction Row (Red button + Likes | Dislikes + Blue button) */}
+        <div className="w-full flex items-center justify-between gap-2 mt-2.5">
           <button
-            onClick={onClose}
-            className="px-4 py-1.5 bg-slate-900 hover:bg-black text-white text-xs font-bold rounded-xl cursor-pointer"
+            type="button"
+            className="cursor-default w-[68px] sm:w-[74px] h-[33px] rounded-[9px] flex items-center justify-center bg-[#E51E2B]"
           >
-            Close
+            <ThumbsUp className="w-4.5 h-4.5 text-white fill-white" />
           </button>
+
+          <div className="flex items-center justify-center gap-2 shrink-0">
+            <div className="text-center min-w-[50px]">
+              <div className="text-[12px] sm:text-[12.5px] font-bold text-black tabular-nums leading-none">
+                {current.likes.toLocaleString()}
+              </div>
+              <div className="text-[10px] font-medium text-slate-700 leading-tight mt-0.5">
+                Likes
+              </div>
+            </div>
+
+            <div className="w-[1px] h-6 bg-slate-300 shrink-0" />
+
+            <div className="text-center min-w-[50px]">
+              <div className="text-[12px] sm:text-[12.5px] font-bold text-black tabular-nums leading-none">
+                {current.dislikes.toLocaleString()}
+              </div>
+              <div className="text-[10px] font-medium text-slate-700 leading-tight mt-0.5">
+                Dislikes
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            className="cursor-default w-[68px] sm:w-[74px] h-[33px] rounded-[9px] flex items-center justify-center bg-[#1D3D8F]"
+          >
+            <ThumbsUp className="w-4.5 h-4.5 text-white fill-white" />
+          </button>
+        </div>
+
+        {/* 7. Split Color Progress Bar */}
+        <div className="w-full mt-3">
+          <div className="w-full flex items-center gap-[3px]">
+            <div
+              className="h-[6px] bg-[#E51E2B] rounded-full transition-all duration-300"
+              style={{ width: `${current.redPct}%` }}
+            />
+            <div
+              className="h-[6px] bg-[#1D3D8F] rounded-full transition-all duration-300"
+              style={{ width: `${current.bluePct}%` }}
+            />
+          </div>
+
+          <div className="flex items-center justify-between text-[10.5px] font-bold mt-0.5 px-0.5">
+            <span className="text-[#E51E2B]">Red</span>
+            <span className="text-[#1D3D8F]">Blue</span>
+          </div>
+        </div>
+
+        {/* 8. Bottom Double Yellow Line with Upward Triangle */}
+        <div className="w-full mt-2.5 relative pt-1">
+          <div className="w-full flex flex-col gap-[2.5px]">
+            <div className="w-full h-[3px] bg-[#F5C21B] rounded-full" />
+            <div className="w-full h-[3px] bg-[#F5C21B] rounded-full" />
+          </div>
+
+          <div
+            className="absolute -top-[5.5px] -translate-x-1/2 pointer-events-none transition-all duration-300"
+            style={{ left: `${current.redPct}%` }}
+          >
+            <div className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[9px] border-b-[#F5C21B]" />
+          </div>
         </div>
       </div>
     </div>

@@ -1,16 +1,5 @@
 import React, { useState } from 'react';
-import {
-  X,
-  Swords,
-  Sparkles,
-  Flame,
-  CheckCircle2,
-  Image as ImageIcon,
-  MessageSquare,
-  HelpCircle,
-} from 'lucide-react';
-import { BrokenPencilIcon } from './BrokenPencilIcon';
-import { FaceoffBattleModal } from './FaceoffBattleModal';
+import { X, ThumbsUp, Send } from 'lucide-react';
 
 export interface ChallengePostPayload {
   caption: string;
@@ -38,12 +27,12 @@ interface ChallengePostModalProps {
   };
 }
 
-const PRESET_CHALLENGE_TEMPLATES = [
-  'Calling out for a head-to-head faceoff! Who really runs this arena? Cast your votes below! 🥊🔥',
-  'Think you can outshine my craft? Putting our skills to the ultimate public vote right now. Let the battle begin!',
-  'Online showdown challenge! Red vs Blue — the community decides the true winner today! ⚔️✨',
-];
-
+/**
+ * Adverb Mode - Challenge the person.
+ * Styled to look exactly like the broken pencil / verb faceoff feature card,
+ * with the question, WINNER vs LOSER, preference estimate, avatars, voting bars,
+ * double yellow lines, plus writing area to challenge the person online and submit!
+ */
 export const ChallengePostModal: React.FC<ChallengePostModalProps> = ({
   isOpen,
   onClose,
@@ -52,33 +41,65 @@ export const ChallengePostModal: React.FC<ChallengePostModalProps> = ({
   opponentHandle = '@opponent',
   opponentAvatar = 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
   currentUser = {
-    name: 'Elena Vance',
-    handle: '@elena_aeri',
+    name: 'Freda Da. pepper',
+    handle: '@freda_pepper',
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
   },
 }) => {
   const [battleQuestion, setBattleQuestion] = useState(
-    `Who reigns supreme between ${currentUser.name} and ${opponentName}?`
+    `Who looks Hotter between me ${currentUser.name} or this loser ${opponentName}`
   );
-  const [caption, setCaption] = useState(
-    `⚔️ Official Faceoff Challenge against ${opponentName} (${opponentHandle})! Who brings the better aesthetic and craft? Vote in the broken pencil battle card below!`
+  const [captionText, setCaptionText] = useState(
+    `I am officially challenging ${opponentName} to an online fight! Cast your votes on who wins this battle! 🔥⚔️`
   );
-  const [selectedTag, setSelectedTag] = useState('#faceoffbattle');
-  const [selectedImage, setSelectedImage] = useState(
-    'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=900&auto=format&fit=crop&q=80'
-  );
+
+  const [userVote, setUserVote] = useState<'red' | 'blue' | null>(null);
+  const [likes, setLikes] = useState<number>(234095);
+  const [dislikes, setDislikes] = useState<number>(90000);
+  const [redPct, setRedPct] = useState<number>(52.0);
+  const [bluePct, setBluePct] = useState<number>(48.0);
 
   if (!isOpen) return null;
 
+  const handleVote = (side: 'red' | 'blue') => {
+    if (userVote === side) {
+      setUserVote(null);
+      if (side === 'red') {
+        setLikes((prev) => Math.max(234095, prev - 1));
+      } else {
+        setDislikes((prev) => Math.max(90000, prev - 1));
+      }
+      setRedPct(52.0);
+      setBluePct(48.0);
+    } else {
+      if (side === 'red') {
+        setLikes((prev) => prev + 1);
+        if (userVote === 'blue') {
+          setDislikes((prev) => Math.max(90000, prev - 1));
+        }
+        setRedPct(52.5);
+        setBluePct(47.5);
+      } else {
+        setDislikes((prev) => prev + 1);
+        if (userVote === 'red') {
+          setLikes((prev) => Math.max(234095, prev - 1));
+        }
+        setRedPct(51.5);
+        setBluePct(48.5);
+      }
+      setUserVote(side);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!caption.trim() || !battleQuestion.trim()) return;
+    if (!captionText.trim()) return;
 
     onPublishChallenge({
-      caption,
-      battleQuestion,
-      mediaUrl: selectedImage,
-      tags: ['#faceoffbattle', '#onlinefight', '#brokenpencil', selectedTag],
+      caption: captionText.trim(),
+      battleQuestion: battleQuestion.trim(),
+      mediaUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=900&auto=format&fit=crop&q=80',
+      tags: ['#brokenpencil', '#faceoff', '#onlinefight'],
       opponentName,
       opponentHandle,
       opponentAvatar,
@@ -90,201 +111,201 @@ export const ChallengePostModal: React.FC<ChallengePostModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-xs animate-in fade-in duration-150"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-100"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-[500px] max-h-[92vh] bg-white rounded-3xl shadow-2xl border border-purple-200 overflow-hidden flex flex-col relative select-none animate-in zoom-in-95 duration-200"
+        className="w-full max-w-[420px] bg-white rounded-2xl shadow-2xl border border-slate-200/90 p-3.5 sm:p-4 relative select-none animate-in zoom-in-95 duration-150 max-h-[92vh] overflow-y-auto scrollbar-thin"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
-        <div className="bg-gradient-to-r from-purple-800 via-indigo-700 to-pink-600 px-4 py-3.5 text-white flex items-center justify-between shrink-0">
-          <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white shadow-inner">
-              <Swords className="w-5 h-5 stroke-[2.2]" />
-            </div>
-            <div>
-              <div className="text-[10px] font-black uppercase tracking-widest text-pink-200 flex items-center gap-1.5">
-                <span>Adverb Mode</span>
-                <span>&bull;</span>
-                <span>Broken Pencil Challenge</span>
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-2.5 right-2.5 text-slate-400 hover:text-slate-800 p-1 rounded-full hover:bg-slate-100 transition-colors cursor-pointer z-10"
+          aria-label="Close"
+          title="Close"
+        >
+          <X className="w-4 h-4 stroke-[2.5]" />
+        </button>
+
+        {/* Mode Tag */}
+        <div className="inline-block px-2 py-0.5 bg-purple-100 text-purple-800 text-[10px] font-black rounded-md mb-2 uppercase tracking-wide">
+          Adverb &bull; Challenge Person Online
+        </div>
+
+        {/* 1. Header Question (Editable so you can write the challenge headline) */}
+        <div className="pr-6">
+          <input
+            type="text"
+            value={battleQuestion}
+            onChange={(e) => setBattleQuestion(e.target.value)}
+            className="w-full text-[14px] sm:text-[15px] font-black text-slate-900 leading-snug tracking-tight bg-slate-50/80 hover:bg-slate-100/80 focus:bg-white rounded-lg px-2 py-1 border border-slate-200 focus:border-purple-500 outline-none transition-colors"
+            placeholder="Write challenge question..."
+          />
+        </div>
+
+        {/* 2. WINNER vs LOSER Header */}
+        <div className="flex items-center justify-between mt-2.5 mb-0.5">
+          <span className="text-[20px] sm:text-[22px] font-black text-[#E51E2B] tracking-tight leading-none">
+            WINNER
+          </span>
+          <span className="text-[20px] sm:text-[22px] font-black text-[#1D3D8F] tracking-tight leading-none">
+            LOSER
+          </span>
+        </div>
+
+        {/* 3. Sub-heading: Preference estimate */}
+        <div className="text-[11.5px] font-extrabold text-slate-900 mb-1.5">
+          Preference estimate
+        </div>
+
+        {/* 4. Faces & Percentages Row */}
+        <div className="flex items-center justify-between px-0.5">
+          {/* Challenger Left / Red */}
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <img
+              src={currentUser.avatar}
+              alt={currentUser.name}
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover shadow-2xs ring-1 ring-slate-200"
+            />
+            <span className="text-[13.5px] sm:text-[14.5px] font-black text-slate-900 tabular-nums">
+              {redPct.toFixed(1)}%
+            </span>
+          </div>
+
+          {/* Center Timer */}
+          <div className="text-[12px] font-bold text-slate-900 tabular-nums px-1">
+            0:00:00
+          </div>
+
+          {/* Opponent Right / Blue */}
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <span className="text-[13.5px] sm:text-[14.5px] font-black text-slate-900 tabular-nums">
+              {bluePct.toFixed(1)}%
+            </span>
+            <img
+              src={opponentAvatar}
+              alt={opponentName}
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover shadow-2xs ring-1 ring-slate-200"
+            />
+          </div>
+        </div>
+
+        {/* 5. Names Row */}
+        <div className="flex items-center justify-between mt-1 px-0.5 text-[11px] font-bold text-slate-900">
+          <span>{currentUser.name}</span>
+          <span>{opponentName}</span>
+        </div>
+
+        {/* 6. Interaction Row (Red button + Likes | Dislikes + Blue button) */}
+        <div className="w-full flex items-center justify-between gap-2 mt-2.5">
+          {/* Red Like Button */}
+          <button
+            type="button"
+            onClick={() => handleVote('red')}
+            className={`cursor-pointer w-[68px] sm:w-[74px] h-[33px] rounded-[9px] flex items-center justify-center transition-all active:scale-90 ${
+              userVote === 'red'
+                ? 'bg-[#E51E2B] ring-2 ring-red-400 ring-offset-1'
+                : 'bg-[#E51E2B] hover:bg-[#D41825]'
+            }`}
+            title="Vote Red"
+          >
+            <ThumbsUp className="w-4.5 h-4.5 text-white fill-white" />
+          </button>
+
+          {/* Likes & Dislikes Counters */}
+          <div className="flex items-center justify-center gap-2 shrink-0">
+            <div className="text-center min-w-[50px]">
+              <div className="text-[12px] sm:text-[12.5px] font-bold text-black tabular-nums leading-none">
+                {likes.toLocaleString()}
               </div>
-              <h2 className="text-base font-black text-white leading-tight">
-                Challenge {opponentName} to an Online Fight
-              </h2>
+              <div className="text-[10px] font-medium text-slate-700 leading-tight mt-0.5">
+                Likes
+              </div>
+            </div>
+
+            <div className="w-[1px] h-6 bg-slate-300 shrink-0" />
+
+            <div className="text-center min-w-[50px]">
+              <div className="text-[12px] sm:text-[12.5px] font-bold text-black tabular-nums leading-none">
+                {dislikes.toLocaleString()}
+              </div>
+              <div className="text-[10px] font-medium text-slate-700 leading-tight mt-0.5">
+                Dislikes
+              </div>
             </div>
           </div>
 
+          {/* Blue Like Button */}
           <button
-            onClick={onClose}
-            className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer"
-            aria-label="Close"
+            type="button"
+            onClick={() => handleVote('blue')}
+            className={`cursor-pointer w-[68px] sm:w-[74px] h-[33px] rounded-[9px] flex items-center justify-center transition-all active:scale-90 ${
+              userVote === 'blue'
+                ? 'bg-[#1D3D8F] ring-2 ring-blue-400 ring-offset-1'
+                : 'bg-[#1D3D8F] hover:bg-[#183275]'
+            }`}
+            title="Vote Blue"
           >
-            <X className="w-4.5 h-4.5 stroke-[2.5]" />
+            <ThumbsUp className="w-4.5 h-4.5 text-white fill-white" />
           </button>
         </div>
 
-        {/* Scrollable form */}
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin">
-          {/* Matchup Header Card */}
-          <div className="bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-2xl p-3.5 flex items-center justify-between shadow-xs">
-            {/* Challenger (You) */}
-            <div className="flex items-center gap-2.5">
-              <div className="relative">
-                <img
-                  src={currentUser.avatar}
-                  alt={currentUser.name}
-                  className="w-11 h-11 rounded-full object-cover ring-2 ring-[#E51E2B] shadow-sm"
-                />
-                <span className="absolute -bottom-1 -left-1 px-1.5 py-0.2 bg-[#E51E2B] text-white text-[9px] font-black rounded-md uppercase">
-                  RED
-                </span>
-              </div>
-              <div>
-                <span className="text-[10px] font-bold text-red-300 uppercase tracking-wider block">
-                  Challenger (You)
-                </span>
-                <span className="text-xs font-black text-white leading-tight block">
-                  {currentUser.name}
-                </span>
-                <span className="text-[10px] text-slate-400">
-                  {currentUser.handle}
-                </span>
-              </div>
-            </div>
-
-            {/* VS Badge */}
-            <div className="px-2.5 py-1 rounded-xl bg-white/10 border border-white/20 flex flex-col items-center">
-              <span className="text-[11px] font-black text-amber-300">VS</span>
-              <span className="text-[9px] font-bold text-slate-300">FIGHT</span>
-            </div>
-
-            {/* Opponent */}
-            <div className="flex items-center gap-2.5 flex-row-reverse text-right">
-              <div className="relative">
-                <img
-                  src={opponentAvatar}
-                  alt={opponentName}
-                  className="w-11 h-11 rounded-full object-cover ring-2 ring-[#1D3D8F] shadow-sm"
-                />
-                <span className="absolute -bottom-1 -right-1 px-1.5 py-0.2 bg-[#1D3D8F] text-white text-[9px] font-black rounded-md uppercase">
-                  BLUE
-                </span>
-              </div>
-              <div>
-                <span className="text-[10px] font-bold text-blue-300 uppercase tracking-wider block">
-                  Challenged
-                </span>
-                <span className="text-xs font-black text-white leading-tight block">
-                  {opponentName}
-                </span>
-                <span className="text-[10px] text-slate-400">
-                  {opponentHandle}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Broken Pencil Battle Question Field */}
-          <div>
-            <label className="text-[12px] font-black text-slate-900 flex items-center justify-between mb-1">
-              <span className="flex items-center gap-1.5">
-                <BrokenPencilIcon className="w-5 h-auto" />
-                <span>Battle Question / Stakes</span>
-              </span>
-              <span className="text-[10px] font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">
-                Broken Pencil Card Title
-              </span>
-            </label>
-            <input
-              type="text"
-              value={battleQuestion}
-              onChange={(e) => setBattleQuestion(e.target.value)}
-              placeholder="e.g. Who looks Hotter between me or this loser?"
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-purple-600 focus:ring-2 focus:ring-purple-100 text-xs font-bold text-slate-900 transition-all outline-none"
-              required
+        {/* 7. Split Color Progress Bar */}
+        <div className="w-full mt-3">
+          <div className="w-full flex items-center gap-[3px]">
+            <div
+              className="h-[6px] bg-[#E51E2B] rounded-full transition-all duration-300"
+              style={{ width: `${redPct}%` }}
+            />
+            <div
+              className="h-[6px] bg-[#1D3D8F] rounded-full transition-all duration-300"
+              style={{ width: `${bluePct}%` }}
             />
           </div>
 
-          {/* Post Caption / Writing Area */}
-          <div>
-            <label className="text-[12px] font-black text-slate-900 flex items-center justify-between mb-1">
-              <span className="flex items-center gap-1.5">
-                <MessageSquare className="w-4 h-4 text-purple-600" />
-                <span>Challenge Post Caption</span>
-              </span>
-              <span className="text-[10px] font-semibold text-slate-400">
-                Writing your challenge
-              </span>
-            </label>
-            <textarea
-              rows={3}
-              value={caption}
-              onChange={(e) => setCaption(e.target.value)}
-              placeholder="Write your public callout to challenge this person online..."
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-purple-600 focus:ring-2 focus:ring-purple-100 text-xs font-medium text-slate-900 transition-all outline-none resize-none"
-              required
-            />
+          <div className="flex items-center justify-between text-[10.5px] font-bold mt-0.5 px-0.5">
+            <span className="text-[#E51E2B]">Red</span>
+            <span className="text-[#1D3D8F]">Blue</span>
+          </div>
+        </div>
 
-            {/* Quick preset templates */}
-            <div className="mt-1.5 flex flex-wrap gap-1.5">
-              {PRESET_CHALLENGE_TEMPLATES.map((tmpl, idx) => (
-                <button
-                  type="button"
-                  key={idx}
-                  onClick={() => setCaption(tmpl)}
-                  className="text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-100 hover:bg-purple-100 text-slate-700 hover:text-purple-800 transition-colors cursor-pointer text-left line-clamp-1"
-                >
-                  Template #{idx + 1}
-                </button>
-              ))}
-            </div>
+        {/* 8. Bottom Double Yellow Line with Upward Triangle */}
+        <div className="w-full mt-2.5 relative pt-1">
+          <div className="w-full flex flex-col gap-[2.5px]">
+            <div className="w-full h-[3px] bg-[#F5C21B] rounded-full" />
+            <div className="w-full h-[3px] bg-[#F5C21B] rounded-full" />
           </div>
 
-          {/* Integrated Live Preview of Broken Pencil Feature */}
-          <div className="border border-purple-200/90 rounded-2xl p-3 bg-purple-50/40 space-y-2">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-lg bg-purple-600 text-white flex items-center justify-center p-0.5">
-                  <BrokenPencilIcon className="w-4 h-auto" />
-                </div>
-                <span className="text-[11.5px] font-black text-purple-950">
-                  Live Broken Pencil Card Preview
-                </span>
-              </div>
-              <span className="text-[10px] font-bold text-slate-500">
-                Attached to post on submit
-              </span>
-            </div>
-
-            <div className="w-full flex justify-center pt-1">
-              <FaceoffBattleModal
-                battleQuestion={battleQuestion}
-                redParticipant={{
-                  name: currentUser.name,
-                  avatar: currentUser.avatar,
-                }}
-                blueParticipant={{
-                  name: opponentName,
-                  avatar: opponentAvatar,
-                }}
-              />
-            </div>
+          <div
+            className="absolute -top-[5.5px] -translate-x-1/2 pointer-events-none transition-all duration-300"
+            style={{ left: `${redPct}%` }}
+          >
+            <div className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[9px] border-b-[#F5C21B]" />
           </div>
+        </div>
 
-          {/* Submit Button */}
-          <div className="pt-1">
-            <button
-              type="submit"
-              className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-purple-700 via-indigo-600 to-pink-600 hover:from-purple-800 hover:to-pink-700 text-white font-black text-sm tracking-wide shadow-lg hover:shadow-xl transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-98"
-            >
-              <Swords className="w-4.5 h-4.5 stroke-[2.5]" />
-              <span>Submit Challenge Post & Start Battle</span>
-            </button>
-            <p className="text-center text-[10.5px] text-slate-500 font-medium mt-2">
-              This post will be published to the feed with the interactive broken pencil card popped out ready for voting.
-            </p>
-          </div>
+        {/* 9. Writing & Post Creation for the Challenge */}
+        <form onSubmit={handleSubmit} className="mt-4 pt-3 border-t border-slate-200/80">
+          <label className="block text-[11px] font-black text-slate-800 mb-1">
+            Write your challenge post:
+          </label>
+          <textarea
+            rows={2}
+            value={captionText}
+            onChange={(e) => setCaptionText(e.target.value)}
+            placeholder="Write to challenge the person to a fight online..."
+            className="w-full p-2.5 rounded-xl border border-slate-300 focus:border-purple-600 focus:ring-1 focus:ring-purple-200 text-xs text-slate-900 outline-none resize-none leading-snug"
+            required
+          />
+
+          <button
+            type="submit"
+            className="w-full mt-2.5 py-2.5 px-4 bg-[#E51E2B] hover:bg-[#D41825] active:scale-98 text-white font-black text-xs rounded-xl shadow-xs hover:shadow-sm transition-all cursor-pointer flex items-center justify-center gap-1.5"
+          >
+            <Send className="w-3.5 h-3.5" />
+            <span>Submit Challenge Post</span>
+          </button>
         </form>
       </div>
     </div>
