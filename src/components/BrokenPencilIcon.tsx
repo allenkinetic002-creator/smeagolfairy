@@ -33,11 +33,6 @@ export const BrokenPencilIcon: React.FC<BrokenPencilIconProps> = ({
       {...props}
     >
       <defs>
-        {/* Soft shadow for depth */}
-        <filter id="pencil-shadow" x="-5%" y="-5%" width="115%" height="120%">
-          <feDropShadow dx="0" dy="2" stdDeviation="1.5" floodColor="#000000" floodOpacity="0.12" />
-        </filter>
-
         {/* Ferrule metallic gradient */}
         <linearGradient id="ferrule-grad" x1="0%" y1="0%" x2="0%" y2="100%">
           <stop offset="0%" stopColor="#E5E7EB" />
@@ -54,7 +49,7 @@ export const BrokenPencilIcon: React.FC<BrokenPencilIconProps> = ({
         </linearGradient>
       </defs>
 
-      <g filter="url(#pencil-shadow)">
+      <g>
         {/* ========================================================================= */}
         {/* 1. LEFT PIECE (Lead Tip -> Broken Splintered End) */}
         {/* ========================================================================= */}
