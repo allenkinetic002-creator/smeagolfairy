@@ -22,6 +22,8 @@ import {
   FlameKindling,
   SlidersHorizontal,
   Clock,
+  Plus,
+  Video,
 } from 'lucide-react';
 import postImage from './assets/images/fairy_post_image_1791012530319.jpg';
 import elenaAvatar from './assets/images/creator_portrait_elena_1791014499312.jpg';
@@ -57,6 +59,25 @@ import { AeriMindProfileIcon } from './components/AeriMindProfileIcon';
 import { AeriProfileUserIcon } from './components/AeriProfileUserIcon';
 import { AeriBellIcon } from './components/AeriBellIcon';
 import { AeriHorseIcon } from './components/AeriHorseIcon';
+import { CreatePostModal, NewPostPayload } from './components/CreatePostModal';
+
+export interface FeedPost {
+  id: string;
+  authorName: string;
+  authorHandle: string;
+  authorAvatar: string;
+  isVerified: boolean;
+  timeAgo: string;
+  location?: string;
+  mediaType: 'image' | 'video';
+  mediaUrl: string;
+  caption: string;
+  tags: string[];
+  audioTitle: string;
+  likeCount: number;
+  isLiked: boolean;
+  isTrending?: boolean;
+}
 
 interface CommentItem {
   id: string;
@@ -1323,8 +1344,63 @@ const CATEGORY_TABS = [
 export default function App() {
   // Nav index: 0 = Home (Post Screen), 1 = Thumbs Up (Top 10 People Leaderboard), 2 = Comments, 3 = Trending, 4 = Profile
   const [activeNavIndex, setActiveNavIndex] = useState(0);
-  const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(2450);
+  const [showCreatePostModal, setShowCreatePostModal] = useState(false);
+  const [feedPosts, setFeedPosts] = useState<FeedPost[]>([
+    {
+      id: 'post-default-elena',
+      authorName: 'Elena Vance',
+      authorHandle: '@elena_aeri',
+      authorAvatar: elenaAvatar,
+      isVerified: true,
+      timeAgo: '2h ago',
+      location: 'Kyoto, Japan',
+      mediaType: 'image',
+      mediaUrl: postImage,
+      caption: 'Golden hour in the enchanted woods 🧚✨ Caught between autumn mist and warm amber light. Where should we wander next?',
+      tags: ['#fairy', '#autumnlight', '#aeri', '#dreamscape'],
+      audioTitle: 'Original Audio',
+      likeCount: 2450,
+      isLiked: false,
+      isTrending: true,
+    },
+  ]);
+
+  const handlePublishPost = (payload: NewPostPayload) => {
+    const newPost: FeedPost = {
+      id: 'post-' + Date.now(),
+      authorName: 'Elena Vance',
+      authorHandle: '@elena_aeri',
+      authorAvatar: elenaAvatar,
+      isVerified: true,
+      timeAgo: 'Just now',
+      location: payload.location,
+      mediaType: payload.mediaType,
+      mediaUrl: payload.mediaUrl,
+      caption: payload.caption,
+      tags: payload.tags,
+      audioTitle: payload.audioTitle,
+      likeCount: 1,
+      isLiked: true,
+      isTrending: true,
+    };
+    setFeedPosts((prev) => [newPost, ...prev]);
+  };
+
+  const handleTogglePostLike = (postId: string) => {
+    setFeedPosts((prev) =>
+      prev.map((p) => {
+        if (p.id === postId) {
+          const nextLiked = !p.isLiked;
+          return {
+            ...p,
+            isLiked: nextLiked,
+            likeCount: nextLiked ? p.likeCount + 1 : p.likeCount - 1,
+          };
+        }
+        return p;
+      })
+    );
+  };
 
   // Comments state
   const [commentType, setCommentType] = useState<'inline-feed' | 'discussion-card' | 'floating-drawer'>('inline-feed');
@@ -1503,14 +1579,15 @@ export default function App() {
             </div>
           </header>
 
-          {/* Trending Tag & Comment Switcher */}
-          <div className="w-full px-4 py-1 flex items-center justify-between shrink-0 bg-white z-10 border-b border-slate-50">
-            <div className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-[#FFF0F5] rounded-full">
-              <AeriFlameIcon filled className="w-3.5 h-3.5 text-[#FF5722]" />
-              <span className="text-[11.5px] font-bold text-[#8B2FC9] tracking-tight">
-                Trending
-              </span>
-            </div>
+          {/* Quick Bar: Create Post Action & Comment Switcher */}
+          <div className="w-full px-4 py-1.5 flex items-center justify-between shrink-0 bg-white z-10 border-b border-slate-100">
+            <button
+              onClick={() => setShowCreatePostModal(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white rounded-full text-xs font-black shadow-xs transition-transform active:scale-95 cursor-pointer"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>New Post</span>
+            </button>
 
             <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
               <button
@@ -1521,7 +1598,7 @@ export default function App() {
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
-                Feed Comments
+                Feed
               </button>
               <button
                 onClick={() => setCommentType('discussion-card')}
@@ -1531,7 +1608,7 @@ export default function App() {
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
-                Discussion Card
+                Discussion
               </button>
               <button
                 onClick={() => {
@@ -1544,86 +1621,138 @@ export default function App() {
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
-                Sliding Sheet
+                Sheet
               </button>
             </div>
           </div>
 
           {/* Main Content Area */}
-          <div className="flex-1 min-h-0 w-full px-4 py-1 flex flex-col overflow-y-auto scrollbar-thin space-y-2 relative">
-            {/* Post Author Header with Profile Picture */}
-            <div className="flex items-center justify-between py-1 px-0.5 shrink-0 bg-white">
-              <div className="flex items-center gap-2.5">
-                <div className="relative">
-                  <img
-                    src={elenaAvatar}
-                    alt="Elena Vance"
-                    className="w-9 h-9 rounded-full object-cover ring-2 ring-purple-600/30 p-0.5 shadow-xs"
-                  />
-                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-1.5 ring-white" />
-                </div>
-                <div className="flex flex-col">
-                  <div className="flex items-center gap-1.5 leading-none">
-                    <span className="text-[13px] font-black text-slate-900 tracking-tight">
-                      Elena Vance
-                    </span>
-                    <CheckCircle2 className="w-3.5 h-3.5 text-purple-600 fill-purple-100" />
-                  </div>
-                  <span className="text-[10.5px] font-medium text-slate-500 mt-0.5">
-                    @elena_aeri &middot; 2h ago &middot; Kyoto, Japan
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-1.5">
-                <button
-                  className="px-3 py-1 rounded-full bg-purple-50 hover:bg-purple-100 text-purple-700 font-extrabold text-[11px] transition-colors cursor-pointer"
-                >
-                  Follow
-                </button>
-                <button
-                  aria-label="Post options"
-                  className="p-1 text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
-                >
-                  <span className="text-base font-bold leading-none">&middot;&middot;&middot;</span>
-                </button>
+          <div className="flex-1 min-h-0 w-full px-4 py-1 flex flex-col overflow-y-auto scrollbar-thin space-y-3 relative">
+            {/* Quick Compose Input Box */}
+            <div
+              onClick={() => setShowCreatePostModal(true)}
+              className="flex items-center gap-2.5 p-2.5 bg-slate-50 hover:bg-slate-100/90 rounded-2xl border border-slate-200/60 cursor-pointer transition-all shadow-2xs group shrink-0"
+            >
+              <img
+                src={elenaAvatar}
+                alt="Elena Vance"
+                className="w-8 h-8 rounded-full object-cover ring-1 ring-purple-500/20"
+              />
+              <span className="text-xs text-slate-400 font-medium flex-1">
+                Share a video, photo or write a post...
+              </span>
+              <div className="flex items-center gap-2 pr-1">
+                <span className="p-1 rounded-lg bg-amber-50 text-amber-600 group-hover:scale-105 transition-transform" title="Add Photo">
+                  <Camera className="w-3.5 h-3.5" />
+                </span>
+                <span className="p-1 rounded-lg bg-indigo-50 text-indigo-600 group-hover:scale-105 transition-transform" title="Add Video">
+                  <Video className="w-3.5 h-3.5" />
+                </span>
               </div>
             </div>
 
-            {/* Post Card */}
-            <div
-              className="relative w-full h-[36vh] min-h-[190px] max-h-[290px] rounded-[18px] overflow-hidden bg-gradient-to-b from-[#557F8B] via-[#D19B36] to-[#7E6650] shadow-xs shrink-0"
-            >
-                  <img
-                    src={postImage}
-                    alt="Post content"
-                    referrerPolicy="no-referrer"
-                    className="w-full h-full object-cover object-center"
-                  />
+            {feedPosts.map((post) => (
+              <div key={post.id} className="space-y-2 shrink-0">
+                {/* 1. Trending Tag with Flame placed directly on top of the person profile pic */}
+                {post.isTrending && (
+                  <div className="flex items-center justify-between pt-1 pb-0.5 px-0.5 shrink-0">
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[#FFF0F5] border border-pink-100/80 rounded-full shadow-2xs">
+                      <AeriFlameIcon filled className="w-3.5 h-3.5 text-[#FF5722]" />
+                      <span className="text-[11px] font-black text-[#8B2FC9] tracking-tight">
+                        Trending #1 Post
+                      </span>
+                    </div>
+                    <span className="text-[10px] font-bold text-slate-400">
+                      Featured in Fairy Feed
+                    </span>
+                  </div>
+                )}
 
-                  <div className="absolute right-3 bottom-3 bg-white/75 backdrop-blur-md px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-xs border border-white/40">
+                {/* 2. Post Author Header with Profile Picture */}
+                <div className="flex items-center justify-between py-1 px-0.5 shrink-0 bg-white">
+                  <div className="flex items-center gap-2.5">
+                    <div className="relative">
+                      <img
+                        src={post.authorAvatar}
+                        alt={post.authorName}
+                        className="w-9 h-9 rounded-full object-cover ring-2 ring-purple-600/30 p-0.5 shadow-xs"
+                      />
+                      {/* Flame Badge directly on top of the profile pic */}
+                      <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-gradient-to-tr from-[#FF5722] to-amber-400 flex items-center justify-center ring-1.5 ring-white shadow-2xs" title="Trending Creator">
+                        <AeriFlameIcon filled className="w-2.5 h-2.5 text-white" />
+                      </div>
+                    </div>
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-1.5 leading-none">
+                        <span className="text-[13px] font-black text-slate-900 tracking-tight">
+                          {post.authorName}
+                        </span>
+                        {post.isVerified && (
+                          <CheckCircle2 className="w-3.5 h-3.5 text-purple-600 fill-purple-100" />
+                        )}
+                      </div>
+                      <span className="text-[10.5px] font-medium text-slate-500 mt-0.5">
+                        {post.authorHandle} &middot; {post.timeAgo} {post.location ? `· ${post.location}` : ''}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      className="px-3 py-1 rounded-full bg-purple-50 hover:bg-purple-100 text-purple-700 font-extrabold text-[11px] transition-colors cursor-pointer"
+                    >
+                      Follow
+                    </button>
+                    <button
+                      aria-label="Post options"
+                      className="p-1 text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
+                    >
+                      <span className="text-base font-bold leading-none">&middot;&middot;&middot;</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* 3. Post Card: Image or Video */}
+                <div className="relative w-full h-[36vh] min-h-[190px] max-h-[290px] rounded-[18px] overflow-hidden bg-black shadow-xs shrink-0 group">
+                  {post.mediaType === 'video' ? (
+                    <video
+                      src={post.mediaUrl}
+                      controls
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-full h-full object-cover object-center"
+                    />
+                  ) : (
+                    <img
+                      src={post.mediaUrl}
+                      alt={post.caption}
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover object-center"
+                    />
+                  )}
+
+                  <div className="absolute right-3 bottom-3 bg-white/75 backdrop-blur-md px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-xs border border-white/40 pointer-events-none">
                     <Music className="w-3 h-3 text-slate-800" />
                     <span className="text-[9.5px] font-semibold text-slate-900 tracking-tight">
-                      Original Audio
+                      {post.audioTitle || 'Original Audio'}
                     </span>
                   </div>
                 </div>
 
-                {/* Action Row */}
+                {/* 4. Action Row */}
                 <div className="flex items-center justify-between pt-1.5 shrink-0 text-black">
                   <div className="flex items-center gap-4">
                     <button
-                      onClick={() => {
-                        setIsLiked(!isLiked);
-                        setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
-                      }}
+                      onClick={() => handleTogglePostLike(post.id)}
                       className="cursor-pointer transition-transform active:scale-90"
                       aria-label="Like post"
                     >
                       <AeriFlameIcon
-                        filled={isLiked}
+                        filled={post.isLiked}
                         className={`w-5.5 h-5.5 transition-colors ${
-                          isLiked
+                          post.isLiked
                             ? 'text-[#FF6D00]'
                             : 'text-[#FF6D00] stroke-[1.8]'
                         }`}
@@ -1671,42 +1800,39 @@ export default function App() {
                   </div>
 
                   <span className="text-[11px] font-bold text-slate-500 tabular-nums">
-                    {likeCount.toLocaleString()} likes
+                    {post.likeCount.toLocaleString()} likes
                   </span>
                 </div>
 
-                {/* Post Writing & Caption */}
+                {/* 5. Post Writing & Caption */}
                 <div className="pt-0.5 pb-1 px-0.5 shrink-0">
                   <div className="flex items-start gap-2">
                     <img
-                      src={elenaAvatar}
-                      alt="Elena Vance"
+                      src={post.authorAvatar}
+                      alt={post.authorName}
                       className="w-5 h-5 rounded-full object-cover shrink-0 mt-0.5 ring-1 ring-purple-500/20"
                     />
                     <div className="flex-1 min-w-0">
                       <p className="text-[12px] leading-snug text-slate-800">
                         <span className="font-extrabold text-slate-900 mr-1.5">
-                          @elena_aeri
+                          {post.authorHandle}
                         </span>
-                        Golden hour in the enchanted woods 🧚✨ Caught between autumn mist and warm amber light. Where should we wander next?
+                        {post.caption}
                       </p>
-                      <div className="flex flex-wrap gap-1.5 mt-1">
-                        <span className="text-[10.5px] font-bold text-purple-600 hover:underline cursor-pointer">
-                          #fairy
-                        </span>
-                        <span className="text-[10.5px] font-bold text-purple-600 hover:underline cursor-pointer">
-                          #autumnlight
-                        </span>
-                        <span className="text-[10.5px] font-bold text-purple-600 hover:underline cursor-pointer">
-                          #aeri
-                        </span>
-                        <span className="text-[10.5px] font-bold text-purple-600 hover:underline cursor-pointer">
-                          #dreamscape
-                        </span>
-                      </div>
+                      {post.tags && post.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 mt-1">
+                          {post.tags.map((tag) => (
+                            <span key={tag} className="text-[10.5px] font-bold text-purple-600 hover:underline cursor-pointer">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
+              </div>
+            ))}
 
                 {/* Comments Section */}
                 <div className="flex-1 min-h-0 w-full my-1 flex flex-col justify-between overflow-hidden">
@@ -2405,6 +2531,14 @@ export default function App() {
       <InfluenceRatingModal
         isOpen={showInfluenceRatingModal}
         onClose={() => setShowInfluenceRatingModal(false)}
+      />
+
+      {/* Create Post Modal (Allows posting video, pic, and writing) */}
+      <CreatePostModal
+        isOpen={showCreatePostModal}
+        onClose={() => setShowCreatePostModal(false)}
+        onPublish={handlePublishPost}
+        authorAvatar={elenaAvatar}
       />
     </div>
   );
