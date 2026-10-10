@@ -198,7 +198,7 @@ export const CreateTweetModal: React.FC<CreateTweetModalProps> = ({
                         <AeriCommentIcon className="w-4.5 h-4.5 text-slate-700" /> 0
                       </span>
                       <span className="flex items-center gap-1.5 text-xs text-slate-600">
-                        <AeriMessageBubbleIcon className="w-4.5 h-4.5 text-slate-700" color="#334155" /> 0
+                        <AeriDoubleTriangleIcon size={18} className="w-4.5 h-4.5 text-slate-700" /> 0
                       </span>
                       <span className="flex items-center gap-1 text-xs text-slate-600">
                         <AeriHandPhoneIcon className="w-4.5 h-4.5 text-slate-700" />
@@ -208,9 +208,9 @@ export const CreateTweetModal: React.FC<CreateTweetModalProps> = ({
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-1 text-xs text-slate-400 font-medium">
-                      <AeriDoubleTriangleIcon size={16} className="text-slate-400" />
-                      <span>0</span>
+                    <div className="px-2.5 py-0.5 bg-[#E2E8F0] text-black rounded-full text-[10px] font-semibold flex items-center gap-1 border border-slate-300">
+                      <AeriMessageBubbleIcon className="w-3 h-3 text-black" color="#000000" />
+                      <span>Send me message</span>
                     </div>
                   </div>
                 </div>
