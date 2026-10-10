@@ -5,12 +5,10 @@ import {
   User,
   Search,
   X,
-  RotateCcw,
   Music,
   Heart,
   CornerDownRight,
   Smile,
-  Trash2,
   Trophy,
   CheckCircle2,
   Sparkles,
@@ -1323,8 +1321,6 @@ const CATEGORY_TABS = [
 ];
 
 export default function App() {
-  const [isDeleted, setIsDeleted] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   // Nav index: 0 = Home (Post Screen), 1 = Thumbs Up (Top 10 People Leaderboard), 2 = Comments, 3 = Trending, 4 = Profile
   const [activeNavIndex, setActiveNavIndex] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
@@ -1349,25 +1345,6 @@ export default function App() {
   const [showInfluenceRatingModal, setShowInfluenceRatingModal] = useState(false);
 
   const currentCreators = creatorsData[selectedCategory] || creatorsData.new_artists;
-
-  const handleOpenModal = () => {
-    if (!isDeleted) {
-      setIsModalOpen(true);
-    }
-  };
-
-  const handleDelete = () => {
-    setIsDeleted(true);
-    setIsModalOpen(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleRestore = () => {
-    setIsDeleted(false);
-  };
 
   const handleToggleCommentLike = (id: string) => {
     setComments((prev) =>
@@ -1479,15 +1456,6 @@ export default function App() {
             </div>
 
             <div className="flex items-center gap-3">
-              <button
-                onClick={handleOpenModal}
-                className="px-2 py-0.5 rounded-full bg-red-50 hover:bg-red-100 text-red-600 font-bold text-[10px] flex items-center gap-1 transition-colors cursor-pointer mr-0.5"
-                title="Open delete confirmation dialog"
-              >
-                <Trash2 className="w-2.5 h-2.5" />
-                Delete Modal
-              </button>
-
               {/* 1st header icon: Guacamole Bowl icon inspired by 61f6185e-7107-40ff-8eb6-0569d6090611.jpg.png */}
               <button
                 aria-label="Guacamole & Nachos"
@@ -1583,14 +1551,10 @@ export default function App() {
 
           {/* Main Content Area */}
           <div className="flex-1 min-h-0 w-full px-4 py-1 flex flex-col justify-between overflow-hidden relative">
-            {!isDeleted ? (
-              <>
-                {/* Post Card */}
-                <div
-                  onClick={handleOpenModal}
-                  className="relative w-full h-[36vh] min-h-[190px] max-h-[290px] rounded-[18px] overflow-hidden bg-gradient-to-b from-[#557F8B] via-[#D19B36] to-[#7E6650] shadow-xs cursor-pointer shrink-0"
-                  title="Click to open delete modal"
-                >
+            {/* Post Card */}
+            <div
+              className="relative w-full h-[36vh] min-h-[190px] max-h-[290px] rounded-[18px] overflow-hidden bg-gradient-to-b from-[#557F8B] via-[#D19B36] to-[#7E6650] shadow-xs shrink-0"
+            >
                   <img
                     src={postImage}
                     alt="Post content"
@@ -1824,71 +1788,6 @@ export default function App() {
                     <AeriRaygunIcon className="w-8.5 h-8.5 text-slate-800 stroke-[1.3]" />
                   </button>
                 </div>
-              </>
-            ) : (
-              <div className="flex-1 flex flex-col items-center justify-center text-center px-6 py-6 animate-fadeIn">
-                <div className="w-14 h-14 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center mb-3 text-slate-400">
-                  <X className="w-7 h-7 stroke-[2]" />
-                </div>
-                <h2 className="text-lg font-bold text-slate-900 mb-1">
-                  Post Deleted
-                </h2>
-                <p className="text-xs text-slate-500 max-w-xs mb-4">
-                  This post will no longer be visible on Fairy.
-                </p>
-                <button
-                  onClick={handleRestore}
-                  className="px-5 py-2 bg-[#9810FA] hover:bg-[#8B0EE5] text-white text-xs font-bold rounded-full shadow-xs transition-transform active:scale-95 flex items-center gap-1.5 cursor-pointer"
-                >
-                  <RotateCcw className="w-3.5 h-3.5" />
-                  Restore Post
-                </button>
-              </div>
-            )}
-
-            {/* Delete Confirmation Modal */}
-            {isModalOpen && !isDeleted && (
-              <div
-                className="absolute inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-[6px] animate-fadeIn"
-                onClick={handleCancel}
-              >
-                <div
-                  className="w-full max-w-[275px] bg-white rounded-[24px] shadow-2xl overflow-hidden flex flex-col items-stretch text-center border border-white/60 animate-scaleUp"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <div className="pt-5 pb-3.5 px-5">
-                    <h2 className="text-[16px] font-extrabold text-black leading-snug tracking-tight">
-                      You wanna delete
-                      <br />
-                      this post?
-                    </h2>
-                    <p className="text-[11px] text-[#9E9E9E] mt-1.5 leading-relaxed">
-                      This post will no longer be visible
-                      <br />
-                      on Fairy
-                    </p>
-                  </div>
-
-                  <div className="h-[0.8px] bg-[#F1F5F9] w-full" />
-
-                  <button
-                    onClick={handleDelete}
-                    className="w-full py-3 text-center text-[14px] font-extrabold text-[#EF4444] hover:bg-red-50/50 active:bg-red-100/60 transition-colors cursor-pointer"
-                  >
-                    Delete
-                  </button>
-
-                  <div className="h-[0.8px] bg-[#F1F5F9] w-full" />
-
-                  <button
-                    onClick={handleCancel}
-                    className="w-full py-3 text-center text-[14px] font-extrabold text-black hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            )}
           </div>
         </>
       )}
