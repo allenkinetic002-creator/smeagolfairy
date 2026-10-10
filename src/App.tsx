@@ -2157,90 +2157,69 @@ export default function App() {
 
                 {/* 4. Action Row */}
                 <div className="flex items-end justify-between pt-1.5 shrink-0 text-black">
-                  {/* All icons grouped closely together on the left */}
-                  <div className="flex items-end gap-1.5 sm:gap-2">
-                    {/* Left 3 icons: Flame, Comment, Honeyjar (standard untouched spacing) */}
-                    <div className="flex items-center gap-3.5 sm:gap-4 pb-0.5">
-                      <button
-                        onClick={() => handleTogglePostLike(post.id)}
-                        className="cursor-pointer transition-transform active:scale-90"
-                        aria-label="Like post"
-                      >
-                        <AeriFlameIcon
-                          filled={post.isLiked}
-                          className={`w-5.5 h-5.5 transition-colors ${
-                            post.isLiked
-                              ? 'text-[#FF6D00]'
-                              : 'text-[#FF6D00] stroke-[1.8]'
-                          }`}
-                        />
-                      </button>
+                  {/* Action icons row (Flame, Comment, Message, Phone, Masked Eyes) */}
+                  <div className="flex items-center gap-3.5 sm:gap-4 pb-0.5">
+                    {/* 1st icon: Flame */}
+                    <button
+                      onClick={() => handleTogglePostLike(post.id)}
+                      className="cursor-pointer transition-transform active:scale-90"
+                      aria-label="Like post"
+                    >
+                      <AeriFlameIcon
+                        filled={post.isLiked}
+                        className={`w-5.5 h-5.5 transition-colors ${
+                          post.isLiked
+                            ? 'text-[#FF6D00]'
+                            : 'text-[#FF6D00] stroke-[1.8]'
+                        }`}
+                      />
+                    </button>
 
-                      <button
-                        onClick={() => setIsDrawerOpen(true)}
-                        className="cursor-pointer transition-transform active:scale-90 hover:opacity-75"
-                        aria-label="Comments"
-                      >
-                        <AeriCommentIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
-                      </button>
+                    {/* 2nd icon: Comment */}
+                    <button
+                      onClick={() => setIsDrawerOpen(true)}
+                      className="cursor-pointer transition-transform active:scale-90 hover:opacity-75"
+                      aria-label="Comments"
+                    >
+                      <AeriCommentIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
+                    </button>
 
-                      {/* 3rd icon: Honey jar icon (Fairy Pot) */}
-                      <button
-                        onClick={() => {
-                          setActiveNavIndex(2);
-                          setShowMatchesScreen(false);
-                        }}
-                        className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
-                        aria-label="Honey Jar / Fairy Pot"
-                        title="Honey Jar"
-                      >
-                        <FairyPotIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
-                      </button>
-                    </div>
+                    {/* 3rd icon: Message icon */}
+                    <button
+                      onClick={() =>
+                        handleOpenSendPersonMessage({
+                          id: 'p-' + (post.authorHandle || post.authorName),
+                          name: post.authorName,
+                          handle: post.authorHandle,
+                          avatarUrl: post.authorAvatar,
+                        })
+                      }
+                      className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
+                      aria-label={`Send ${post.authorName} message`}
+                      title="Direct Message"
+                    >
+                      <AeriMessageBubbleIcon className="w-5.5 h-5.5 text-black" color="#000000" />
+                    </button>
 
-                    {/* Pill & Two Icons column */}
-                    <div className="flex flex-col items-start gap-1.5">
-                      {/* Long gray pill like icon with "Send me message" */}
-                      <button
-                        onClick={() =>
-                          handleOpenSendPersonMessage({
-                            id: 'p-elena',
-                            name: post.authorName,
-                            handle: post.authorHandle,
-                            avatarUrl: post.authorAvatar,
-                          })
-                        }
-                        className="cursor-pointer px-3.5 py-1 bg-[#E2E8F0] hover:bg-[#CBD5E1] text-black hover:text-black rounded-full text-[11px] font-semibold flex items-center justify-center gap-1.5 border border-slate-300 shadow-2xs transition-all active:scale-95 whitespace-nowrap"
-                        title={`Send ${post.authorName} message`}
-                        aria-label="Send me message"
-                      >
-                        <AeriMessageBubbleIcon className="w-3.5 h-3.5 text-black shrink-0" color="#000000" />
-                        <span className="text-black font-semibold">Send me message</span>
-                      </button>
+                    {/* 4th icon: Hand holding smartphone */}
+                    <button
+                      onClick={() => handleTogglePhoneReaction(post.id)}
+                      className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
+                      title="Smartphone / Social Reach"
+                      aria-label="Smartphone"
+                    >
+                      <AeriHandPhoneIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
+                    </button>
 
-                      {/* Only those two icons moved slightly more to the right */}
-                      <div className="flex items-center gap-2.5 ml-1.5 sm:ml-2">
-                        {/* 4th icon: Hand holding smartphone */}
-                        <button
-                          onClick={() => handleTogglePhoneReaction(post.id)}
-                          className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
-                          title="Smartphone / Social Reach"
-                          aria-label="Smartphone"
-                        >
-                          <AeriHandPhoneIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
-                        </button>
-
-                        {/* 5th icon: Masked 2 eyes */}
-                        <button
-                          onClick={() => handleToggleInfluenceRating(post.id)}
-                          className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
-                          aria-label="View Fairy ratings and social reach"
-                          title="Overall ratings & Social reach"
-                        >
-                          <AeriMaskedEyesIcon className="w-[33px] h-[23px] text-black shrink-0" />
-                        </button>
-                      </div>
-                    </div>
+                    {/* 5th icon: Masked 2 eyes */}
+                    <button
+                      onClick={() => handleToggleInfluenceRating(post.id)}
+                      className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
+                      aria-label="View ratings and social reach"
+                      title="Overall ratings & Social reach"
+                    >
+                      <AeriMaskedEyesIcon className="w-[33px] h-[23px] text-black shrink-0" />
+                    </button>
                   </div>
 
                   {/* Likes count alone on the right */}
@@ -2785,100 +2764,75 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* 4. Action Button Row: Flame, Comment, Honeyjar, Phone Hand, Masked 2 Eyes, Long Gray Pill */}
-                  <div className="flex items-end justify-between pt-2.5 pb-1 px-3.5 text-black border-t border-slate-100 bg-white">
-                    {/* All icons grouped closely together on the left */}
-                    <div className="flex items-end gap-1.5 sm:gap-2">
-                      {/* Left 3 icons: Flame, Comment, Honeyjar (standard untouched spacing) */}
-                      <div className="flex items-center gap-3.5 sm:gap-4 pb-0.5">
-                        {/* 1. Flame Icon */}
-                        <button
-                          onClick={() => toggleLikedCreatorPost(person.rank)}
-                          className="cursor-pointer transition-transform active:scale-90"
-                          aria-label="Like post"
-                          title="Flame Like"
-                        >
-                          <AeriFlameIcon
-                            filled={isLiked}
-                            className={`w-5.5 h-5.5 transition-colors ${
-                              isLiked
-                                ? 'text-[#FF6D00]'
-                                : 'text-[#FF6D00] stroke-[1.8]'
-                            }`}
-                          />
-                        </button>
+                  {/* 4. Action Button Row: Flame, Comment, Message, Phone Hand, Masked 2 Eyes */}
+                  <div className="flex items-center justify-between pt-2.5 pb-1 px-3.5 text-black border-t border-slate-100 bg-white">
+                    {/* Action icons row */}
+                    <div className="flex items-center gap-3.5 sm:gap-4 pb-0.5">
+                      {/* 1. Flame Icon */}
+                      <button
+                        onClick={() => toggleLikedCreatorPost(person.rank)}
+                        className="cursor-pointer transition-transform active:scale-90"
+                        aria-label="Like post"
+                        title="Flame Like"
+                      >
+                        <AeriFlameIcon
+                          filled={isLiked}
+                          className={`w-5.5 h-5.5 transition-colors ${
+                            isLiked
+                              ? 'text-[#FF6D00]'
+                              : 'text-[#FF6D00] stroke-[1.8]'
+                          }`}
+                        />
+                      </button>
 
-                        {/* 2. Comment Icon */}
-                        <button
-                          onClick={() => setIsDrawerOpen(true)}
-                          className="cursor-pointer transition-transform active:scale-90 hover:opacity-75"
-                          aria-label="Comments"
-                          title="Comments"
-                        >
-                          <AeriCommentIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
-                        </button>
+                      {/* 2. Comment Icon */}
+                      <button
+                        onClick={() => setIsDrawerOpen(true)}
+                        className="cursor-pointer transition-transform active:scale-90 hover:opacity-75"
+                        aria-label="Comments"
+                        title="Comments"
+                      >
+                        <AeriCommentIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
+                      </button>
 
-                        {/* 3. Honeyjar Icon (Fairy Pot) */}
-                        <button
-                          onClick={() => handleHoneyJarClick(person.rank)}
-                          className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5 relative"
-                          aria-label="Honey Jar / Fairy Pot"
-                          title="Honey Jar"
-                        >
-                          <FairyPotIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
-                          {honeyCount > 0 && (
-                            <span className="absolute -top-1 -right-2 bg-amber-400 text-amber-950 text-[9px] font-black px-1 rounded-full leading-none py-0.5 shadow-2xs">
-                              +{honeyCount}
-                            </span>
-                          )}
-                        </button>
-                      </div>
+                      {/* 3. Message Icon */}
+                      <button
+                        onClick={() =>
+                          handleOpenSendPersonMessage({
+                            name: person.name,
+                            handle: person.handle,
+                            avatarUrl: person.avatarUrl,
+                            avatarBg: person.avatarBg,
+                            avatarInitial: person.avatarInitial,
+                            city: person.location,
+                          })
+                        }
+                        className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
+                        aria-label={`Send ${person.name} message`}
+                        title="Direct Message"
+                      >
+                        <AeriMessageBubbleIcon className="w-5.5 h-5.5 text-black" color="#000000" />
+                      </button>
 
-                      {/* Pill & Two Icons column */}
-                      <div className="flex flex-col items-start gap-1.5">
-                        {/* Long gray pill like icon with "Send me message" */}
-                        <button
-                          onClick={() =>
-                            handleOpenSendPersonMessage({
-                              name: person.name,
-                              handle: person.handle,
-                              avatarUrl: person.avatarUrl,
-                              avatarBg: person.avatarBg,
-                              avatarInitial: person.avatarInitial,
-                              city: person.location,
-                            })
-                          }
-                          className="cursor-pointer px-3.5 py-1 bg-[#E2E8F0] hover:bg-[#CBD5E1] text-black hover:text-black rounded-full text-[11px] font-semibold flex items-center justify-center gap-1.5 border border-slate-300 shadow-2xs transition-all active:scale-95 whitespace-nowrap"
-                          title={`Send ${person.name} message`}
-                          aria-label="Send me message"
-                        >
-                          <AeriMessageBubbleIcon className="w-3.5 h-3.5 text-black shrink-0" color="#000000" />
-                          <span className="text-black font-semibold">Send me message</span>
-                        </button>
+                      {/* 4. Phone Hand Icon */}
+                      <button
+                        onClick={() => handleTogglePhoneReaction(`person-${person.name}`)}
+                        className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
+                        title="Phone Hand"
+                        aria-label="Smartphone"
+                      >
+                        <AeriHandPhoneIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
+                      </button>
 
-                        {/* Only those two icons moved slightly more to the right */}
-                        <div className="flex items-center gap-2 ml-1.5 sm:ml-2">
-                          {/* 4. Phone Hand Icon */}
-                          <button
-                            onClick={() => handleTogglePhoneReaction(`person-${person.name}`)}
-                            className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
-                            title="Phone Hand"
-                            aria-label="Smartphone"
-                          >
-                            <AeriHandPhoneIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
-                          </button>
-
-                          {/* 5. Masked 2 Eyes Icon */}
-                          <button
-                            onClick={() => handleToggleInfluenceRating(`person-${person.name}`)}
-                            className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
-                            aria-label="Masked 2 Eyes"
-                            title="Masked 2 Eyes"
-                          >
-                            <AeriMaskedEyesIcon className="w-[31px] h-[21px] text-black shrink-0" />
-                          </button>
-                        </div>
-                      </div>
+                      {/* 5. Masked 2 Eyes Icon */}
+                      <button
+                        onClick={() => handleToggleInfluenceRating(`person-${person.name}`)}
+                        className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
+                        aria-label="Masked 2 Eyes"
+                        title="Masked 2 Eyes"
+                      >
+                        <AeriMaskedEyesIcon className="w-[31px] h-[21px] text-black shrink-0" />
+                      </button>
                     </div>
 
                     {/* Likes count on the right */}
@@ -3347,57 +3301,40 @@ export default function App() {
                     <AeriCommentIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
                   </button>
 
-                  {/* 3. Honeyjar (Fairy Pot) */}
+                  {/* 3. Message icon */}
                   <button
-                    onClick={() => {
-                      setActiveNavIndex(2);
-                      setShowMatchesScreen(false);
-                    }}
+                    onClick={() =>
+                      handleOpenSendPersonMessage({
+                        id: 'p-elena',
+                        name: 'Aeri Fairy',
+                        handle: '@aerifairy',
+                        avatarUrl: feedPosts[0].authorAvatar,
+                      })
+                    }
                     className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
-                    title="Honey Jar"
+                    title="Direct Message"
+                    aria-label="Direct Message"
                   >
-                    <FairyPotIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
+                    <AeriMessageBubbleIcon className="w-5.5 h-5.5 text-black" color="#000000" />
                   </button>
 
-                  {/* Phone Hand & Masked 2 Eyes with Long Gray Pill directly above them */}
-                  <div className="flex flex-col items-center gap-1">
-                    <button
-                      onClick={() =>
-                        handleOpenSendPersonMessage({
-                          id: 'p-elena',
-                          name: 'Aeri Fairy',
-                          handle: '@aerifairy',
-                          avatarUrl: feedPosts[0].authorAvatar,
-                        })
-                      }
-                      className="cursor-pointer px-3 py-0.5 bg-[#E2E8F0] hover:bg-[#CBD5E1] text-black hover:text-black rounded-full text-[10px] font-semibold flex items-center justify-center gap-1 border border-slate-300 shadow-2xs transition-all active:scale-95 whitespace-nowrap"
-                      title="Send me message"
-                      aria-label="Send me message"
-                    >
-                      <AeriMessageBubbleIcon className="w-3 h-3 text-black shrink-0" color="#000000" />
-                      <span className="text-black font-semibold">Send me message</span>
-                    </button>
+                  {/* 4. Phone Hand */}
+                  <button
+                    onClick={() => handleTogglePhoneReaction('creator-preview')}
+                    className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
+                    title="Phone Hand"
+                  >
+                    <AeriHandPhoneIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
+                  </button>
 
-                    <div className="flex items-center gap-2.5">
-                      {/* 4. Phone Hand */}
-                      <button
-                        onClick={() => handleTogglePhoneReaction('creator-preview')}
-                        className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
-                        title="Phone Hand"
-                      >
-                        <AeriHandPhoneIcon className="w-5.5 h-5.5 text-black stroke-[1.8]" />
-                      </button>
-
-                      {/* 5. Masked 2 Eyes */}
-                      <button
-                        onClick={() => handleToggleInfluenceRating('creator-preview')}
-                        className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
-                        title="Masked 2 Eyes"
-                      >
-                        <AeriMaskedEyesIcon className="w-[31px] h-[21px] text-black shrink-0" />
-                      </button>
-                    </div>
-                  </div>
+                  {/* 5. Masked 2 Eyes */}
+                  <button
+                    onClick={() => handleToggleInfluenceRating('creator-preview')}
+                    className="cursor-pointer transition-transform active:scale-90 hover:opacity-75 flex items-center justify-center p-0.5"
+                    title="Masked 2 Eyes"
+                  >
+                    <AeriMaskedEyesIcon className="w-[31px] h-[21px] text-black shrink-0" />
+                  </button>
 
                   {/* 6. Fire Hydrant */}
                   <button
