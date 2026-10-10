@@ -1517,7 +1517,7 @@ export default function App() {
 
               <button
                 aria-label="Search"
-                className="hover:opacity-75 transition-opacity cursor-pointer p-1"
+                className="hover:opacity-75 transition-opacity cursor-pointer p-1 translate-y-1"
               >
                 <AeriSearchIcon className="w-[23px] h-[23px] text-black" />
               </button>
@@ -1527,9 +1527,9 @@ export default function App() {
                 onClick={() => setShowNormalMessagesScreen(true)}
                 aria-label="Messages"
                 title="Messages · Direct messages with normal users"
-                className="hover:opacity-75 transition-all active:scale-90 cursor-pointer p-1 relative text-black"
+                className="hover:opacity-75 transition-all active:scale-90 cursor-pointer p-1 relative text-black flex items-center justify-center -translate-x-1.5 mr-1 translate-y-1"
               >
-                <AeriMessageBubbleIcon className="w-[21px] h-[21px] text-black" />
+                <AeriMessageBubbleIcon size={23} className="w-[23px] h-[23px] text-black" />
                 <span className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
               </button>
             </div>
@@ -2405,7 +2405,7 @@ export default function App() {
         >
           <AeriBellIcon
             size={24}
-            className="w-[23px] h-[25px] transition-transform active:scale-95"
+            className="w-[24px] h-[24px] transition-transform active:scale-95"
             strokeWidth={!showMatchesScreen && !showNormalMessagesScreen && activeNavIndex === 3 ? 2.8 : 2.3}
           />
         </button>
